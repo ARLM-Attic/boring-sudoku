@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Project Name="boringsudoku" InternalType="Console">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
+  <VirtualDirectory Name="SFML-2.1">
+    <VirtualDirectory Name="include">
+      <VirtualDirectory Name="SFML">
+        <VirtualDirectory Name="System">
+          <File Name="SFML-2.1/include/SFML/System/Vector3.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/Clock.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/Time.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/Lock.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/Export.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/Thread.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/ThreadLocal.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/Err.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/String.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/Vector2.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/Mutex.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/ThreadLocalPtr.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/InputStream.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/NonCopyable.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/Utf.hpp"/>
+          <File Name="SFML-2.1/include/SFML/System/Sleep.hpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="Window">
+          <File Name="SFML-2.1/include/SFML/Window/Event.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/Window.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/GlResource.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/Export.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/VideoMode.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/ContextSettings.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/Context.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/Joystick.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/Keyboard.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/WindowHandle.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/WindowStyle.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Window/Mouse.hpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="Network">
+          <File Name="SFML-2.1/include/SFML/Network/Export.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Network/TcpListener.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Network/Socket.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Network/TcpSocket.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Network/Http.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Network/IpAddress.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Network/UdpSocket.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Network/SocketHandle.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Network/Ftp.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Network/Packet.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Network/SocketSelector.hpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="Graphics">
+          <File Name="SFML-2.1/include/SFML/Graphics/Transform.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Shader.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/RenderTarget.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Transformable.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/RenderWindow.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Image.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Export.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/CircleShape.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Font.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Glyph.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Texture.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/VertexArray.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/RectangleShape.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/PrimitiveType.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Rect.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Color.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Drawable.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/ConvexShape.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Sprite.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Vertex.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/RenderStates.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/BlendMode.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/RenderTexture.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Shape.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/Text.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Graphics/View.hpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="Audio">
+          <File Name="SFML-2.1/include/SFML/Audio/SoundStream.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Audio/Sound.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Audio/Listener.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Audio/SoundSource.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Audio/Export.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Audio/Music.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Audio/SoundRecorder.hpp"/>
+          <File Name="SFML-2.1/include/SFML/Audio/SoundBuffer.hpp"/>
+        </VirtualDirectory>
+        <File Name="SFML-2.1/include/SFML/Window.hpp"/>
+        <File Name="SFML-2.1/include/SFML/Audio.hpp"/>
+        <File Name="SFML-2.1/include/SFML/System.hpp"/>
+        <File Name="SFML-2.1/include/SFML/OpenGL.hpp"/>
+        <File Name="SFML-2.1/include/SFML/Config.hpp"/>
+        <File Name="SFML-2.1/include/SFML/Graphics.hpp"/>
+        <File Name="SFML-2.1/include/SFML/Network.hpp"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="source">
+    <File Name="source/main.cpp"/>
+  </VirtualDirectory>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <IncludePath Value="SFML-2.1/include"/>
+        <IncludePath Value="include"/>
+      </Compiler>
+      <Linker Options="" Required="yes">
+        <LibraryPath Value="SFML-2.1/lib"/>
+        <Library Value="sfml-audio"/>
+        <Library Value="sfml-graphics"/>
+        <Library Value="sfml-window"/>
+        <Library Value="sfml-system"/>
+        <Library Value="sfml-network"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[LD_LIBRARY_PATH=$(HOME)/Workspace/sudoku-demo/SFML-2.1/lib]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O2;-Wall" C_Options="-O2;-Wall" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <IncludePath Value="SFML-2.1/include"/>
+        <IncludePath Value="include"/>
+      </Compiler>
+      <Linker Options="" Required="yes">
+        <LibraryPath Value="SFML-2.1/lib"/>
+        <Library Value="sfml-audio"/>
+        <Library Value="sfml-graphics"/>
+        <Library Value="sfml-window"/>
+        <Library Value="sfml-system"/>
+        <Library Value="sfml-network"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[LD_LIBRARY_PATH=SFML-2.1/lib]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>

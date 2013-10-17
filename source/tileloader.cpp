@@ -87,14 +87,20 @@ void TileLoader::mapTiles(unsigned char *level,
     }
 }
 
-void TileLoader::mapTiles(std::vector<sf::Vertex>& levelVertex, 
-                          std::vector<int>         levelTile) {
+void TileLoader::mapTiles(std::vector<sf::Vertex> levelVertex, 
+                          std::vector<int>        levelTile) {
     // No of sf::Quad to be filled must match the numbers of value that are 
     // available
     unsigned int noOfQuadToBeFilled = levelVertex.size() / 4;
     if (noOfQuadToBeFilled != levelTile.size()) {
         return;
     }
+
+    // Copy the levelVertex into the class' vector
+    _vertexarray.clear();
+    _vertexarray.insert(_vertexarray.end(), 
+                        levelVertex.begin(), 
+                        levelVertex.end());
 
     for (unsigned int i = 0; i < levelTile.size(); i++) {
         // Define tile texture
@@ -105,16 +111,16 @@ void TileLoader::mapTiles(std::vector<sf::Vertex>& levelVertex,
         float tv = (float) (tileNumber / (_texturesize.x / _tilesize.x));
         
         // Define its 4 texture coordinates
-        levelVertex[(i + 0)].texCoords = sf::Vector2f(
+        _vertexarray[(i + 0)].texCoords = sf::Vector2f(
             (tu       * _tilesize.x), (tv       * _tilesize.y)
         );
-        levelVertex[(i + 1)].texCoords = sf::Vector2f(
+        _vertexarray[(i + 1)].texCoords = sf::Vector2f(
             ((tu + 1) * _tilesize.x), (tv       * _tilesize.y)
         );
-        levelVertex[(i + 2)].texCoords = sf::Vector2f(
+        _vertexarray[(i + 2)].texCoords = sf::Vector2f(
             ((tu + 1) * _tilesize.x), ((tv + 1) * _tilesize.y)
         );
-        levelVertex[(i + 3)].texCoords = sf::Vector2f(
+        _vertexarray[(i + 3)].texCoords = sf::Vector2f(
             (tu       * _tilesize.x), ((tv + 1) * _tilesize.y)
         );
     }

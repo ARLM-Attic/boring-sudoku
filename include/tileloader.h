@@ -66,8 +66,8 @@ public:
     /// \param levelPosition The level coordinates
     /// \param levelTile     The tile no from tileset
     ///
-    void mapTiles(std::vector<sf::Vertex>& levelVertex, 
-                  std::vector<int>         levelTile);
+    void mapTiles(std::vector<sf::Vertex> levelVertex, 
+                  std::vector<int>        levelTile);
 
     // Iterator interface so the vertex can be joined in the user class. 
     // Declare it in header file so it will be inlined

@@ -49,8 +49,6 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR, int) {
 #else /* Win32-MinGW / Linux / etc */
 int main(int argc,char *argv[]) {
 #endif
-    
-
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Hello World");
     
     sf::Texture backgroundTexture;
@@ -72,8 +70,10 @@ int main(int argc,char *argv[]) {
     
     backgroundLoader.mapTiles(windowVertex, backgroundTile);
 
-    std::vector<sf::Vertex> screenVertex(windowVertex.begin(), windowVertex.end());
-    
+    std::vector<sf::Vertex> screenVertex(backgroundLoader.begin(), 
+                                         backgroundLoader.end()
+    );
+
     while (window.isOpen()) {
         // handle events
         sf::Event event;

@@ -59,7 +59,7 @@ CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
 ##
 CodeLiteDir:=/usr/share/codelite
 LD_LIBRARY_PATH:=$(HOME)/Workspace/sudoku-demo/SFML-2.1/lib
-Objects0=$(IntermediateDirectory)/source_main$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/source_main$(ObjectSuffix) $(IntermediateDirectory)/source_tileloader$(ObjectSuffix) 
 
 
 
@@ -94,6 +94,14 @@ $(IntermediateDirectory)/source_main$(DependSuffix): source/main.cpp
 $(IntermediateDirectory)/source_main$(PreprocessSuffix): source/main.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/source_main$(PreprocessSuffix) "source/main.cpp"
 
+$(IntermediateDirectory)/source_tileloader$(ObjectSuffix): source/tileloader.cpp $(IntermediateDirectory)/source_tileloader$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/kunilkuda/Workspace/boringsudoku/source/tileloader.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/source_tileloader$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/source_tileloader$(DependSuffix): source/tileloader.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/source_tileloader$(ObjectSuffix) -MF$(IntermediateDirectory)/source_tileloader$(DependSuffix) -MM "source/tileloader.cpp"
+
+$(IntermediateDirectory)/source_tileloader$(PreprocessSuffix): source/tileloader.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/source_tileloader$(PreprocessSuffix) "source/tileloader.cpp"
+
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
 ##
@@ -103,6 +111,9 @@ clean:
 	$(RM) $(IntermediateDirectory)/source_main$(ObjectSuffix)
 	$(RM) $(IntermediateDirectory)/source_main$(DependSuffix)
 	$(RM) $(IntermediateDirectory)/source_main$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/source_tileloader$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/source_tileloader$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/source_tileloader$(PreprocessSuffix)
 	$(RM) $(OutputFile)
 	$(RM) ".build-debug/boringsudoku"
 

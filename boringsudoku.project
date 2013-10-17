@@ -106,6 +106,7 @@
   <Dependencies/>
   <VirtualDirectory Name="source">
     <File Name="source/main.cpp"/>
+    <File Name="source/tileloader.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -210,4 +211,7 @@
       </Completion>
     </Configuration>
   </Settings>
+  <VirtualDirectory Name="include">
+    <File Name="include/tileloader.h"/>
+  </VirtualDirectory>
 </CodeLite_Project>

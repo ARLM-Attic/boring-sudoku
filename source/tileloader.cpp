@@ -91,7 +91,7 @@ void TileLoader::mapTiles(std::vector<sf::Vertex>& levelVertex,
                           std::vector<int>         levelTile) {
     // No of sf::Quad to be filled must match the numbers of value that are 
     // available
-    int noOfQuadToBeFilled = levelVertex.size() / 4;
+    unsigned int noOfQuadToBeFilled = levelVertex.size() / 4;
     if (noOfQuadToBeFilled != levelTile.size()) {
         return;
     }

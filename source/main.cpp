@@ -36,7 +36,9 @@
 #endif
 #endif
 
+#include <vector>
 #include <SFML/Graphics.hpp>
+#include "tileloader.h"
 
 #ifdef _WIN32            /* WIN32 platform specific (WinXP, Win7) */
 #ifdef _MSC_VER          /* MS Visual Studio specific (including express 
@@ -47,7 +49,30 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR, int) {
 #else /* Win32-MinGW / Linux / etc */
 int main(int argc,char *argv[]) {
 #endif
+    
+
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Hello World");
+    
+    sf::Texture backgroundTexture;
+    backgroundTexture.loadFromFile("artwork/sudoku-jungle-background.png");
+    
+    std::vector<sf::Vertex> windowVertex(4);
+    windowVertex[0].position = sf::Vector2f(   0.f,   0.f);
+    windowVertex[1].position = sf::Vector2f(1023.f,   0.f);
+    windowVertex[2].position = sf::Vector2f(1023.f, 767.f);
+    windowVertex[3].position = sf::Vector2f(   0.f, 767.f);
+
+    std::vector<int> backgroundTile(1, 0);
+
+    TileLoader backgroundLoader(
+        sf::Vector2u(backgroundTexture.getSize().x, 
+                     backgroundTexture.getSize().y),
+        sf::Vector2u(1024.f, 768.f)
+    );
+    
+    backgroundLoader.mapTiles(windowVertex, backgroundTile);
+
+    std::vector<sf::Vertex> screenVertex(windowVertex.begin(), windowVertex.end());
     
     while (window.isOpen()) {
         // handle events
@@ -60,6 +85,12 @@ int main(int argc,char *argv[]) {
 
         // This will draw 1024 x 768 blank screen
         window.clear();
+
+        window.draw(&screenVertex[0], 
+                    screenVertex.size(), 
+                    sf::Quads, 
+                    &backgroundTexture);
+
         window.display();
     }
 

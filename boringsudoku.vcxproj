@@ -87,9 +87,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\sudokuboard.cpp" />
     <ClCompile Include="source\tileloader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\sudokuboard.h" />
     <ClInclude Include="include\tileloader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

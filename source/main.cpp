@@ -38,7 +38,9 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+
 #include "tileloader.h"
+#include "sudokuboard.h"
 
 #ifdef _WIN32            /* WIN32 platform specific (WinXP, Win7) */
 #ifdef _MSC_VER          /* MS Visual Studio specific (including express 
@@ -51,28 +53,26 @@ int main(int argc,char *argv[]) {
 #endif
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Hello World");
     
-    sf::Texture backgroundTexture;
-    backgroundTexture.loadFromFile("artwork/sudoku-jungle-background.png");
+    sf::Texture boardTile;
+    boardTile.loadFromFile("artwork/sudoku-numbertiles.png");
+
+    SudokuBoard sudokuBoard(SudokuBoard::SUDOKUBOARD_SIZE_16X16, 
+                            boardTile, 
+                            sf::Vector2u(40, 40));
+
+    std::vector<int> sudokuBoard_tile(256, 2);
     
-    std::vector<sf::Vertex> windowVertex(4);
-    windowVertex[0].position = sf::Vector2f(   0.f,   0.f);
-    windowVertex[1].position = sf::Vector2f(1023.f,   0.f);
-    windowVertex[2].position = sf::Vector2f(1023.f, 767.f);
-    windowVertex[3].position = sf::Vector2f(   0.f, 767.f);
+    sudokuBoard.setBoard(sudokuBoard_tile);
 
-    std::vector<int> backgroundTile(1, 0);
-
-    TileLoader backgroundLoader(
-        sf::Vector2u(backgroundTexture.getSize().x, 
-                     backgroundTexture.getSize().y),
-        sf::Vector2u(1024.f, 768.f)
+    TileLoader boardLoader(
+        sf::Vector2u(boardTile.getSize().x, 
+                     boardTile.getSize().y),
+        sf::Vector2u(40, 40)
     );
     
-    backgroundLoader.mapTiles(windowVertex, backgroundTile);
+    boardLoader.mapTiles(sudokuBoard.getVertex(), sudokuBoard.getBoard());
 
-    std::vector<sf::Vertex> screenVertex(backgroundLoader.begin(), 
-                                         backgroundLoader.end()
-    );
+    std::vector<sf::Vertex> screenVertex(boardLoader.begin(), boardLoader.end());
 
     while (window.isOpen()) {
         // handle events
@@ -89,7 +89,7 @@ int main(int argc,char *argv[]) {
         window.draw(&screenVertex[0], 
                     screenVertex.size(), 
                     sf::Quads, 
-                    &backgroundTexture);
+                    &boardTile);
 
         window.display();
     }

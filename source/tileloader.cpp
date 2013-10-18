@@ -111,16 +111,16 @@ void TileLoader::mapTiles(std::vector<sf::Vertex> levelVertex,
         float tv = (float) (tileNumber / (_texturesize.x / _tilesize.x));
         
         // Define its 4 texture coordinates
-        _vertexarray[(i + 0)].texCoords = sf::Vector2f(
+        _vertexarray[(i * 4) + 0].texCoords = sf::Vector2f(
             (tu       * _tilesize.x), (tv       * _tilesize.y)
         );
-        _vertexarray[(i + 1)].texCoords = sf::Vector2f(
+        _vertexarray[(i * 4) + 1].texCoords = sf::Vector2f(
             ((tu + 1) * _tilesize.x), (tv       * _tilesize.y)
         );
-        _vertexarray[(i + 2)].texCoords = sf::Vector2f(
+        _vertexarray[(i * 4) + 2].texCoords = sf::Vector2f(
             ((tu + 1) * _tilesize.x), ((tv + 1) * _tilesize.y)
         );
-        _vertexarray[(i + 3)].texCoords = sf::Vector2f(
+        _vertexarray[(i * 4) + 3].texCoords = sf::Vector2f(
             (tu       * _tilesize.x), ((tv + 1) * _tilesize.y)
         );
     }

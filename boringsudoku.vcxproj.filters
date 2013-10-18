@@ -21,9 +21,15 @@
     <ClCompile Include="source\tileloader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\sudokuboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\tileloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sudokuboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -54,6 +54,8 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+#include "sudokutile.h"
+
 class SudokuBoard {
 public:
     /// 
@@ -68,49 +70,37 @@ public:
     ///
     /// \brief Generate sudoku board, with specific size and tileset
     ///
-    /// \param size    The sudoku size
-    /// \param tileset The sudoku tileset
+    /// \param size     The sudoku size
+    /// \param tilemap  The texture for the tilemap
+    /// \param tilesize The size of the board's tile (in pixel)
+    /// \param screenSize The screen size
     ///
     explicit SudokuBoard(enum t_sudokuboard_size size, 
-                         sf::Texture             tileset, 
-                         sf::Vector2u            tilesize);
-    ~SudokuBoard() { }
+                         sf::Texture            *tilemap,
+                         sf::Vector2u            tileSize,
+                         sf::Vector2f            screenSize);
 
     ///
-    /// \brief Set new sudoku board
+    /// \brief Set the tile's value
+    /// 
+    /// \param row    The row of the tile
+    /// \param column The column of the tile 
+    /// \param value  The value of the tile
     ///
-    /// \param sudokuboard The new sudoku board. The board size must match the
-    ///                    current sudoku board.
-    ///
-    void setBoard(std::vector<int> sudokuboard) {
-        _sudokuboard = sudokuboard;
+    void setTileValue(int row, int column, int value) {
+        _sudokuboard[(row * getBoardSize()) + column].setValue(value);
     }
 
     ///
-    /// \brief Get the current sudoku board
+    /// \brief Get the tile's value
     ///
-    /// \return Sudoku board array
+    /// \param row    The row of the tile
+    /// \param column The column of the tile 
     ///
-    std::vector<int> getBoard() {
-        return _sudokuboard;
-    }
-    
+    /// \return The tile's value
     ///
-    /// \brief Get the Sudoku tileset texture
-    ///
-    /// \return The tileset texture
-    ///
-    sf::Texture getTileset() {
-        return _sudokuTileset;
-    }
-
-    ///
-    /// \brief Get the board's vertex to draw the board
-    ///
-    /// \return The board's vertex
-    ///
-    std::vector<sf::Vertex> getVertex() {
-        return _sudokuboardVertex;
+    int getTileValue(int row, int column) {
+        return _sudokuboard[(row * getBoardSize()) + column].getValue();
     }
 
     ///
@@ -131,30 +121,47 @@ public:
         return (_subboardSize * _subboardSize);
     }
 
+    //-------------------------------------------------------------------------
+    // Interface to get the board to be drawn in the screen
+
+    ///
+    /// \brief Update the board to be displayed
+    ///
+    /// \param elapsedTime The time that has elapsed since the last update
+    ///
+    void update(sf::Time elapsedTime);
+
+    std::vector<sf::Vertex>::iterator begin() {
+        return _vertex.begin();
+    }
+
+    std::vector<sf::Vertex>::iterator end() {
+        return _vertex.end();
+    }
+
+    std::vector<sf::Vertex>::const_iterator begin() const {
+        return _vertex.begin();
+    }
+
+    std::vector<sf::Vertex>::const_iterator end() const {
+        return _vertex.end();
+    }
+
 private:
+    ///
     /// \brief The sudoku sub board's size
-    const int               _subboardSize;
-
-    /// \brief The sudoku board values
-    std::vector<int>        _sudokuboard;
-
-    /// \brief The sudoku board vertex
-    std::vector<sf::Vertex> _sudokuboardVertex;
-
-    /// \brief The sudoku tileset texture
-    sf::Texture             _sudokuTileset;
-
-    /// \brief The sudoku tile size
-    sf::Vector2u            _sudokuTilesize;
+    ///
+    const int _subboardSize;
 
     ///
-    /// \brief Create subboard's vertex, along with its gap (so each sub board
-    ///        will appear separated)
+    /// \brief The sudoku board
     ///
-    /// \param offsetRow The starting row of the sub board
-    /// \param offsetCol The starting column of the sub board
+    std::vector<SudokuTile> _sudokuboard;
+
     ///
-    void setSuboardVertex(int offsetRow, int offsetCol);
+    /// \brief The vertex to draw the board
+    ///
+    std::vector<sf::Vertex> _vertex;
 };
 
 #endif // __SUDOKUBOARD_H_

@@ -39,7 +39,6 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "tileloader.h"
 #include "sudokuboard.h"
 
 #ifdef _WIN32            /* WIN32 platform specific (WinXP, Win7) */
@@ -57,22 +56,14 @@ int main(int argc,char *argv[]) {
     boardTile.loadFromFile("artwork/sudoku-numbertiles.png");
 
     SudokuBoard sudokuBoard(SudokuBoard::SUDOKUBOARD_SIZE_16X16, 
-                            boardTile, 
-                            sf::Vector2u(40, 40));
-
-    std::vector<int> sudokuBoard_tile(256, 2);
-    
-    sudokuBoard.setBoard(sudokuBoard_tile);
-
-    TileLoader boardLoader(
-        sf::Vector2u(boardTile.getSize().x, 
-                     boardTile.getSize().y),
-        sf::Vector2u(40, 40)
+                            &boardTile, 
+                            sf::Vector2u(   40,  40),
+                            sf::Vector2f( 640, 480)
     );
-    
-    boardLoader.mapTiles(sudokuBoard.getVertex(), sudokuBoard.getBoard());
 
-    std::vector<sf::Vertex> screenVertex(boardLoader.begin(), boardLoader.end());
+    sudokuBoard.update(sf::Time());
+
+    std::vector<sf::Vertex> screenVertex(sudokuBoard.begin(), sudokuBoard.end());
 
     while (window.isOpen()) {
         // handle events

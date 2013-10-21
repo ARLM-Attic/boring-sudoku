@@ -53,12 +53,12 @@ int main(int argc,char *argv[]) {
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Hello World");
     
     sf::Texture boardTile;
-    boardTile.loadFromFile("artwork/sudoku-numbertiles.png");
+    boardTile.loadFromFile("artwork/sudoku-numbertiles-32px.png");
 
     SudokuBoard sudokuBoard(SudokuBoard::SUDOKUBOARD_SIZE_16X16, 
                             &boardTile, 
-                            sf::Vector2u(   40,  40),
-                            sf::Vector2f( 640, 480)
+                            sf::Vector2u( 32, 32),
+                            sf::Vector2f(1024, 768)
     );
 
     sudokuBoard.update(sf::Time());

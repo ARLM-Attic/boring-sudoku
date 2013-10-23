@@ -26,7 +26,8 @@
 SudokuBoard::SudokuBoard(enum t_sudokuboard_size size, 
                          sf::Texture            *tilemap,
                          sf::Vector2u            tileSize,
-                         sf::Vector2f            screenSize) :
+                         sf::Vector2f            screenSize,
+                         sf::Vector2f            screenOffset) :
     _subboardSize(static_cast<int> (size)) 
 {
     for (int i = 0; i < (getBoardSize() * getBoardSize()); i++) {
@@ -40,8 +41,8 @@ SudokuBoard::SudokuBoard(enum t_sudokuboard_size size,
     //
     // Based on this measurement, the center for :
     // 4x4 board = (2.75 tileSize, 2.75 tileSize)
-    // 9x9 board = (5.75 tileSize, 5.75 tileSize)
-    //16x16board = (9.75 tileSize, 9.75 tileSize)
+    // 9x9 board = (6    tileSize, 6    tileSize)
+    //16x16board = (10.5 tileSize, 10.5 tileSize)
     //
     // Using these formulas:
     //     screenColCenter = n.tileSize + colOffset 
@@ -50,20 +51,22 @@ SudokuBoard::SudokuBoard(enum t_sudokuboard_size size,
     //
     float screenColCenter = screenSize.x / 2;
     float screenRowCenter = screenSize.y / 2;
-    float rowOffset, colOffset;
+    
+    float colOffset = screenOffset.x + screenColCenter;
+    float rowOffset = screenOffset.y + screenRowCenter;
     
     switch (size) {
     case SUDOKUBOARD_SIZE_4X4:
-        colOffset = screenColCenter - (2.75f * tileSize.x);
-        rowOffset = screenRowCenter - (2.75f * tileSize.y);
+        colOffset -= (2.75f * tileSize.x);
+        rowOffset -= (2.75f * tileSize.y);
         break;
     case SUDOKUBOARD_SIZE_9X9:
-        colOffset = screenColCenter - ( 6.0f * tileSize.x);
-        rowOffset = screenRowCenter - ( 6.0f * tileSize.y);
+        colOffset -= (  6.f * tileSize.x);
+        rowOffset -= (  6.f * tileSize.y);
         break;
     case SUDOKUBOARD_SIZE_16X16:
-        colOffset = screenColCenter - (10.5f * tileSize.x);
-        rowOffset = screenRowCenter - (10.5f * tileSize.y);
+        colOffset -= (10.5f * tileSize.x);
+        rowOffset -= (10.5f * tileSize.y);
         break;
     }
 

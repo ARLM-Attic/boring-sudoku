@@ -40,6 +40,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "sudokuboard.h"
+#include "sudokukeypad.h"
 
 #ifdef _WIN32            /* WIN32 platform specific (WinXP, Win7) */
 #ifdef _MSC_VER          /* MS Visual Studio specific (including express 
@@ -57,13 +58,26 @@ int main(int argc,char *argv[]) {
 
     SudokuBoard sudokuBoard(SudokuBoard::SUDOKUBOARD_SIZE_16X16, 
                             &boardTile, 
-                            sf::Vector2u( 32, 32),
-                            sf::Vector2f(1024, 768)
+                            sf::Vector2u(32, 32),
+                            sf::Vector2f(768, 768)
     );
 
     sudokuBoard.update(sf::Time());
 
+    sf::Texture keypadTile;
+    keypadTile.loadFromFile("artwork/sudoku-numbertiles-32px.png");
+
+    SudokuKeypad sudokuKeypad(&keypadTile, 
+                              sf::Vector2u(32, 32),
+                              sf::Vector2f(84, 768),
+                              sf::Vector2f(768, 0)
+    );
+
+    sudokuKeypad.show();
+    sudokuKeypad.update(sf::Time());
+    
     std::vector<sf::Vertex> screenVertex(sudokuBoard.begin(), sudokuBoard.end());
+    std::vector<sf::Vertex> keypadVertex(sudokuKeypad.begin(), sudokuKeypad.end());
 
     while (window.isOpen()) {
         // handle events
@@ -81,6 +95,11 @@ int main(int argc,char *argv[]) {
                     screenVertex.size(), 
                     sf::Quads, 
                     &boardTile);
+
+        window.draw(&keypadVertex[0], 
+                    keypadVertex.size(), 
+                    sf::Quads, 
+                    &keypadTile);
 
         window.display();
     }

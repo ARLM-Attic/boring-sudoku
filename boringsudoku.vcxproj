@@ -88,11 +88,13 @@
   <ItemGroup>
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\sudokuboard.cpp" />
+    <ClCompile Include="source\sudokukeypad.cpp" />
     <ClCompile Include="source\sudokutile.cpp" />
     <ClCompile Include="source\tileloader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\sudokuboard.h" />
+    <ClInclude Include="include\sudokukeypad.h" />
     <ClInclude Include="include\sudokutile.h" />
     <ClInclude Include="include\tileloader.h" />
   </ItemGroup>

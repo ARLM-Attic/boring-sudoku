@@ -70,15 +70,17 @@ public:
     ///
     /// \brief Generate sudoku board, with specific size and tileset
     ///
-    /// \param size     The sudoku size
-    /// \param tilemap  The texture for the tilemap
-    /// \param tilesize The size of the board's tile (in pixel)
-    /// \param screenSize The screen size
+    /// \param size         The sudoku size
+    /// \param tilemap      The texture for the tilemap
+    /// \param tilesize     The size of the board's tile (in pixel)
+    /// \param screenSize   The screen size
+    /// \param screenOffset The offset from screen to be added
     ///
     explicit SudokuBoard(enum t_sudokuboard_size size, 
-                         sf::Texture            *tilemap,
-                         sf::Vector2u            tileSize,
-                         sf::Vector2f            screenSize);
+                         sf::Texture *tilemap,
+                         sf::Vector2u tileSize,
+                         sf::Vector2f screenSize,
+                         sf::Vector2f screenOffset = sf::Vector2f(0, 0));
 
     ///
     /// \brief Set the tile's value

@@ -87,16 +87,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\sudokuboard.cpp" />
-    <ClCompile Include="source\sudokukeypad.cpp" />
-    <ClCompile Include="source\sudokutile.cpp" />
-    <ClCompile Include="source\tileloader.cpp" />
+    <ClCompile Include="source\sudokuboardview.cpp" />
+    <ClCompile Include="source\sudokutileview.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\sudokuboard.h" />
-    <ClInclude Include="include\sudokukeypad.h" />
-    <ClInclude Include="include\sudokutile.h" />
-    <ClInclude Include="include\tileloader.h" />
+    <ClInclude Include="include\sudokuboardview.h" />
+    <ClInclude Include="include\sudokutileview.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

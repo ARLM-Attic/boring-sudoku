@@ -18,30 +18,18 @@
     <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\tileloader.cpp">
+    <ClCompile Include="source\sudokutileview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\sudokuboard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\sudokutile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\sudokukeypad.cpp">
+    <ClCompile Include="source\sudokuboardview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\tileloader.h">
+    <ClInclude Include="include\sudokutileview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\sudokuboard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sudokutile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sudokukeypad.h">
+    <ClInclude Include="include\sudokuboardview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

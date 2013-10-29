@@ -39,8 +39,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "sudokuboard.h"
-#include "sudokukeypad.h"
+#include "sudokuboardview.h"
 
 #ifdef _WIN32            /* WIN32 platform specific (WinXP, Win7) */
 #ifdef _MSC_VER          /* MS Visual Studio specific (including express 
@@ -51,33 +50,33 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR, int) {
 #else /* Win32-MinGW / Linux / etc */
 int main(int argc,char *argv[]) {
 #endif
-    sf::RenderWindow window(sf::VideoMode(1024, 768), "Hello World");
+    sf::RenderWindow window(sf::VideoMode(480, 320), "Boring Sudoku Game");
     
+    std::vector<int> sudokuboard(81, 3);
+
     sf::Texture boardTile;
-    boardTile.loadFromFile("artwork/sudoku-numbertiles-32px.png");
+    boardTile.loadFromFile("artwork/sudoku-numbertiles-24px.png");
 
-    SudokuBoard sudokuBoard(SudokuBoard::SUDOKUBOARD_SIZE_16X16, 
-                            &boardTile, 
-                            sf::Vector2u(32, 32),
-                            sf::Vector2f(768, 768)
+    SudokuBoardView sudokuBoardView(
+        &sudokuboard,
+        SudokuBoardView::SUDOKUBOARD_SIZE_9X9, 
+        &boardTile,
+        sf::Vector2u(24, 24),
+        sf::Vector2f(320, 320)
     );
 
-    sudokuBoard.update(sf::Time());
+    sudokuBoardView.update(sf::Time());
 
-    sf::Texture keypadTile;
-    keypadTile.loadFromFile("artwork/sudoku-numbertiles-32px.png");
+    std::vector<sf::Vertex> screenVertex(sudokuBoardView.begin(), sudokuBoardView.end());
 
-    SudokuKeypad sudokuKeypad(&keypadTile, 
-                              sf::Vector2u(32, 32),
-                              sf::Vector2f(84, 768),
-                              sf::Vector2f(768, 0)
-    );
+    sf::Texture background;
+    background.loadFromFile("artwork/sudoku-background.png");
+    sf::Sprite backgroundSprite(background);
 
-    sudokuKeypad.show();
-    sudokuKeypad.update(sf::Time());
-    
-    std::vector<sf::Vertex> screenVertex(sudokuBoard.begin(), sudokuBoard.end());
-    std::vector<sf::Vertex> keypadVertex(sudokuKeypad.begin(), sudokuKeypad.end());
+    sf::Texture cursor;
+    cursor.loadFromFile("artwork/sudoku-cursor-36px.png");
+    sf::Sprite cursorSprite(cursor);
+    cursorSprite.setPosition(16.f, 16.f);
 
     while (window.isOpen()) {
         // handle events
@@ -91,15 +90,13 @@ int main(int argc,char *argv[]) {
         // This will draw 1024 x 768 blank screen
         window.clear();
 
+        window.draw(backgroundSprite);
+        window.draw(cursorSprite);
         window.draw(&screenVertex[0], 
                     screenVertex.size(), 
                     sf::Quads, 
                     &boardTile);
-
-        window.draw(&keypadVertex[0], 
-                    keypadVertex.size(), 
-                    sf::Quads, 
-                    &keypadTile);
+        
 
         window.display();
     }

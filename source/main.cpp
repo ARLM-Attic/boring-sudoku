@@ -37,6 +37,7 @@
 #endif
 
 #include "gamemanager.h"
+#include "play9x9sudokustate.h"
 #include "splashscreenstate.h"
 
 #ifdef _WIN32            /* WIN32 platform specific (WinXP, Win7) */
@@ -51,6 +52,7 @@ int main(int argc,char *argv[]) {
     GameManager *theGame = GameManager::getInstance();
 
     // Init the sequence of the game state
+    theGame->pushGameState(new Play9x9SudokuState(theGame));
     theGame->pushGameState(new SplashScreenState(theGame));
 
     theGame->run();

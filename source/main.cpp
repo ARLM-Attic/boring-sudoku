@@ -36,10 +36,8 @@
 #endif
 #endif
 
-#include <vector>
-#include <SFML/Graphics.hpp>
-
-#include "sudokuboardview.h"
+#include "gamemanager.h"
+#include "splashscreenstate.h"
 
 #ifdef _WIN32            /* WIN32 platform specific (WinXP, Win7) */
 #ifdef _MSC_VER          /* MS Visual Studio specific (including express 
@@ -50,56 +48,12 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR, int) {
 #else /* Win32-MinGW / Linux / etc */
 int main(int argc,char *argv[]) {
 #endif
-    sf::RenderWindow window(sf::VideoMode(480, 320), "Boring Sudoku Game");
-    
-    std::vector<int> sudokuboard(81, 3);
+    GameManager *theGame = GameManager::getInstance();
 
-    sf::Texture boardTile;
-    boardTile.loadFromFile("artwork/sudoku-numbertiles-24px.png");
+    // Init the sequence of the game state
+    theGame->pushGameState(new SplashScreenState(theGame));
 
-    SudokuBoardView sudokuBoardView(
-        &sudokuboard,
-        SudokuBoardView::SUDOKUBOARD_SIZE_9X9, 
-        &boardTile,
-        sf::Vector2u(24, 24),
-        sf::Vector2f(320, 320)
-    );
-
-    sudokuBoardView.update(sf::Time());
-
-    std::vector<sf::Vertex> screenVertex(sudokuBoardView.begin(), sudokuBoardView.end());
-
-    sf::Texture background;
-    background.loadFromFile("artwork/sudoku-background.png");
-    sf::Sprite backgroundSprite(background);
-
-    sf::Texture cursor;
-    cursor.loadFromFile("artwork/sudoku-cursor-36px.png");
-    sf::Sprite cursorSprite(cursor);
-    cursorSprite.setPosition(16.f, 16.f);
-
-    while (window.isOpen()) {
-        // handle events
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if(event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        // This will draw 1024 x 768 blank screen
-        window.clear();
-
-        window.draw(backgroundSprite);
-        window.draw(cursorSprite);
-        window.draw(&screenVertex[0], 
-                    screenVertex.size(), 
-                    sf::Quads, 
-                    &boardTile);
-        
-
-        window.display();
-    }
+    theGame->run();
 
     return 0;
 }

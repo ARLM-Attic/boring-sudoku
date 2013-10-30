@@ -86,11 +86,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\gamemanager.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\splashscreenstate.cpp" />
     <ClCompile Include="source\sudokuboardview.cpp" />
     <ClCompile Include="source\sudokutileview.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\gamemanager.h" />
+    <ClInclude Include="include\gamestateinterface.h" />
+    <ClInclude Include="include\play9x9sudokustate.h" />
+    <ClInclude Include="include\splashscreenstate.h" />
     <ClInclude Include="include\sudokuboardview.h" />
     <ClInclude Include="include\sudokutileview.h" />
   </ItemGroup>

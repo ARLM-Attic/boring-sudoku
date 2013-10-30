@@ -48,8 +48,8 @@
  * |-----------------|-----------------|-----------------|
  */
 
-#ifndef __SUDOKUBOARD_H_
-#define __SUDOKUBOARD_H_
+#ifndef __SUDOKUBOARDVIEW_H_
+#define __SUDOKUBOARDVIEW_H_
 
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -132,4 +132,4 @@ private:
     std::vector<sf::Vertex> _vertex;
 };
 
-#endif // __SUDOKUBOARD_H_
+#endif // __SUDOKUBOARDVIEW_H_

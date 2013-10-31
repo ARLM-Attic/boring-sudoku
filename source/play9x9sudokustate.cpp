@@ -115,6 +115,13 @@ void Play9x9SudokuState::mouseMove(int x, int y) {
 }
 
 void Play9x9SudokuState::update(sf::Time elapsedTime) {
+    // Update the cursor
+    sf::Vector2f cursorPositionInScreen = 
+        _sudokuBoardView.getTilePosition(_cursorPos.y, _cursorPos.x);
+    _cursorView.setPosition(cursorPositionInScreen);
+    _cursorView.update(elapsedTime);
+
+    _sudokuBoardView.update(elapsedTime);
 }
 
 void Play9x9SudokuState::draw(sf::RenderWindow *win) {

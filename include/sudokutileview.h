@@ -54,6 +54,15 @@ public:
     }
 
     ///
+    /// \brief Get the tile's position in the screen
+    ///
+    /// \return The tile's position in screen
+    ///
+    sf::Vector2f getPosition() {
+        return _tilePos;
+    }
+
+    ///
     /// \brief Get the tile's size
     ///
     /// This function is needed to make sure that the tile can be drawn without

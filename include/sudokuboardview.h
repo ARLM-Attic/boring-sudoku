@@ -84,6 +84,16 @@ public:
             sf::Vector2f            screenSize,
             sf::Vector2f            screenOffset = sf::Vector2f(0, 0));
 
+    ///
+    /// \brief Get the tile's position in the screen
+    ///
+    /// \param row    The row where the tile is located
+    /// \param column The column where the tile is located
+    ///
+    /// \return The tile position in the screen
+    ///
+    sf::Vector2f getTilePosition(int row, int column);
+
     //-------------------------------------------------------------------------
     // Interface to get the board to be drawn in the screen
 

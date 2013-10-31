@@ -94,6 +94,13 @@ SudokuBoardView::SudokuBoardView(
     }
 }
 
+sf::Vector2f SudokuBoardView::getTilePosition(int row, int column) {
+    int            boardSize = (_subboardSize * _subboardSize);
+    SudokuTileView tile      = _sudokuboardview[(row * boardSize) + column];
+
+    return tile.getPosition();
+}
+
 void SudokuBoardView::update(sf::Time elapsedTime) {
     _vertex.clear();
 

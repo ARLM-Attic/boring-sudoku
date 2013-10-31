@@ -40,6 +40,14 @@ public:
     virtual void update(sf::Time elapsedTime);
     virtual void draw(sf::RenderWindow *win);
 
+    ///
+    /// \brief Set the cursor's position in the screen
+    ///
+    /// \param position The cursor's new position in screen
+    void setPosition(sf::Vector2f position) {
+        _cursorView.setPosition(position);
+    }
+
 private:
     ///
     /// \brief Unlike Sudoku tile, the cursor tile value is always 0 since 

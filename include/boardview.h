@@ -52,6 +52,32 @@ public:
     virtual void draw(sf::RenderWindow *win);
 
     ///
+    /// \brief Check whether the tile (pointed by its row / column in the 
+    ///        board) is available
+    ///
+    /// This function is needed to interface the cursor with the board
+    ///
+    /// \param row    The row where the tile lies
+    /// \param column The column where the tile lies
+    ///
+    /// \return true if the tile lies within the board
+    ///
+    bool tileIsInBoard(int row, int column);
+
+    ///
+    /// \brief Get the tile position in the screen
+    ///
+    /// This function is needed to interface the cursor with the board.
+    /// It assumes that the row / column is valid within the board
+    ///
+    /// \param row    The row where the tile lies
+    /// \param column The column where the tile lies
+    ///
+    /// \return tile's position in the screen
+    ///
+    sf::Vector2f tilePosition(int row, int column);
+
+    ///
     /// \brief Virtual destructor so this class can be overridden
     ///
     virtual ~BoardView() { }

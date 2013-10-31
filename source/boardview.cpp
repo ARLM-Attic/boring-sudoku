@@ -91,3 +91,19 @@ void BoardView::draw(sf::RenderWindow *win) {
               sf::Quads, 
               &_tileTexture);
 }
+
+bool BoardView::tileIsInBoard(int row, int column) {
+    int tileInBoard = (row * _columnSize) + column;
+
+    if ((tileInBoard >= 0) && (tileInBoard < _boardTiles.size())) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+sf::Vector2f BoardView::tilePosition(int row, int column) {
+    int tileInBoard = (row * _columnSize) + column;
+    
+    return _boardTiles[tileInBoard].getPosition();
+}

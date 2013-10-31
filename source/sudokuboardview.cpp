@@ -24,24 +24,16 @@
 #include "sudokuboardview.h"
 
 SudokuBoardView::SudokuBoardView(
+            enum t_sudokuboard_size size,
             std::vector<int>       *sudokuboard,
-            enum t_sudokuboard_size size, 
-            sf::Texture            *tilemap,
-            sf::Vector2u            tileSize,
             sf::Vector2f            screenSize,
             sf::Vector2f            screenOffset) :
-
-    _subboardSize(static_cast<int> (size)), _sudokuboard(sudokuboard)
+    BoardView(static_cast<int> (size), sudokuboard, screenSize, screenOffset)
 {
+}
 
-    // Create tile view for each of the Sudoku tile
-    int tileNo = _subboardSize * _subboardSize * _subboardSize * _subboardSize;
-
-    for (int i = 0; i < tileNo; i++) {
-        SudokuTileView tile(&(*sudokuboard)[i], tilemap, tileSize);
-        _sudokuboardview.push_back(tile);
-    }
-
+void SudokuBoardView::setLayout(sf::Vector2f screenSize, 
+                                sf::Vector2f screenOffset) {
     // Init the tile's position in screen. 
     // All of the coordinates are based on tileSize value. 
     // The distance between the tiles is (1/4 * tileSize). The 
@@ -63,52 +55,32 @@ SudokuBoardView::SudokuBoardView(
     float colOffset = screenOffset.x + screenColCenter;
     float rowOffset = screenOffset.y + screenRowCenter;
     
-    switch (size) {
-    case SUDOKUBOARD_SIZE_4X4:
-        colOffset -= (2.75f * tileSize.x);
-        rowOffset -= (2.75f * tileSize.y);
-        break;
-    case SUDOKUBOARD_SIZE_9X9:
-        colOffset -= (  6.f * tileSize.x);
-        rowOffset -= (  6.f * tileSize.y);
-        break;
-    case SUDOKUBOARD_SIZE_16X16:
-        colOffset -= (10.5f * tileSize.x);
-        rowOffset -= (10.5f * tileSize.y);
-        break;
-    }
-
-    // Adjust the position for all of the tiles
-    int boardSize = (_subboardSize * _subboardSize);
+    int boardSize = (_columnSize * _columnSize);
     for (int row = 0; row < boardSize; row++) {
         for (int col = 0; col < boardSize; col++) {
-            float x = 0.75f + (1.25f * col) + (0.25f * (col / _subboardSize));
-            float y = 0.75f + (1.25f * row) + (0.25f * (row / _subboardSize));
+            float x = 0.75f + (1.25f * col) + (0.25f * (col / _columnSize));
+            float y = 0.75f + (1.25f * row) + (0.25f * (row / _columnSize));
 
-            SudokuTileView *tile = &_sudokuboardview[(row * boardSize) + col];
+            TileView *tile = &_boardTiles[(row * boardSize) + col];
+
+            switch (_columnSize) {
+            case SUDOKUBOARD_SIZE_4X4:
+                colOffset -= (2.75f * tile->getTileSize().x);
+                rowOffset -= (2.75f * tile->getTileSize().y);
+                break;
+            case SUDOKUBOARD_SIZE_9X9:
+                colOffset -= (  6.f * tile->getTileSize().x);
+                rowOffset -= (  6.f * tile->getTileSize().y);
+                break;
+            case SUDOKUBOARD_SIZE_16X16:
+                colOffset -= (10.5f * tile->getTileSize().x);
+                rowOffset -= (10.5f * tile->getTileSize().y);
+                break;
+            }
 
             x = (x * (tile->getTileSize().x)) + colOffset;
             y = (y * (tile->getTileSize().y)) + rowOffset;
             tile->setPosition(sf::Vector2f(x, y));
         }
-    }
-}
-
-sf::Vector2f SudokuBoardView::getTilePosition(int row, int column) {
-    int            boardSize = (_subboardSize * _subboardSize);
-    SudokuTileView tile      = _sudokuboardview[(row * boardSize) + column];
-
-    return tile.getPosition();
-}
-
-void SudokuBoardView::update(sf::Time elapsedTime) {
-    _vertex.clear();
-
-    for (unsigned int i = 0; i < _sudokuboardview.size(); i++) {
-        _sudokuboardview[i].update(elapsedTime);
-        _vertex.insert( _vertex.end(), 
-                        _sudokuboardview[i].begin(), 
-                        _sudokuboardview[i].end()
-        );
     }
 }

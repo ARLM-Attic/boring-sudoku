@@ -28,12 +28,17 @@
 #ifndef __CURSORVIEW_H_
 #define __CURSORVIEW_H_
 
-#include "sudokutileview.h"
+#include "abstractviewer.h"
+#include "tileview.h"
 
-class CursorView : public SudokuTileView {
+class CursorView : public AbstractViewer {
 public:
-    CursorView (sf::Texture *cursorTexture, 
-                sf::Vector2u cursorSize);
+    explicit CursorView();
+    
+    //-------------------------------------------------------------------------
+    // Override the AbstractViewer's methods
+    virtual void update(sf::Time elapsedTime);
+    virtual void draw(sf::RenderWindow *win);
 
 private:
     ///
@@ -41,6 +46,21 @@ private:
     ///        there's only 1 cursor type available in the cursor tilemap
     ///
     int _tileValue;
+
+    ///
+    /// \brief The tile texture for the board
+    ///
+    sf::Texture _cursorTexture;
+
+    ///
+    /// \brief The cursor representatives
+    ///
+    TileView _cursorView;
+
+    ///
+    /// \brief The tiles' vertex to draw
+    ///
+    std::vector<sf::Vertex> _vertex;
 };
 
 #endif // __CURSORVIEW_H_

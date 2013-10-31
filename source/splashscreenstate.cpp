@@ -26,8 +26,17 @@
 #define SPLASHSCREEN_DURATION_IN_SEC    2
 
 SplashScreenState::SplashScreenState(GameManager *manager) :
-    _manager(manager), _texture() {
-        _texture.loadFromFile("artwork/sudoku-splashscreen.png");
+    _manager(manager), 
+    _texture() {
+    
+    _controller = new AbstractController();
+    _view       = this;
+
+    _texture.loadFromFile("artwork/sudoku-splashscreen.png");
+}
+
+SplashScreenState::~SplashScreenState() {
+    delete _controller;
 }
 
 void SplashScreenState::update(sf::Time elapsedTime) {

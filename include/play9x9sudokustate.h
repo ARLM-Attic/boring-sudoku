@@ -23,7 +23,7 @@
 
 #ifndef __PLAY9X9SUDOKUSTATE_H_
 #define __PLAY9X9SUDOKUSTATE_H_
-
+#if 0
 #include <vector>
 
 #include "cursorview.h"
@@ -111,5 +111,5 @@ private:
     ///
     sf::Texture _backgroundTexture;
 };
-
+#endif
 #endif // __PLAY9X9SUDOKUSTATE_H_

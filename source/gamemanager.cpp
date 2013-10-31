@@ -51,7 +51,7 @@ GameManager *GameManager::getInstance() {
     return _instance;
 }
 
-void GameManager::pushGameState(GameStateInterface *state) {
+void GameManager::pushGameState(AbstractGameState *state) {
     _gameStateStack.push(state);
 }
 
@@ -81,14 +81,15 @@ void GameManager::run() {
         // Get the events from the system, and send it to the game state
         processEvents();
 
-        // Update the current game state with elapsed time
-        _currentGameState->update(gameClock.restart());
+        // Update the current game state view with elapsed time
+        AbstractViewer *gameStateView = _currentGameState->getView();
+        gameStateView->update(gameClock.restart());
 
         // Clear the current window
         _gameWindow.clear();
 
         // Ask state to redraw
-        _currentGameState->draw(&_gameWindow);
+        gameStateView->draw(&_gameWindow);
 
         // Re-paint the window
         _gameWindow.display();
@@ -96,7 +97,7 @@ void GameManager::run() {
 
     // Clean up all the game state that's still left on the stack
     while(!_gameStateStack.empty()) {
-        GameStateInterface *gameState = _gameStateStack.top();
+        AbstractGameState *gameState = _gameStateStack.top();
 
         delete gameState;
         _gameStateStack.pop();
@@ -104,6 +105,7 @@ void GameManager::run() {
 }
 
 void GameManager::processEvents() {
+    AbstractController *gameStateController = _currentGameState->getController();
     sf::Event gameEvent;
     
     // Check if we have some event coming
@@ -143,28 +145,28 @@ void GameManager::processEvents() {
             }
             case sf::Keyboard::Up: {
                 // Send key up event to the game state
-                _currentGameState->up();
+                gameStateController->up();
                 break;
             }
             case sf::Keyboard::Down: {
                 // Send key down event to the game state
-                _currentGameState->down();
+                gameStateController->down();
                 break;
             }
             case sf::Keyboard::Left: {
                 // Send key left event to the game state
-                _currentGameState->left();
+                gameStateController->left();
                 break;
             }
             case sf::Keyboard::Right: {
                 // Send key right event to the game state
-                _currentGameState->right();
+                gameStateController->right();
                 break;
             }
             case sf::Keyboard::Space: 
             case sf::Keyboard::Return: {
                 // Send key select event to the game state
-                _currentGameState->select();
+                gameStateController->select();
                 break;
             }
             default: {
@@ -175,15 +177,15 @@ void GameManager::processEvents() {
         }
 
         case sf::Event::MouseMoved: {
-            _currentGameState->mouseMove(gameEvent.mouseMove.x, 
+            gameStateController->mouseMove(gameEvent.mouseMove.x, 
                                         gameEvent.mouseMove.y);
             break;
         }
 
         case sf::Event::MouseButtonPressed: {
-            _currentGameState->mouseMove(gameEvent.mouseButton.x, 
+            gameStateController->mouseMove(gameEvent.mouseButton.x, 
                                         gameEvent.mouseButton.y);
-            _currentGameState->select();
+            gameStateController->select();
             break;
         }
 

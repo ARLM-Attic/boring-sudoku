@@ -54,9 +54,9 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "sudokutileview.h"
+#include "boardview.h"
 
-class SudokuBoardView {
+class SudokuBoardView : public BoardView {
 public:
     /// 
     /// \brief The type of Sudoku board
@@ -71,75 +71,20 @@ public:
     /// \brief Generate sudoku board, with specific size and tileset
     ///
     /// \param size         The sudoku size
-    /// \param tilemap      The texture for the tilemap
-    /// \param tilesize     The size of the board's tile (in pixel)
     /// \param screenSize   The screen size
     /// \param screenOffset The offset from screen to be added
     ///
     explicit SudokuBoardView(
+            enum t_sudokuboard_size size,
             std::vector<int>       *sudokuboard,
-            enum t_sudokuboard_size size, 
-            sf::Texture            *tilemap,
-            sf::Vector2u            tileSize,
             sf::Vector2f            screenSize,
             sf::Vector2f            screenOffset = sf::Vector2f(0, 0));
 
-    ///
-    /// \brief Get the tile's position in the screen
-    ///
-    /// \param row    The row where the tile is located
-    /// \param column The column where the tile is located
-    ///
-    /// \return The tile position in the screen
-    ///
-    sf::Vector2f getTilePosition(int row, int column);
 
     //-------------------------------------------------------------------------
-    // Interface to get the board to be drawn in the screen
-
-    ///
-    /// \brief Update the board to be displayed
-    ///
-    /// \param elapsedTime The time that has elapsed since the last update
-    ///
-    void update(sf::Time elapsedTime);
-
-    std::vector<sf::Vertex>::iterator begin() {
-        return _vertex.begin();
-    }
-
-    std::vector<sf::Vertex>::iterator end() {
-        return _vertex.end();
-    }
-
-    std::vector<sf::Vertex>::const_iterator begin() const {
-        return _vertex.begin();
-    }
-
-    std::vector<sf::Vertex>::const_iterator end() const {
-        return _vertex.end();
-    }
-
-private:
-    ///
-    /// \brief The sudoku sub board's size
-    ///
-    const int _subboardSize;
-
-    ///
-    /// \brief The sudoku board model
-    ///
-    const std::vector<int> *_sudokuboard;
-
-    ///
-    /// \brief The sudoku board tiles
-    ///
-    std::vector<SudokuTileView> _sudokuboardview;
-
-    ///
-    /// \brief The vertex to draw the board
-    ///
-    std::vector<sf::Vertex> _vertex;
+    // Override the BoardView's methods
+    virtual void setLayout(sf::Vector2f screenSize, 
+                           sf::Vector2f screenOffset);
 };
 
 #endif // __SUDOKUBOARDVIEW_H_

@@ -28,25 +28,18 @@
 #ifndef __SPLASHSCREENSTATE_H_
 #define __SPLASHSCREENSTATE_H_
 
+#include "abstractgamestate.h"
 #include "gamemanager.h"
-#include "gamestateinterface.h"
 
-class SplashScreenState : public GameStateInterface {
+class SplashScreenState : public AbstractGameState, AbstractViewer {
 public:
     explicit SplashScreenState  (GameManager *manager);
+    virtual ~SplashScreenState();
 
-    void pause()                 { }
-    void resume()                { }
-    bool isPaused()              { return false; }
-    void up()                    { }
-    void down()                  { }
-    void left()                  { }
-    void right()                 { }
-    void select()                { }
-    void mouseMove(int x, int y) { }
-
-    void update(sf::Time elapsedTime);
-    void draw  (sf::RenderWindow *win);
+    //-------------------------------------------------------------------------
+    // Override the AbstractViewer's methods
+    virtual void update(sf::Time elapsedTime);
+    virtual void draw(sf::RenderWindow *win);
 
 private:
     ///
@@ -63,11 +56,6 @@ private:
     /// \brief Track the running time of this state
     ///
     sf::Time    _runningTime;
-
-    //-------------------------------------------------------------------------
-    // Avoid copy and const copy
-    SplashScreenState           (SplashScreenState const&) { };
-    SplashScreenState& operator=(SplashScreenState const&) { };
 };
 
 #endif // __SPLASHSCREENSTATE_H_

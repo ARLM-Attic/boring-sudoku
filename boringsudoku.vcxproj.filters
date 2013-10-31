@@ -18,9 +18,6 @@
     <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\sudokutileview.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\sudokuboardview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,18 +33,18 @@
     <ClCompile Include="source\play9x9sudokustate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\tileview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\boardview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\sudokutileview.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\sudokuboardview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\gamemanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\gamestateinterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\splashscreenstate.h">
@@ -57,6 +54,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\cursorview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\abstractcontroller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\abstractviewer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\abstractgamestate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tileview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\boardview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

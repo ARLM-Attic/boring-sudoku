@@ -26,7 +26,7 @@
 
 #include <stack>
 #include <SFML/Graphics.hpp>
-#include "gamestateinterface.h"
+#include "abstractgamestate.h"
 
 class GameManager {
 public:
@@ -43,7 +43,7 @@ public:
     ///
     /// \param state The game state to be executed
     ///
-    void pushGameState(GameStateInterface *state);
+    void pushGameState(AbstractGameState *state);
 
     ///
     /// \brief Remove game state from the stack
@@ -77,12 +77,12 @@ private:
     /// This member is needed to avoid the game state popped / pushed in the 
     /// middle of screen update
     ///
-    GameStateInterface *_currentGameState;
+    AbstractGameState *_currentGameState;
 
     ///
     /// \brief The stack of game state
     ///
-    std::stack<GameStateInterface *> _gameStateStack;
+    std::stack<AbstractGameState *> _gameStateStack;
 
     ///
     /// \brief The main view to render the animation / games

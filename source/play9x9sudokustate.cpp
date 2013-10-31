@@ -20,7 +20,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-
+#if 0
 #include "play9x9sudokustate.h"
 
 //-----------------------------------------------------------------------------
@@ -147,3 +147,5 @@ void Play9x9SudokuState::draw(sf::RenderWindow *win) {
               sf::Quads, 
               &_sudokuBoardTexture);
 }
+
+#endif

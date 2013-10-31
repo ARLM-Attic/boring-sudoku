@@ -23,7 +23,29 @@
 
 #include "cursorview.h"
 
-CursorView::CursorView(sf::Texture *cursorTexture, sf::Vector2u cursorSize) :
-    _tileValue(0),
-    SudokuTileView(&_tileValue, cursorTexture, cursorSize) {
+// The cursor size in pixel
+#define CURSOR_SIZE   sf::Vector2u(36, 36)
+
+CursorView::CursorView() :
+    _tileValue(0), 
+    _cursorTexture(),
+    _cursorView(&_tileValue, &_cursorTexture, CURSOR_SIZE) {
+    
+    // Load cursor texture
+    _cursorTexture.loadFromFile("artwork/sudoku-cursor-36px.png");
+}
+
+void CursorView::update(sf::Time elapsedTime) {
+    _vertex.clear();
+    _vertex.insert( _vertex.end(), 
+                    _cursorView.begin(), 
+                    _cursorView.end()
+    );
+}
+
+void CursorView::draw(sf::RenderWindow *win) {
+    win->draw(&_vertex[0], 
+              _vertex.size(), 
+              sf::Quads, 
+              &_cursorTexture);
 }

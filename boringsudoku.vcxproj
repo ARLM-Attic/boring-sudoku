@@ -86,22 +86,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\boardview.cpp" />
     <ClCompile Include="source\cursorview.cpp" />
     <ClCompile Include="source\gamemanager.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\play9x9sudokustate.cpp" />
     <ClCompile Include="source\splashscreenstate.cpp" />
     <ClCompile Include="source\sudokuboardview.cpp" />
-    <ClCompile Include="source\sudokutileview.cpp" />
+    <ClCompile Include="source\tileview.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\abstractcontroller.h" />
+    <ClInclude Include="include\abstractgamestate.h" />
+    <ClInclude Include="include\boardview.h" />
     <ClInclude Include="include\cursorview.h" />
     <ClInclude Include="include\gamemanager.h" />
-    <ClInclude Include="include\gamestateinterface.h" />
     <ClInclude Include="include\play9x9sudokustate.h" />
     <ClInclude Include="include\splashscreenstate.h" />
     <ClInclude Include="include\sudokuboardview.h" />
-    <ClInclude Include="include\sudokutileview.h" />
+    <ClInclude Include="include\abstractviewer.h" />
+    <ClInclude Include="include\tileview.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

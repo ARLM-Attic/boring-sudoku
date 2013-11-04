@@ -95,6 +95,7 @@ private:
 
     ///
     /// \brief The sudoku board cursor controller
+    ///
     CursorController *_sudokuBoardCursorController;
 
     //-------------------------------------------------------------------------
@@ -102,6 +103,33 @@ private:
     /// \brief The background texture of the game
     ///
     sf::Texture  _backgroundTexture;
+
+    //-------------------------------------------------------------------------
+    ///
+    /// \brief The keypad to insert the number selection
+    ///
+    std::vector<int> _keypad;
+
+    ///
+    /// \brief The view of the keypad
+    ///
+    BoardView *_keypadView;
+
+    //-------------------------------------------------------------------------
+    ///
+    /// \brief The cursor position of the keypad
+    ///
+    sf::Vector2i _keypadCursorPos;
+
+    ///
+    /// \brief The cursor view of the keypad
+    ///
+    CursorView *_keypadCursorView;
+
+    ///
+    /// \brief The sudoku board cursor controller
+    ///
+    CursorController *_keypadCursorController;
 };
 
 #endif // __PLAY9X9SUDOKUSTATE_H_

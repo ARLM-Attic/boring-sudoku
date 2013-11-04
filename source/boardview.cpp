@@ -62,8 +62,8 @@ void BoardView::setLayout(sf::Vector2f screenSize,
         
         sf::Vector2u tileSize = tile->getTileSize();
         sf::Vector2f tilePos = sf::Vector2f(
-            (0.75f + (col * 1.25f)) * tileSize.x,
-            (0.75f + (row * 1.25f)) * tileSize.y
+            screenOffset.x + ((0.75f + (col * 1.25f)) * tileSize.x),
+            screenOffset.y + ((0.75f + (row * 1.25f)) * tileSize.y)
         );
 
         tile->setPosition(tilePos);
@@ -76,7 +76,8 @@ void BoardView::setLayout(sf::Vector2f screenSize,
     }
 
     // Keep the last row to be used by the cursor
-    _rowSize = row;
+    // row is index to the row, the size of the row is (row + 1)
+    _rowSize = (row + 1);
 }
 
 void BoardView::update(sf::Time elapsedTime) {

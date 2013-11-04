@@ -23,48 +23,46 @@
 
 #ifndef __PLAY9X9SUDOKUSTATE_H_
 #define __PLAY9X9SUDOKUSTATE_H_
-#if 0
-#include <vector>
 
+#include <vector>
+#include "abstractcontroller.h"
+#include "abstractgamestate.h"
+#include "abstractviewer.h"
 #include "cursorview.h"
+#include "cursorcontroller.h"
 #include "gamemanager.h"
-#include "gamestateinterface.h"
 #include "sudokuboardview.h"
 
-class Play9x9SudokuState : public GameStateInterface {
+class Play9x9SudokuState : public AbstractGameState, 
+                                  AbstractViewer, 
+                                  AbstractController {
 public:
-    explicit Play9x9SudokuState  (GameManager *manager);
+    explicit Play9x9SudokuState(GameManager *manager);
+    virtual ~Play9x9SudokuState();
 
     //-------------------------------------------------------------------------
-    // These functions are needed to control the paused / option / menu screen
-    void pause();
-    void resume()   {
-        // Not used. The paused state will be pushed into the state stack. 
-        // Hence this state will always in the running state
-    }
-
-    bool isPaused() {
-        // This state is always running
-        return false; 
-    }
+    // Override the AbstractGameState's methods. These functions are needed to
+    // create the paused / option / menu screen
+    virtual void pause();
 
     //-------------------------------------------------------------------------
-    // These functions are needed to control the cursor on the board
-    void up();
-    void down();
-    void left();
-    void right();
-    void select();
-    void mouseMove(int x, int y);
+    // Override the AbstractController's methods. These functions are needed to
+    // control the cursor on the board
+    virtual void up();
+    virtual void down();
+    virtual void left();
+    virtual void right();
+    virtual void select();
+    virtual void mouseMove(int x, int y);
 
     //-------------------------------------------------------------------------
-    // This function is needed to compute the cursor position on the screen 
-    // along with updating the screen background and the board's view
-    void update(sf::Time elapsedTime);
+    // Override the AbstractViewer's method. This function is needed to compute
+    // the cursor position on the screen along with updating the screen 
+    // background and the board's view
+    virtual void update(sf::Time elapsedTime);
 
-    //-------------------------------------------------------------------------
     // This function is needed to draw the game
-    void draw(sf::RenderWindow *win);
+    virtual void draw(sf::RenderWindow *win);
 
 private:
     ///
@@ -79,37 +77,31 @@ private:
     std::vector<int> _sudokuBoard;
 
     ///
-    /// \brief The Sudoku board view
+    /// \brief The view of the sudoku board
     ///
-    SudokuBoardView _sudokuBoardView;
-
-    ///
-    /// \brief The Sudoku board texture (tile with numbers 1 - 9)
-    ///
-    sf::Texture _sudokuBoardTexture;
-
+    SudokuBoardView *_sudokuBoardView;
+    
     //-------------------------------------------------------------------------
     ///
     /// \brief The cursor position (in term of board's row / column, not the 
     ///        screen row / column)
     ///
-    sf::Vector2i _cursorPos;
+    sf::Vector2i _sudokuBoardCursorPos;
 
     ///
-    /// \brief The cursor view
+    /// \brief The cursor view of the sudoku board
     ///
-    CursorView _cursorView;
+    CursorView *_sudokuBoardCursorView;
 
     ///
-    /// \brief The Sudoku cursor texture
-    ///
-    sf::Texture _cursorTexture;
+    /// \brief The sudoku board cursor controller
+    CursorController *_sudokuBoardCursorController;
 
     //-------------------------------------------------------------------------
     ///
-    /// \brief The Sudoku board background texture
+    /// \brief The background texture of the game
     ///
-    sf::Texture _backgroundTexture;
+    sf::Texture  _backgroundTexture;
 };
-#endif
+
 #endif // __PLAY9X9SUDOKUSTATE_H_

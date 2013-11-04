@@ -52,6 +52,28 @@ public:
     virtual void draw(sf::RenderWindow *win);
 
     ///
+    /// \brief Check the column size
+    ///
+    /// This function is needed to interface the cursor with the board
+    ///
+    /// \return the column size
+    ///
+    int columnSize() {
+        return _columnSize;
+    }
+
+    ///
+    /// \brief Check the row size
+    ///
+    /// This function is needed to interface the cursor with the board
+    ///
+    /// \return the row size
+    ///
+    int rowSize() {
+        return _rowSize;
+    }
+
+    ///
     /// \brief Check whether the tile (pointed by its row / column in the 
     ///        board) is available
     ///
@@ -84,17 +106,14 @@ public:
 
 protected:
     ///
-    /// \brief Set the board's layout
-    ///
-    /// This function can be overriden to create different board layout
-    ///
-    virtual void setLayout(sf::Vector2f screenSize, 
-                           sf::Vector2f screenOffset);
-
-    ///
     /// \brief The board's column size
     ///
-    const int _columnSize;
+    int _columnSize;
+
+    ///
+    /// \brief The board's row size
+    ///
+    int _rowSize;
 
     ///
     /// \brief The board tiles
@@ -102,6 +121,13 @@ protected:
     std::vector<TileView> _boardTiles;
 
 private:
+    ///
+    /// \brief Set the board's layout
+    ///
+    /// This function can be overriden to create different board layout
+    ///
+    void setLayout(sf::Vector2f screenSize, sf::Vector2f screenOffset);
+
     ///
     /// \brief Pointer to the board's model
     ///

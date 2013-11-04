@@ -33,7 +33,7 @@
 
 class SplashScreenState : public AbstractGameState, AbstractViewer {
 public:
-    explicit SplashScreenState  (GameManager *manager);
+    explicit SplashScreenState(GameManager *manager);
     virtual ~SplashScreenState();
 
     //-------------------------------------------------------------------------

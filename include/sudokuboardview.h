@@ -81,10 +81,8 @@ public:
             sf::Vector2f            screenOffset = sf::Vector2f(0, 0));
 
 
-    //-------------------------------------------------------------------------
-    // Override the BoardView's methods
-    virtual void setLayout(sf::Vector2f screenSize, 
-                           sf::Vector2f screenOffset);
+private:
+    void setLayout(sf::Vector2f screenSize, sf::Vector2f screenOffset);
 };
 
 #endif // __SUDOKUBOARDVIEW_H_

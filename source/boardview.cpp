@@ -61,8 +61,11 @@ void BoardView::setLayout(sf::Vector2f screenSize,
         TileView *tile = &_boardTiles[i];
         
         sf::Vector2u tileSize = tile->getTileSize();
-        sf::Vector2f tilePos = sf::Vector2f(0.75f * (col + 1) * tileSize.x, 
-                                            0.75f * (row + 1) * tileSize.y);
+        sf::Vector2f tilePos = sf::Vector2f(
+            (0.75f + (col * 1.25f)) * tileSize.x,
+            (0.75f + (row * 1.25f)) * tileSize.y
+        );
+
         tile->setPosition(tilePos);
 
         col++;
@@ -71,6 +74,9 @@ void BoardView::setLayout(sf::Vector2f screenSize,
             row++;
         }
     }
+
+    // Keep the last row to be used by the cursor
+    _rowSize = row;
 }
 
 void BoardView::update(sf::Time elapsedTime) {
@@ -93,9 +99,9 @@ void BoardView::draw(sf::RenderWindow *win) {
 }
 
 bool BoardView::tileIsInBoard(int row, int column) {
-    int tileInBoard = (row * _columnSize) + column;
+    unsigned int tileInBoard = (row * _columnSize) + column;
 
-    if ((tileInBoard >= 0) && (tileInBoard < _boardTiles.size())) {
+    if (tileInBoard < _boardTiles.size()) {
         return true;
     } else {
         return false;

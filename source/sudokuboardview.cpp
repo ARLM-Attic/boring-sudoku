@@ -30,6 +30,8 @@ SudokuBoardView::SudokuBoardView(
             sf::Vector2f            screenOffset) :
     BoardView(static_cast<int> (size), sudokuboard, screenSize, screenOffset)
 {
+    // Setup the layout of the board
+    setLayout(screenSize, screenOffset);
 }
 
 void SudokuBoardView::setLayout(sf::Vector2f screenSize, 
@@ -55,6 +57,24 @@ void SudokuBoardView::setLayout(sf::Vector2f screenSize,
     float colOffset = screenOffset.x + screenColCenter;
     float rowOffset = screenOffset.y + screenRowCenter;
     
+    // Assume that all tiles are having the same size. Use tile #0 size to
+    // calculate the tilesize
+    sf::Vector2u tileSize = _boardTiles[0].getTileSize();
+    switch (_columnSize) {
+    case SUDOKUBOARD_SIZE_4X4:
+        colOffset -= (2.75f * tileSize.x);
+        rowOffset -= (2.75f * tileSize.y);
+        break;
+    case SUDOKUBOARD_SIZE_9X9:
+        colOffset -= (  6.f * tileSize.x);
+        rowOffset -= (  6.f * tileSize.y);
+        break;
+    case SUDOKUBOARD_SIZE_16X16:
+        colOffset -= (10.5f * tileSize.x);
+        rowOffset -= (10.5f * tileSize.y);
+        break;
+    }
+
     int boardSize = (_columnSize * _columnSize);
     for (int row = 0; row < boardSize; row++) {
         for (int col = 0; col < boardSize; col++) {
@@ -63,24 +83,17 @@ void SudokuBoardView::setLayout(sf::Vector2f screenSize,
 
             TileView *tile = &_boardTiles[(row * boardSize) + col];
 
-            switch (_columnSize) {
-            case SUDOKUBOARD_SIZE_4X4:
-                colOffset -= (2.75f * tile->getTileSize().x);
-                rowOffset -= (2.75f * tile->getTileSize().y);
-                break;
-            case SUDOKUBOARD_SIZE_9X9:
-                colOffset -= (  6.f * tile->getTileSize().x);
-                rowOffset -= (  6.f * tile->getTileSize().y);
-                break;
-            case SUDOKUBOARD_SIZE_16X16:
-                colOffset -= (10.5f * tile->getTileSize().x);
-                rowOffset -= (10.5f * tile->getTileSize().y);
-                break;
-            }
-
             x = (x * (tile->getTileSize().x)) + colOffset;
             y = (y * (tile->getTileSize().y)) + rowOffset;
             tile->setPosition(sf::Vector2f(x, y));
         }
     }
+
+    // The only exception for this class is that _columnSize was actually 
+    // referring to sub-board's column size, while the base class of board view
+    // is using it as the main board's column size.
+    //
+    // Hence, we fix it back after the layout set is done
+    _columnSize = boardSize;
+    _rowSize    = boardSize;
 }

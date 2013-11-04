@@ -13,12 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Game Widgets">
+      <UniqueIdentifier>{4045d675-ecfe-4481-8075-e44170701e64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Widgets\Headers">
+      <UniqueIdentifier>{b365301a-dbcf-439f-8e5b-89685c060a0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Widgets\Source">
+      <UniqueIdentifier>{c06b9108-ec3d-4e84-9a04-5a4b1b0a7420}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\sudokuboardview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\gamemanager.cpp">
@@ -27,23 +33,26 @@
     <ClCompile Include="source\splashscreenstate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\cursorview.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\play9x9sudokustate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\tileview.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\boardview.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\cursorview.cpp">
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\sudokuboardview.cpp">
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tileview.cpp">
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\cursorcontroller.cpp">
+      <Filter>Game Widgets\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\sudokuboardview.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\gamemanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -53,23 +62,29 @@
     <ClInclude Include="include\play9x9sudokustate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\cursorview.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\abstractcontroller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\abstractviewer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\abstractgamestate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\tileview.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\abstractcontroller.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\abstractviewer.h">
+      <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
     <ClInclude Include="include\boardview.h">
-      <Filter>Header Files</Filter>
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\cursorcontroller.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\cursorview.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sudokuboardview.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tileview.h">
+      <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

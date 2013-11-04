@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\boardview.cpp" />
+    <ClCompile Include="source\cursorcontroller.cpp" />
     <ClCompile Include="source\cursorview.cpp" />
     <ClCompile Include="source\gamemanager.cpp" />
     <ClCompile Include="source\main.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="include\abstractcontroller.h" />
     <ClInclude Include="include\abstractgamestate.h" />
     <ClInclude Include="include\boardview.h" />
+    <ClInclude Include="include\cursorcontroller.h" />
     <ClInclude Include="include\cursorview.h" />
     <ClInclude Include="include\gamemanager.h" />
     <ClInclude Include="include\play9x9sudokustate.h" />

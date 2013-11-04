@@ -36,6 +36,8 @@ CursorView::CursorView() :
 }
 
 void CursorView::update(sf::Time elapsedTime) {
+    _cursorView.update(elapsedTime);
+
     _vertex.clear();
     _vertex.insert( _vertex.end(), 
                     _cursorView.begin(), 

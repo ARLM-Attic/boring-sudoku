@@ -52,6 +52,7 @@ int main(int argc,char *argv[]) {
     GameManager *theGame = GameManager::getInstance();
 
     // Init the sequence of the game state
+    theGame->pushGameState(new Play9x9SudokuState(theGame));
     theGame->pushGameState(new SplashScreenState(theGame));
 
     theGame->run();

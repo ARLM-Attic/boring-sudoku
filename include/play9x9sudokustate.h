@@ -46,16 +46,6 @@ public:
     virtual void pause();
 
     //-------------------------------------------------------------------------
-    // Override the AbstractController's methods. These functions are needed to
-    // control the cursor on the board
-    virtual void up();
-    virtual void down();
-    virtual void left();
-    virtual void right();
-    virtual void select();
-    virtual void mouseMove(int x, int y);
-
-    //-------------------------------------------------------------------------
     // Override the AbstractViewer's method. This function is needed to compute
     // the cursor position on the screen along with updating the screen 
     // background and the board's view

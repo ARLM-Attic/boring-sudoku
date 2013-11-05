@@ -31,6 +31,9 @@ BoardView::BoardView(const int    columnSize,
         _board(board), 
         _tileTexture() 
 {
+    // Make sure the view is closed when init'd
+    _isShowed = false;
+
     // Load the tile texture
     _tileTexture.loadFromFile("artwork/sudoku-numbertiles-24px.png");
     
@@ -93,6 +96,11 @@ void BoardView::update(sf::Time elapsedTime) {
 }
 
 void BoardView::draw(sf::RenderWindow *win) {
+    // Don't draw if it's not supposed to be shown
+    if (!_isShowed) {
+        return;
+    }
+
     win->draw(&_vertex[0], 
               _vertex.size(), 
               sf::Quads, 

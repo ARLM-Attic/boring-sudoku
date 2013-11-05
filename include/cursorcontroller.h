@@ -28,6 +28,7 @@
 #define __CURSORCONTROLLER_H_
 
 #include <SFML/Graphics.hpp>
+
 #include "abstractcontroller.h"
 #include "boardview.h"
 #include "cursorview.h"
@@ -64,6 +65,11 @@ public:
     /// \brief 'Right' key is pressed event
     ///
     virtual void right();
+
+    ///
+    /// \brief Menu / item selected event
+    ///
+    virtual void select();
 
 private:
     ///

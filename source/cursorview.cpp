@@ -30,7 +30,9 @@ CursorView::CursorView() :
     _tileValue(0), 
     _cursorTexture(),
     _cursorView(&_tileValue, &_cursorTexture, CURSOR_SIZE) {
-    
+    // Make sure the view is closed when init'd
+    _isShowed = false;
+
     // Load cursor texture
     _cursorTexture.loadFromFile("artwork/sudoku-cursor-36px.png");
 }
@@ -46,6 +48,11 @@ void CursorView::update(sf::Time elapsedTime) {
 }
 
 void CursorView::draw(sf::RenderWindow *win) {
+    // Don't draw if it's not supposed to be shown
+    if (!_isShowed) {
+        return;
+    }
+
     win->draw(&_vertex[0], 
               _vertex.size(), 
               sf::Quads, 

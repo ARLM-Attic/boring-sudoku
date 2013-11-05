@@ -47,9 +47,31 @@ public:
     virtual void draw(sf::RenderWindow *win) { }
 
     ///
+    /// \brief Show the view
+    ///
+    virtual void show() {
+        _isShowed = true;
+    }
+
+    ///
+    /// \brief Hide the view
+    ///
+    virtual void hide() {
+        _isShowed = false;
+    }
+
+    ///
     /// \brief The viewer's desctructor
     ///
     virtual ~AbstractViewer() { }
+
+protected:
+    ///
+    /// \brief Flag to indicate that this view should be drawn in the screen
+    ///
+    /// This flag should be polled in the draw() or update() method
+    ///
+    bool _isShowed;
 };
 
 #endif // __VIEWABLEINTERFACE_H_

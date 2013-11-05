@@ -23,13 +23,13 @@
 
 #include "cursorcontroller.h"
 
-CursorController::CursorController(sf::Vector2i *cursorModel,
-                                   CursorView   *cursorView,
-                                   BoardView    *boardView) :
+CursorController::CursorController(
+                    sf::Vector2i *cursorModel,
+                    CursorView   *cursorView,
+                    BoardView    *boardView) :
         _cursorModel(cursorModel),
         _cursorView(cursorView),
         _boardView(boardView) {
-    
     sf::Vector2f cursorPos = 
         _boardView->tilePosition(_cursorModel->y, _cursorModel->x);
     _cursorView->setPosition(cursorPos);
@@ -81,6 +81,10 @@ void CursorController::right() {
     sf::Vector2f cursorPos = 
         _boardView->tilePosition(_cursorModel->y, _cursorModel->x);
     _cursorView->setPosition(cursorPos);
+}
+
+void CursorController::select() {
+    
 }
 
 int CursorController::lastRow() {

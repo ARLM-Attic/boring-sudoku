@@ -31,6 +31,7 @@
 
 #include "abstractcontroller.h"
 #include "boardview.h"
+#include "cursoreventobserver.h"
 #include "cursorview.h"
 
 class CursorController : public AbstractController {
@@ -45,6 +46,16 @@ public:
     CursorController(sf::Vector2i *cursorModel,
                      CursorView   *cursorView,
                      BoardView    *boardView);
+
+    ///
+    /// \brief Register the cursor event observer
+    ///
+    /// Since the cursor only attach to single board, only single observer 
+    /// that's possible. Hence, only 1 observer that can be registered
+    ///
+    /// \param observer The observer for this event
+    ///
+    void registerObserver(CursorEventObserver *observer);
 
     ///
     /// \brief 'Up' key is pressed event
@@ -107,6 +118,11 @@ private:
     /// \brief The board view, that represents the board which the cursor 
     ///        attached to
     BoardView   *_boardView;
+
+    ///
+    /// \brief The cursor event observer
+    ///
+    CursorEventObserver *_eventObserver;
 };
 
 #endif

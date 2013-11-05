@@ -35,6 +35,10 @@ CursorController::CursorController(
     _cursorView->setPosition(cursorPos);
 }
 
+void CursorController::registerObserver(CursorEventObserver *observer) {
+    _eventObserver = observer;
+}
+
 void CursorController::up() {
     if (_cursorModel->y > 0) {
         _cursorModel->y--;
@@ -84,7 +88,7 @@ void CursorController::right() {
 }
 
 void CursorController::select() {
-    
+    _eventObserver->tileSelected(this, *_cursorModel);
 }
 
 int CursorController::lastRow() {

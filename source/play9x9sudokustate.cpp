@@ -80,6 +80,8 @@ Play9x9SudokuState::Play9x9SudokuState(GameManager *manager) :
                              _sudokuBoardCursorView, 
                              _sudokuBoardView
         );
+    // Register its 'select' event handler
+    _sudokuBoardCursorController->registerObserver(this);
 
     // Create the keypad model
     _keypad.resize(10);
@@ -92,16 +94,16 @@ Play9x9SudokuState::Play9x9SudokuState(GameManager *manager) :
                                 &_keypad, 
                                 KEYPAD_SCREEN_SIZE,
                                 KEYPAD_SCREEN_OFFSET);
-    _keypadView->show();
 
     // Connect the keypad cursor to the keypad's view
     _keypadCursorView = new CursorView();
-    _keypadCursorView->show();
     _keypadCursorController = 
         new CursorController(&_keypadCursorPos, 
                              _keypadCursorView, 
                              _keypadView
         );
+    // Register its 'select' event handler
+    _keypadCursorController->registerObserver(this);
 
     _controller = _sudokuBoardCursorController;
     _view       = this;
@@ -121,9 +123,12 @@ void Play9x9SudokuState::pause() {
     // TODO: Create paused / option screen
 }
 
-#if 0
-void Play9x9SudokuState::select() {
-    if (_keypadCursorController == NULL) {
+void Play9x9SudokuState::tileSelected(AbstractController *controller, 
+                                      sf::Vector2i        tilePos) {
+    if (controller == _sudokuBoardCursorController) {
+        _keypadView->show();
+        _keypadCursorView->show();
+        _controller = _keypadCursorController;
     } else {
         // Sudoku tile is selected, and the number is selected as well
         int *selectedTile = &_sudokuBoard[
@@ -145,14 +150,11 @@ void Play9x9SudokuState::select() {
             *selectedTile = *selectedNo;
         }
 
-        // Remove the keypad resources
-        _keypad.clear();
-        delete _keypadCursorController; _keypadCursorController = NULL;
-        delete _keypadCursorView;       _keypadCursorView = NULL;
-        delete _keypadView;             _keypadView = NULL;
+        _keypadView->hide();
+        _keypadCursorView->hide();
+        _controller = _sudokuBoardCursorController;
     }
 }
-#endif
 
 void Play9x9SudokuState::update(sf::Time elapsedTime) {
     _sudokuBoardCursorView->update(elapsedTime);

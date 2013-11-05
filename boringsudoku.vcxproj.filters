@@ -86,5 +86,8 @@
     <ClInclude Include="include\tileview.h">
       <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="include\cursoreventobserver.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

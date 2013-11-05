@@ -101,6 +101,7 @@
     <ClInclude Include="include\abstractgamestate.h" />
     <ClInclude Include="include\boardview.h" />
     <ClInclude Include="include\cursorcontroller.h" />
+    <ClInclude Include="include\cursoreventobserver.h" />
     <ClInclude Include="include\cursorview.h" />
     <ClInclude Include="include\gamemanager.h" />
     <ClInclude Include="include\play9x9sudokustate.h" />

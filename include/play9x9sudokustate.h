@@ -28,6 +28,7 @@
 #include "abstractcontroller.h"
 #include "abstractgamestate.h"
 #include "abstractviewer.h"
+#include "cursoreventobserver.h"
 #include "cursorview.h"
 #include "cursorcontroller.h"
 #include "gamemanager.h"
@@ -35,7 +36,7 @@
 
 class Play9x9SudokuState : public AbstractGameState, 
                                   AbstractViewer, 
-                                  AbstractController {
+                                  CursorEventObserver {
 public:
     explicit Play9x9SudokuState(GameManager *manager);
     virtual ~Play9x9SudokuState();
@@ -44,6 +45,11 @@ public:
     // Override the AbstractGameState's methods. These functions are needed to
     // create the paused / option / menu screen
     virtual void pause();
+
+    //-------------------------------------------------------------------------
+    // Implementation of CursorEventObserver interface
+    virtual void tileSelected(AbstractController *controller, 
+                              sf::Vector2i        tilePos);
 
     //-------------------------------------------------------------------------
     // Override the AbstractViewer's method. This function is needed to compute

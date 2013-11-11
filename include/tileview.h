@@ -36,41 +36,30 @@ public:
     ///
     /// \brief Create tile, with _tilePos = (0, 0)
     ///
-    /// \param tileValue Pointer to the tile value
     /// \param tilemap   Pointer to the tilemap texture
     /// \param tileSize  The size of each tile in pixel
     ///
-    TileView(int         *tileValue, 
-             sf::Texture *tilemap, 
+    TileView(sf::Texture *tilemap, 
              sf::Vector2u tileSize);
 
     ///
+    /// \brief Set tile face (the tile looks)
+    ///
+    /// \param face The tile no in tilemap
+    ///
+    void setFace(int face) {
+        _tileFace = face;
+    }
+
+    ///
     /// \brief Set tile's drawing position in screen
+    ///
+    /// This is the coordinate of the tile's center in the screen.
     ///
     /// \param position The tile's new position in screen
     ///
     void setPosition(sf::Vector2f position) {
         _tilePos = position;
-    }
-
-    ///
-    /// \brief Get the tile's position in the screen
-    ///
-    /// \return The tile's position in screen
-    ///
-    sf::Vector2f getPosition() {
-        return _tilePos;
-    }
-
-    ///
-    /// \brief Get the tile's size
-    ///
-    /// This function is needed to make sure that the tile can be drawn without
-    /// overlapped each other
-    ///
-    /// \return Tile size (in pixel)
-    sf::Vector2u getTileSize() {
-        return _tileSize;
     }
 
     //-------------------------------------------------------------------------
@@ -100,9 +89,9 @@ public:
 
 private:
     ///
-    /// \brief The pointer to value of the tile
+    /// \brief The tile face (tile no in the tilemap)
     ///
-    int *_tileValue;
+    int _tileFace;
 
     ///
     /// \brief Tile's center position in the screen

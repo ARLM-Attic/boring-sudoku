@@ -23,75 +23,69 @@
 
 #include "boardview.h"
 
-BoardView::BoardView(const int    columnSize, 
-                     std::vector<int> *board,
-                     sf::Vector2f screenSize,
-                     sf::Vector2f screenOffset) :
-        _columnSize(columnSize), 
+BoardView::BoardView(BoardModel        *board,
+                     const std::string &tilemapFilename,
+                     sf::Vector2f       screenSize, 
+                     sf::Vector2f       screenOffset) :
         _board(board), 
-        _tileTexture() 
+        _tileTexture(),
+        _screenSize(screenSize),
+        _screenOffset(screenOffset)
 {
     // Make sure the view is closed when init'd
     _isShowed = false;
 
     // Load the tile texture
-    _tileTexture.loadFromFile("artwork/sudoku-numbertiles-24px.png");
+    _tileTexture.loadFromFile(tilemapFilename);
     
-    // Define the size of the tile in the texture
-    sf::Vector2u tileSize = sf::Vector2u(24, 24);
-
     // Create tile view for each of tile
-    for (unsigned int i = 0; i < (*_board).size(); i++) {
-        TileView tile(&(*_board)[i], 
-                      &_tileTexture, 
-                      tileSize);
+    for (unsigned int i = 0; i < _board->size(); i++) {
+        TileView tile(&_tileTexture, 
+                      TILESIZE_IN_PIXEL);
         _boardTiles.push_back(tile);
     }
 
     // Setup the layout of the board
-    setLayout(screenSize, screenOffset);
+    for (int row = 0; row < _board->rowSize(); row++) {
+        for (int col = 0; col < _board->columnSize(); col++) {
+            if (_board->tileIsInBoard(row, col)) {
+                TileView *tile = &_boardTiles[(row * _board->columnSize()) + col];
+                sf::Vector2f tilePos = tilePositionInScreen(row, col);
+
+                tile->setPosition(tilePos);
+            }
+        }
+    }
 }
 
-void BoardView::setLayout(sf::Vector2f screenSize, 
-                          sf::Vector2f screenOffset) {
+sf::Vector2f BoardView::tilePositionInScreen(int row, int column) {
     // The default board layout will look like this:
     //    XX XX XX .. (_columnSize)
     //    XX XX XX .. (_columnSize)
     //    XX -> (if the tile doesn't fill up the whole column)
-    
-    int row = 0, col = 0;
-    for (unsigned int i = 0; i < (*_board).size(); i++) {
-        TileView *tile = &_boardTiles[i];
-        
-        sf::Vector2u tileSize = tile->getTileSize();
-        sf::Vector2f tilePos = sf::Vector2f(
-            screenOffset.x + ((0.75f + (col * 1.25f)) * tileSize.x),
-            screenOffset.y + ((0.75f + (row * 1.25f)) * tileSize.y)
-        );
 
-        tile->setPosition(tilePos);
+    sf::Vector2u tileSize = TILESIZE_IN_PIXEL;
+    sf::Vector2f tilePos = sf::Vector2f(
+        _screenOffset.x + ((0.75f + (column * 1.25f)) * tileSize.x),
+        _screenOffset.y + ((0.75f + (row    * 1.25f)) * tileSize.y)
+    );
 
-        col++;
-        if (col == _columnSize) {
-            col = 0;
-            row++;
-        }
-    }
-
-    // Keep the last row to be used by the cursor
-    // row is index to the row, the size of the row is (row + 1)
-    _rowSize = (row + 1);
+    return tilePos;
 }
 
 void BoardView::update(sf::Time elapsedTime) {
     _vertex.clear();
 
-    for (unsigned int i = 0; i < _boardTiles.size(); i++) {
-        _boardTiles[i].update(elapsedTime);
-        _vertex.insert( _vertex.end(), 
-                        _boardTiles[i].begin(), 
-                        _boardTiles[i].end()
-        );
+    for (int row = 0; row < _board->rowSize(); row++) {
+        for (int col = 0; col < _board->columnSize(); col++) {
+            if (_board->tileIsInBoard(row, col)) {
+                TileView *tile = &_boardTiles[(row * _board->columnSize()) + col];
+
+                tile->setFace(_board->value(row, col));
+                tile->update(elapsedTime);
+                _vertex.insert( _vertex.end(), tile->begin(), tile->end());
+            }
+        }
     }
 }
 
@@ -105,20 +99,4 @@ void BoardView::draw(sf::RenderWindow *win) {
               _vertex.size(), 
               sf::Quads, 
               &_tileTexture);
-}
-
-bool BoardView::tileIsInBoard(int row, int column) {
-    unsigned int tileInBoard = (row * _columnSize) + column;
-
-    if (tileInBoard < _boardTiles.size()) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-sf::Vector2f BoardView::tilePosition(int row, int column) {
-    int tileInBoard = (row * _columnSize) + column;
-    
-    return _boardTiles[tileInBoard].getPosition();
 }

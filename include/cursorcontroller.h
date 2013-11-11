@@ -30,6 +30,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "abstractcontroller.h"
+#include "boardmodel.h"
 #include "boardview.h"
 #include "cursoreventobserver.h"
 #include "cursorview.h"
@@ -39,13 +40,13 @@ public:
     ///
     /// \brief Register the cursor model and board view to the controller
     ///
-    /// \param cursorModel The cursor model
-    /// \param cursorView  The cursor view
+    /// \param boardModel  The board model
     /// \param boardView   The board view
+    /// \param cursorView  The cursor view
     ///
-    CursorController(sf::Vector2i *cursorModel,
-                     CursorView   *cursorView,
-                     BoardView    *boardView);
+    CursorController(BoardModel *boardModel,
+                     BoardView  *boardView,
+                     CursorView *cursorView);
 
     ///
     /// \brief Register the cursor event observer
@@ -84,30 +85,20 @@ public:
 
 private:
     ///
-    /// \brief Get the last row of the board
+    /// \brief Update the cursor view (called after user event is received)
     ///
-    /// Since not all of the last row of the board is filled, this function 
-    /// is necessary to get the last row for the cursor's column
-    ///
-    /// \return The last row of the column of the board
-    ///
-    int lastRow();
+    void updateCursorView();
 
     ///
-    /// \brief Get the last column of the board
+    /// \brief The board model
     ///
-    /// Since not all of the last column of the board is filled, this function 
-    /// is necessary to get the last column for the cursor's row
-    ///
-    /// \return The last column of the row of the board
-    ///
-    int lastColumn();
+    BoardModel  *_boardModel;
 
     ///
-    /// \brief The cursor model, that represents the cursor position in the 
-    ///        board
+    /// \brief The board view, that represents the board which the cursor 
+    ///        attached to
     ///
-    sf::Vector2i *_cursorModel;
+    BoardView   *_boardView;
 
     ///
     /// \brief The cursor view, represents the cursor position in the screen
@@ -115,9 +106,10 @@ private:
     CursorView  *_cursorView;
 
     ///
-    /// \brief The board view, that represents the board which the cursor 
-    ///        attached to
-    BoardView   *_boardView;
+    /// \brief The cursor model, that represents the cursor position in the 
+    ///        board
+    ///
+    sf::Vector2i _cursorModel;
 
     ///
     /// \brief The cursor event observer

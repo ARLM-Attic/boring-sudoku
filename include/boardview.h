@@ -22,82 +22,54 @@
  */
 
 /*
- * Store the board's information (its graphic properties)
+ * Store the board's view information (its graphic properties)
  */
 
 #ifndef __BOARDVIEW_H_
 #define __BOARDVIEW_H_
 
 #include "abstractviewer.h"
+#include "boardmodel.h"
 #include "tileview.h"
+
+// Define the size of the tile in the texture
+#define TILESIZE_IN_PIXEL   sf::Vector2u(24, 24)
 
 class BoardView : public AbstractViewer {
 public:
     ///
     /// \brief The board's view constructor
     ///
-    /// \param columnSize   The size of the board's column
-    /// \param board        The board's model
-    /// \param screenSize   The screen size
-    /// \param screenOffset The offset from screen to be added
+    /// \param board           The board's model
+    /// \param textureFilename The board's tilemap texture. The tilemap should 
+    ///                        be in 24x24pixel size
+    /// \param screenSize      The drawable screen size
+    /// \param screenOffset    The offset of the drawable screen from the real
+    ///                        screen
     ///
-    explicit BoardView(const int    columnSize, 
-                       std::vector<int> *board,
-                       sf::Vector2f screenSize,
-                       sf::Vector2f screenOffset = sf::Vector2f(0, 0));
+    explicit BoardView(BoardModel        *board,
+                       const std::string &tilemapFilename,
+                       sf::Vector2f       screenSize, 
+                       sf::Vector2f       screenOffset = sf::Vector2f(0, 0));
+
+    //-------------------------------------------------------------------------
+    // Part of board's view layout. To be used by the cursor view, and board 
+    // view
+
+    ///
+    /// \brief Get the tile in row, column's screen coordinate
+    ///
+    /// \param row    The row where the tile's reside
+    /// \param column The column where the tile's reside
+    ///
+    /// \return The tile's position in screen
+    ///
+    virtual sf::Vector2f tilePositionInScreen(int row, int column);
 
     //-------------------------------------------------------------------------
     // Override the AbstractViewer's methods
     virtual void update(sf::Time elapsedTime);
     virtual void draw(sf::RenderWindow *win);
-
-    ///
-    /// \brief Check the column size
-    ///
-    /// This function is needed to interface the cursor with the board
-    ///
-    /// \return the column size
-    ///
-    int columnSize() {
-        return _columnSize;
-    }
-
-    ///
-    /// \brief Check the row size
-    ///
-    /// This function is needed to interface the cursor with the board
-    ///
-    /// \return the row size
-    ///
-    int rowSize() {
-        return _rowSize;
-    }
-
-    ///
-    /// \brief Check whether the tile (pointed by its row / column in the 
-    ///        board) is available
-    ///
-    /// This function is needed to interface the cursor with the board
-    ///
-    /// \param row    The row where the tile lies
-    /// \param column The column where the tile lies
-    ///
-    /// \return true if the tile lies within the board
-    ///
-    bool tileIsInBoard(int row, int column);
-
-    ///
-    /// \brief Get the tile position in the screen
-    ///
-    /// This function is needed to interface the cursor with the board.
-    /// It assumes that the row / column is valid within the board
-    ///
-    /// \param row    The row where the tile lies
-    /// \param column The column where the tile lies
-    ///
-    /// \return tile's position in the screen
-    ///
-    sf::Vector2f tilePosition(int row, int column);
 
     ///
     /// \brief Virtual destructor so this class can be overridden
@@ -106,38 +78,32 @@ public:
 
 protected:
     ///
-    /// \brief The board's column size
-    ///
-    int _columnSize;
-
-    ///
-    /// \brief The board's row size
-    ///
-    int _rowSize;
-
-    ///
     /// \brief The board tiles
     ///
     std::vector<TileView> _boardTiles;
 
-private:
-    ///
-    /// \brief Set the board's layout
-    ///
-    /// This function can be overriden to create different board layout
-    ///
-    void setLayout(sf::Vector2f screenSize, sf::Vector2f screenOffset);
-
     ///
     /// \brief Pointer to the board's model
     ///
-    std::vector<int> *_board;
+    BoardModel *_board;
 
+    ///
+    /// \brief The drawable screen size
+    ///
+    sf::Vector2f _screenSize;
+
+    ///
+    /// \brief The offset of the drawable screen from the real
+    ///        screen
+    ///
+    sf::Vector2f _screenOffset;
+
+private:
     ///
     /// \brief The tile texture for the board
     ///
     sf::Texture _tileTexture;
-
+    
     ///
     /// \brief The tiles' vertex to draw
     ///

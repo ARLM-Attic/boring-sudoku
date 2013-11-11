@@ -27,9 +27,8 @@
 #define CURSOR_SIZE   sf::Vector2u(36, 36)
 
 CursorView::CursorView() :
-    _tileValue(0), 
     _cursorTexture(),
-    _cursorView(&_tileValue, &_cursorTexture, CURSOR_SIZE) {
+    _cursorView(&_cursorTexture, CURSOR_SIZE) {
     // Make sure the view is closed when init'd
     _isShowed = false;
 

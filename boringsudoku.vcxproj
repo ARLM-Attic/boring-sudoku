@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\boardmodel.cpp" />
     <ClCompile Include="source\boardview.cpp" />
     <ClCompile Include="source\cursorcontroller.cpp" />
     <ClCompile Include="source\cursorview.cpp" />
@@ -99,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="include\abstractcontroller.h" />
     <ClInclude Include="include\abstractgamestate.h" />
+    <ClInclude Include="include\boardmodel.h" />
     <ClInclude Include="include\boardview.h" />
     <ClInclude Include="include\cursorcontroller.h" />
     <ClInclude Include="include\cursoreventobserver.h" />
@@ -108,6 +110,7 @@
     <ClInclude Include="include\splashscreenstate.h" />
     <ClInclude Include="include\sudokuboardview.h" />
     <ClInclude Include="include\abstractviewer.h" />
+    <ClInclude Include="include\sudokugame.h" />
     <ClInclude Include="include\tileview.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

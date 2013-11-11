@@ -58,31 +58,35 @@
 
 class SudokuBoardView : public BoardView {
 public:
-    /// 
-    /// \brief The type of Sudoku board
-    ///
-    enum t_sudokuboard_size {
-        SUDOKUBOARD_SIZE_4X4   = 2, /* 4 x  4 SudokuBoard */
-        SUDOKUBOARD_SIZE_9X9   = 3, /* 9 x  9 SudokuBoard */
-        SUDOKUBOARD_SIZE_16X16 = 4, /*16 x 16 SudokuBoard */
-    };
-
     ///
     /// \brief Generate sudoku board, with specific size and tileset
     ///
-    /// \param size         The sudoku size
-    /// \param screenSize   The screen size
-    /// \param screenOffset The offset from screen to be added
+    /// \param board           The board's model
+    /// \param textureFilename The board's tilemap texture. The tilemap should 
+    ///                        be in 24x24pixel size
+    /// \param screenSize      The drawable screen size
+    /// \param screenOffset    The offset of the drawable screen from the real
+    ///                        screen
     ///
-    explicit SudokuBoardView(
-            enum t_sudokuboard_size size,
-            std::vector<int>       *sudokuboard,
-            sf::Vector2f            screenSize,
-            sf::Vector2f            screenOffset = sf::Vector2f(0, 0));
+    explicit SudokuBoardView(BoardModel        *board,
+                             const std::string &tilemapFilename,
+                             sf::Vector2f       screenSize, 
+                             sf::Vector2f       screenOffset = sf::Vector2f(0, 0));
 
 
-private:
-    void setLayout(sf::Vector2f screenSize, sf::Vector2f screenOffset);
+    //-------------------------------------------------------------------------
+    // Part of board's view layout. To be used by the cursor view, and board 
+    // view
+
+    ///
+    /// \brief Get the tile in row, column's screen coordinate
+    ///
+    /// \param row    The row where the tile's reside
+    /// \param column The column where the tile's reside
+    ///
+    /// \return The tile's position in screen
+    ///
+    virtual sf::Vector2f tilePositionInScreen(int row, int column);
 };
 
 #endif // __SUDOKUBOARDVIEW_H_

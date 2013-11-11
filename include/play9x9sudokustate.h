@@ -25,13 +25,19 @@
 #define __PLAY9X9SUDOKUSTATE_H_
 
 #include <vector>
-#include "abstractcontroller.h"
+
 #include "abstractgamestate.h"
 #include "abstractviewer.h"
+
+#include "boardmodel.h"
+#include "boardview.h"
+
+#include "cursorcontroller.h"
 #include "cursoreventobserver.h"
 #include "cursorview.h"
-#include "cursorcontroller.h"
+
 #include "gamemanager.h"
+
 #include "sudokuboardview.h"
 
 class Play9x9SudokuState : public AbstractGameState, 
@@ -39,7 +45,7 @@ class Play9x9SudokuState : public AbstractGameState,
                                   CursorEventObserver {
 public:
     explicit Play9x9SudokuState(GameManager *manager);
-    virtual ~Play9x9SudokuState();
+    virtual ~Play9x9SudokuState() { }
 
     //-------------------------------------------------------------------------
     // Override the AbstractGameState's methods. These functions are needed to
@@ -70,29 +76,35 @@ private:
     ///
     /// \brief The sudoku board
     ///
-    std::vector<int> _sudokuBoard;
+    BoardModel _sudokuBoard;
 
     ///
-    /// \brief The view of the sudoku board
+    /// \brief The view of the sudoku board puzzle (the tiles that cannot be 
+    ///        updated by user)
     ///
-    SudokuBoardView *_sudokuBoardView;
+    SudokuBoardView _sudokuPuzzleView;
+
+    ///
+    /// \brief The view of the sudoku board (the tiles that can be updated by 
+    ///        user)
+    ///
+    SudokuBoardView _sudokuBoardView;
     
     //-------------------------------------------------------------------------
     ///
-    /// \brief The cursor position (in term of board's row / column, not the 
-    ///        screen row / column)
+    /// \brief The cursor position for the Sudoku board
     ///
     sf::Vector2i _sudokuBoardCursorPos;
 
     ///
     /// \brief The cursor view of the sudoku board
     ///
-    CursorView *_sudokuBoardCursorView;
+    CursorView _sudokuBoardCursorView;
 
     ///
     /// \brief The sudoku board cursor controller
     ///
-    CursorController *_sudokuBoardCursorController;
+    CursorController _sudokuBoardCursorController;
 
     //-------------------------------------------------------------------------
     ///
@@ -104,12 +116,12 @@ private:
     ///
     /// \brief The keypad to insert the number selection
     ///
-    std::vector<int> _keypad;
+    BoardModel _keypad;
 
     ///
     /// \brief The view of the keypad
     ///
-    BoardView *_keypadView;
+    BoardView _keypadView;
 
     //-------------------------------------------------------------------------
     ///
@@ -120,12 +132,12 @@ private:
     ///
     /// \brief The cursor view of the keypad
     ///
-    CursorView *_keypadCursorView;
+    CursorView _keypadCursorView;
 
     ///
     /// \brief The sudoku board cursor controller
     ///
-    CursorController *_keypadCursorController;
+    CursorController _keypadCursorController;
 };
 
 #endif // __PLAY9X9SUDOKUSTATE_H_

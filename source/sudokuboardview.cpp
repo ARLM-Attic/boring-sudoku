@@ -23,19 +23,34 @@
 
 #include "sudokuboardview.h"
 
+// Define sub-board column size (because the board is only defining the total 
+// column size)
+#define SUBBOARD_COLUMN_SIZE_2  4
+#define SUBBOARD_COLUMN_SIZE_3  9
+#define SUBBOARD_COLUMN_SIZE_4  16
+
 SudokuBoardView::SudokuBoardView(
-            enum t_sudokuboard_size size,
-            std::vector<int>       *sudokuboard,
-            sf::Vector2f            screenSize,
-            sf::Vector2f            screenOffset) :
-    BoardView(static_cast<int> (size), sudokuboard, screenSize, screenOffset)
+            BoardModel        *board,
+            const std::string &tilemapFilename,
+            sf::Vector2f       screenSize, 
+            sf::Vector2f       screenOffset) :
+    BoardView(board, tilemapFilename, screenSize, screenOffset)
 {
     // Setup the layout of the board
-    setLayout(screenSize, screenOffset);
+    for (int row = 0; row < _board->rowSize(); row++) {
+        for (int col = 0; col < _board->columnSize(); col++) {
+            if (_board->tileIsInBoard(row, col)) {
+                TileView *tile = 
+                    &_boardTiles[(row * _board->columnSize()) + col];
+                sf::Vector2f tilePos = tilePositionInScreen(row, col);
+
+                tile->setPosition(tilePos);
+            }
+        }
+    }
 }
 
-void SudokuBoardView::setLayout(sf::Vector2f screenSize, 
-                                sf::Vector2f screenOffset) {
+sf::Vector2f SudokuBoardView::tilePositionInScreen(int row, int column) {
     // Init the tile's position in screen. 
     // All of the coordinates are based on tileSize value. 
     // The distance between the tiles is (1/4 * tileSize). The 
@@ -51,49 +66,37 @@ void SudokuBoardView::setLayout(sf::Vector2f screenSize,
     //     screenRowCenter = n.tileSize + rowOffset 
     // We will always draw the board in the center of the screen
     //
-    float screenColCenter = screenSize.x / 2;
-    float screenRowCenter = screenSize.y / 2;
+    float screenColCenter = _screenSize.x / 2;
+    float screenRowCenter = _screenSize.y / 2;
     
-    float colOffset = screenOffset.x + screenColCenter;
-    float rowOffset = screenOffset.y + screenRowCenter;
+    float colOffset = _screenOffset.x + screenColCenter;
+    float rowOffset = _screenOffset.y + screenRowCenter;
     
-    // Assume that all tiles are having the same size. Use tile #0 size to
-    // calculate the tilesize
-    sf::Vector2u tileSize = _boardTiles[0].getTileSize();
-    switch (_columnSize) {
-    case SUDOKUBOARD_SIZE_4X4:
+    int subboardSize;
+    sf::Vector2u tileSize = TILESIZE_IN_PIXEL;
+    switch (_board->columnSize()) {
+    case SUBBOARD_COLUMN_SIZE_2:
         colOffset -= (2.75f * tileSize.x);
         rowOffset -= (2.75f * tileSize.y);
+        subboardSize = 2;
         break;
-    case SUDOKUBOARD_SIZE_9X9:
+    case SUBBOARD_COLUMN_SIZE_3:
         colOffset -= (  6.f * tileSize.x);
         rowOffset -= (  6.f * tileSize.y);
+        subboardSize = 3;
         break;
-    case SUDOKUBOARD_SIZE_16X16:
+    case SUBBOARD_COLUMN_SIZE_4:
         colOffset -= (10.5f * tileSize.x);
         rowOffset -= (10.5f * tileSize.y);
+        subboardSize = 4;
         break;
     }
 
-    int boardSize = (_columnSize * _columnSize);
-    for (int row = 0; row < boardSize; row++) {
-        for (int col = 0; col < boardSize; col++) {
-            float x = 0.75f + (1.25f * col) + (0.25f * (col / _columnSize));
-            float y = 0.75f + (1.25f * row) + (0.25f * (row / _columnSize));
+    float x = 0.75f + (1.25f * column) + (0.25f * (column / subboardSize));
+    float y = 0.75f + (1.25f * row)    + (0.25f * (row    / subboardSize));
 
-            TileView *tile = &_boardTiles[(row * boardSize) + col];
+    x = (x * tileSize.x) + colOffset;
+    y = (y * tileSize.y) + rowOffset;
 
-            x = (x * (tile->getTileSize().x)) + colOffset;
-            y = (y * (tile->getTileSize().y)) + rowOffset;
-            tile->setPosition(sf::Vector2f(x, y));
-        }
-    }
-
-    // The only exception for this class is that _columnSize was actually 
-    // referring to sub-board's column size, while the base class of board view
-    // is using it as the main board's column size.
-    //
-    // Hence, we fix it back after the layout set is done
-    _columnSize = boardSize;
-    _rowSize    = boardSize;
+    return sf::Vector2f(x, y);
 }

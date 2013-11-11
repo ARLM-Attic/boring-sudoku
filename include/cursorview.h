@@ -50,12 +50,6 @@ public:
 
 private:
     ///
-    /// \brief Unlike Sudoku tile, the cursor tile value is always 0 since 
-    ///        there's only 1 cursor type available in the cursor tilemap
-    ///
-    int _tileValue;
-
-    ///
     /// \brief The tile texture for the board
     ///
     sf::Texture _cursorTexture;

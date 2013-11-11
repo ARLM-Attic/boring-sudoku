@@ -29,10 +29,19 @@
 #define SUDOKU_BOARD_TILE_SIZE      81
 
 ///
+/// \brief No of column in the Sudoku board
+///
+#define SUDOKU_BOARD_COLUMN_SIZE    9
+
+///
 /// \brief The sudoku board screen size
 ///
 #define SUDOKU_BOARD_SCREEN_SIZE    sf::Vector2f(320, 320)
 
+///
+/// \brief No of tile in the keypad
+///
+#define KEYPAD_TILE_SIZE            10 // 9 numbers + 1 delete key
 ///
 /// \brief The column size of the keypad (in tiles, not pixel)
 ///
@@ -48,75 +57,59 @@
 ///
 #define KEYPAD_SCREEN_OFFSET        sf::Vector2f(320, 16)
 
+///
+/// \brief The keypad value for delete button
+///
+#define KEYPAD_DELETE_TILE          11
+
 //-----------------------------------------------------------------------------
 
 Play9x9SudokuState::Play9x9SudokuState(GameManager *manager) :
         _manager(manager),
-        _sudokuBoardCursorPos(sf::Vector2i(0, 0)),
-        _keypadCursorPos(sf::Vector2i(0, 0))
+        
+        // Create Sudoku board, and its views
+        _sudokuBoard(SUDOKU_BOARD_TILE_SIZE, SUDOKU_BOARD_COLUMN_SIZE),
+        _sudokuPuzzleView(&_sudokuBoard,
+                          "artwork/sudoku-numbertiles-24px-faded.png",
+                          SUDOKU_BOARD_SCREEN_SIZE),
+        _sudokuBoardView(&_sudokuBoard, // TODO: Direct this to the filter
+                          "artwork/sudoku-numbertiles-24px.png",
+                          SUDOKU_BOARD_SCREEN_SIZE),
+
+        // Create Sudoku board's cursor
+        _sudokuBoardCursorView(),
+        _sudokuBoardCursorController(&_sudokuBoard, // TODO: Direct this to the filter
+                                     &_sudokuBoardView, 
+                                     &_sudokuBoardCursorView),
+        
+        // Create keypad board, and its view
+        _keypad(KEYPAD_TILE_SIZE, KEYPAD_COLUMN_SIZE),
+        _keypadView(&_keypad, 
+                    "artwork/sudoku-numbertiles-24px.png",
+                    KEYPAD_SCREEN_SIZE, 
+                    KEYPAD_SCREEN_OFFSET),
+
+        // Create keypad's cursor
+        _keypadCursorView(),
+        _keypadCursorController(&_keypad, &_keypadView, &_keypadCursorView)
 {
     // Load background texture
     _backgroundTexture.loadFromFile("artwork/sudoku-background.png");
 
-    // Create the sudoku board model
-    _sudokuBoard.resize(SUDOKU_BOARD_TILE_SIZE, 0);
-
-    // Connect the sudoku board model into the view
-    _sudokuBoardView = 
-        new SudokuBoardView(SudokuBoardView::SUDOKUBOARD_SIZE_9X9, 
-                            &_sudokuBoard, 
-                            SUDOKU_BOARD_SCREEN_SIZE
-        );
     // Show the sudoku board
-    _sudokuBoardView->show();
+    _sudokuBoardView.show();
 
     // Show the cursor of the board
-    _sudokuBoardCursorView = new CursorView();
-    _sudokuBoardCursorView->show();
+    _sudokuBoardCursorView.show();
     
-    // Connect the sudoku board cursor to the board's view
-    _sudokuBoardCursorController = 
-        new CursorController(&_sudokuBoardCursorPos, 
-                             _sudokuBoardCursorView, 
-                             _sudokuBoardView
-        );
-    // Register its 'select' event handler
-    _sudokuBoardCursorController->registerObserver(this);
+    // Register sudoku board's 'select' event handler
+    _sudokuBoardCursorController.registerObserver(this);
 
-    // Create the keypad model
-    _keypad.resize(10);
-    for (unsigned int i = 0; i < _keypad.size(); i++) {
-        _keypad[i] = (i + 1);
-    }
+    // Register keypad's 'select' event handler
+    _keypadCursorController.registerObserver(this);
 
-    // Connect the keypad model into the view
-    _keypadView = new BoardView(KEYPAD_COLUMN_SIZE, 
-                                &_keypad, 
-                                KEYPAD_SCREEN_SIZE,
-                                KEYPAD_SCREEN_OFFSET);
-
-    // Connect the keypad cursor to the keypad's view
-    _keypadCursorView = new CursorView();
-    _keypadCursorController = 
-        new CursorController(&_keypadCursorPos, 
-                             _keypadCursorView, 
-                             _keypadView
-        );
-    // Register its 'select' event handler
-    _keypadCursorController->registerObserver(this);
-
-    _controller = _sudokuBoardCursorController;
+    _controller = &_sudokuBoardCursorController;
     _view       = this;
-}
-
-Play9x9SudokuState::~Play9x9SudokuState() {
-    delete _keypadCursorController;
-    delete _keypadCursorView;
-    delete _keypadView;
- 
-    delete _sudokuBoardCursorController;
-    delete _sudokuBoardCursorView;
-    delete _sudokuBoardView;
 }
 
 void Play9x9SudokuState::pause() {
@@ -125,43 +118,37 @@ void Play9x9SudokuState::pause() {
 
 void Play9x9SudokuState::tileSelected(AbstractController *controller, 
                                       sf::Vector2i        tilePos) {
-    if (controller == _sudokuBoardCursorController) {
-        _keypadView->show();
-        _keypadCursorView->show();
-        _controller = _keypadCursorController;
+    if (controller == &_sudokuBoardCursorController) {
+        _sudokuBoardCursorPos = tilePos;
+
+        _keypadView.show();
+        _keypadCursorView.show();
+        _controller = &_keypadCursorController;
     } else {
+        _keypadCursorPos = tilePos;
+
         // Sudoku tile is selected, and the number is selected as well
-        int *selectedTile = &_sudokuBoard[
-            (_sudokuBoardCursorPos.y * _sudokuBoardView->columnSize()) + 
-            _sudokuBoardCursorPos.x
-        ];
-
-        int *selectedNo = &_keypad[
-            (_keypadCursorPos.y * _keypadView->columnSize()) + 
-            _keypadCursorPos.x
-        ];
-
-        // Copy the selected no into the selected tile
-        if (*selectedNo == _keypad.back()) {
-            // If user select the 'delete' key (which always be inserted as the
-            // last tile of keypad), replace the sudoku board value with 0
-            *selectedTile = 0;
+        int selectedNo = _keypad.value(_keypadCursorPos.y, _keypadCursorPos.x);
+        if (selectedNo == KEYPAD_DELETE_TILE) {
+            _sudokuBoard.setValue(0, 
+                _sudokuBoardCursorPos.y, _sudokuBoardCursorPos.x);
         } else {
-            *selectedTile = *selectedNo;
+            _sudokuBoard.setValue(selectedNo,
+                _sudokuBoardCursorPos.y, _sudokuBoardCursorPos.x);
         }
 
-        _keypadView->hide();
-        _keypadCursorView->hide();
-        _controller = _sudokuBoardCursorController;
+        _keypadView.hide();
+        _keypadCursorView.hide();
+        _controller = &_sudokuBoardCursorController;
     }
 }
 
 void Play9x9SudokuState::update(sf::Time elapsedTime) {
-    _sudokuBoardCursorView->update(elapsedTime);
-    _sudokuBoardView->update(elapsedTime);
+    _sudokuBoardCursorView.update(elapsedTime);
+    _sudokuBoardView.update(elapsedTime);
 
-    _keypadView->update(elapsedTime);
-    _keypadCursorView->update(elapsedTime);
+    _keypadView.update(elapsedTime);
+    _keypadCursorView.update(elapsedTime);
 }
 
 void Play9x9SudokuState::draw(sf::RenderWindow *win) {
@@ -170,14 +157,14 @@ void Play9x9SudokuState::draw(sf::RenderWindow *win) {
     win->draw(backgroundSprite);
 
     // Draw cursor sprite
-    _sudokuBoardCursorView->draw(win);
+    _sudokuBoardCursorView.draw(win);
 
     // Draw the Sudoku board
-    _sudokuBoardView->draw(win);
+    _sudokuBoardView.draw(win);
 
     // Draw keypad cursor
-    _keypadCursorView->draw(win);
+    _keypadCursorView.draw(win);
     
     // Draw cursor
-    _keypadView->draw(win);
+    _keypadView.draw(win);
 }

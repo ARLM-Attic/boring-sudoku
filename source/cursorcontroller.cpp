@@ -23,16 +23,15 @@
 
 #include "cursorcontroller.h"
 
-CursorController::CursorController(
-                    sf::Vector2i *cursorModel,
-                    CursorView   *cursorView,
-                    BoardView    *boardView) :
-        _cursorModel(cursorModel),
-        _cursorView(cursorView),
-        _boardView(boardView) {
-    sf::Vector2f cursorPos = 
-        _boardView->tilePosition(_cursorModel->y, _cursorModel->x);
-    _cursorView->setPosition(cursorPos);
+CursorController::CursorController(BoardModel *boardModel,
+                                   BoardView  *boardView,
+                                   CursorView *cursorView) :
+    _boardModel(boardModel),
+    _boardView(boardView),
+    _cursorView(cursorView),
+    _cursorModel(sf::Vector2i(0, 0)) {
+    
+    updateCursorView();
 }
 
 void CursorController::registerObserver(CursorEventObserver *observer) {
@@ -40,73 +39,100 @@ void CursorController::registerObserver(CursorEventObserver *observer) {
 }
 
 void CursorController::up() {
-    if (_cursorModel->y > 0) {
-        _cursorModel->y--;
-    } else {
-        _cursorModel->y = lastRow();
+    int rollCount = _boardModel->rowSize();
+
+    while(rollCount > 0) {
+        if (_cursorModel.y > 0) {
+            // Move to the upper row
+            _cursorModel.y -= 1;
+        } else {
+            // The cursor is already at the top of the row, roll to the last 
+            // row
+            _cursorModel.y = _boardModel->rowSize() - 1;
+        }
+
+        if (_boardModel->tileIsInBoard(_cursorModel.y, _cursorModel.x)) {
+            // The new position is valid. Stop rolling
+            break;
+        }
     }
 
-    sf::Vector2f cursorPos = 
-        _boardView->tilePosition(_cursorModel->y, _cursorModel->x);
-    _cursorView->setPosition(cursorPos);
+    updateCursorView();
 }
 
 void CursorController::down() {
-    if (_cursorModel->y < lastRow()) {
-        _cursorModel->y++;
-    } else {
-        _cursorModel->y = 0;
+    int rollCount = _boardModel->rowSize();
+
+    while(rollCount > 0) {
+        if (_cursorModel.y < (_boardModel->rowSize() - 1)) {
+            // Move to the lower row
+            _cursorModel.y += 1;
+        } else {
+            // The cursor is already at the bottom of the row, roll to the top
+            // row
+            _cursorModel.y = 0;
+        }
+
+        if (_boardModel->tileIsInBoard(_cursorModel.y, _cursorModel.x)) {
+            // The new position is valid. Stop rolling
+            break;
+        }
     }
 
-    sf::Vector2f cursorPos = 
-        _boardView->tilePosition(_cursorModel->y, _cursorModel->x);
-    _cursorView->setPosition(cursorPos);
+    updateCursorView();
 }
 
 void CursorController::left() {
-    if (_cursorModel->x > 0) {
-        _cursorModel->x--;
-    } else {
-        _cursorModel->x = lastColumn();
+    int rollCount = _boardModel->columnSize();
+
+    while(rollCount > 0) {
+        if (_cursorModel.x > 0) {
+            // Move to the left column
+            _cursorModel.x -= 1;
+        } else {
+            // The cursor is already at the most left of the column, roll to 
+            // the last column
+            _cursorModel.x = _boardModel->columnSize() - 1;
+        }
+
+        if (_boardModel->tileIsInBoard(_cursorModel.y, _cursorModel.x)) {
+            // The new position is valid. Stop rolling
+            break;
+        }
     }
 
-    sf::Vector2f cursorPos = 
-        _boardView->tilePosition(_cursorModel->y, _cursorModel->x);
-    _cursorView->setPosition(cursorPos);
+    updateCursorView();
 }
  
 void CursorController::right() {
-   if (_cursorModel->x < lastColumn()) {
-       _cursorModel->x++;
-   } else {
-       _cursorModel->x = 0;
-   }
+    int rollCount = _boardModel->columnSize();
 
-    sf::Vector2f cursorPos = 
-        _boardView->tilePosition(_cursorModel->y, _cursorModel->x);
-    _cursorView->setPosition(cursorPos);
+    while(rollCount > 0) {
+        if (_cursorModel.x < (_boardModel->columnSize() - 1)) {
+            // Move to the rigt column
+            _cursorModel.x += 1;
+        } else {
+            // The cursor is already at the most right of the column, roll to 
+            // the first column
+            _cursorModel.x = 0;
+        }
+
+        if (_boardModel->tileIsInBoard(_cursorModel.y, _cursorModel.x)) {
+            // The new position is valid. Stop rolling
+            break;
+        }
+    }
+
+    updateCursorView();
 }
 
 void CursorController::select() {
-    _eventObserver->tileSelected(this, *_cursorModel);
+    _eventObserver->tileSelected(this, _cursorModel);
 }
 
-int CursorController::lastRow() {
-    int lastRow = (_boardView->rowSize() - 1);
-
-    while (!_boardView->tileIsInBoard(lastRow, _cursorModel->x)) {
-        lastRow--;
-    }
-
-    return lastRow;
-}
-
-int CursorController::lastColumn() {
-    int lastColumn = (_boardView->columnSize() - 1);
-
-    while (!_boardView->tileIsInBoard(_cursorModel->y, lastColumn)) {
-        lastColumn--;
-    }
-
-    return lastColumn;
+void CursorController::updateCursorView() {
+    sf::Vector2f cursorPos = 
+        _boardView->tilePositionInScreen(_cursorModel.y, _cursorModel.x);
+    
+    _cursorView->setPosition(cursorPos);
 }

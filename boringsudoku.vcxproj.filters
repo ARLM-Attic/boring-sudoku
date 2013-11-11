@@ -51,6 +51,9 @@
     <ClCompile Include="source\cursorcontroller.cpp">
       <Filter>Game Widgets\Source</Filter>
     </ClCompile>
+    <ClCompile Include="source\boardmodel.cpp">
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\gamemanager.h">
@@ -87,6 +90,12 @@
       <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
     <ClInclude Include="include\cursoreventobserver.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sudokugame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\boardmodel.h">
       <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
   </ItemGroup>

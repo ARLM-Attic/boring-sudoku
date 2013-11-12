@@ -30,6 +30,7 @@
 #include "abstractviewer.h"
 
 #include "boardmodel.h"
+#include "boardmodelmask.h"
 #include "boardview.h"
 
 #include "cursorcontroller.h"
@@ -68,6 +69,16 @@ public:
 
 private:
     ///
+    /// \brief Create the keypad
+    ///
+    void createKeypad();
+
+    ///
+    /// \brief Create the Sudoku puzzle
+    ///
+    void createSudokuPuzzle();
+
+    ///
     /// \brief The access to the game manager
     ///
     GameManager *_manager;
@@ -77,6 +88,11 @@ private:
     /// \brief The sudoku board
     ///
     BoardModel _sudokuBoard;
+
+    ///
+    /// \brief The sudoku board that's editable by user
+    ///
+    BoardModelMask _sudokuUserBoard;
 
     ///
     /// \brief The view of the sudoku board puzzle (the tiles that cannot be 

@@ -40,7 +40,7 @@ public:
     /// \param columnSize The size of the column. The row size is
     ///                   automatically calculated
     ///
-    BoardModel(unsigned int size, int columnSize);
+    BoardModel(unsigned int size = 0, int columnSize = 1);
 
     virtual ~BoardModel() { }
     
@@ -49,7 +49,7 @@ public:
     ///
     /// \return the board size (in no of tiles that are available)
     ///
-    unsigned int size() {
+    virtual unsigned int size() {
         return _board.size();
     }
 
@@ -60,7 +60,7 @@ public:
     ///
     /// \return the column size
     ///
-    int columnSize() {
+    virtual int columnSize() {
         return _columnSize;
     }
 
@@ -71,7 +71,7 @@ public:
     ///
     /// \return the row size
     ///
-    int rowSize() {
+    virtual int rowSize() {
         return _rowSize;
     }
 
@@ -86,7 +86,7 @@ public:
     ///
     /// \return true if the tile lies within the board
     ///
-    bool tileIsInBoard(int row, int column);
+    virtual bool tileIsInBoard(int row, int column);
 
     ///
     /// \brief Get the tile value at row / column
@@ -98,7 +98,7 @@ public:
     ///
     /// \return the tile value
     ///
-    int value(int row, int column);
+    virtual int value(int row, int column);
 
     ///
     /// \brief Set the tile value at row / column
@@ -108,7 +108,7 @@ public:
     /// \param row    The row where the tile lies
     /// \param column The column where the tile lies
     ///
-    void setValue(int value, int row, int column);
+    virtual void setValue(int value, int row, int column);
 
 protected:
     ///

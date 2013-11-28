@@ -227,7 +227,7 @@ void Play9x9SudokuState::createSudokuPuzzle() {
     _sudokuBoard.setValue( 7, 5, 7);
     _sudokuBoard.setValue( 5, 6, 1);
     _sudokuBoard.setValue( 6, 6, 4);
-    _sudokuBoard.setValue( 7, 6, 7);
+    _sudokuBoard.setValue( 7, 6, 8);
     _sudokuBoard.setValue( 8, 7, 2);
     _sudokuBoard.setValue( 9, 7, 5);
     _sudokuBoard.setValue( 4, 8, 0);

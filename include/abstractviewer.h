@@ -49,14 +49,14 @@ public:
     ///
     /// \brief Show the view
     ///
-    virtual void show() {
+    void show() {
         _isShowed = true;
     }
 
     ///
     /// \brief Hide the view
     ///
-    virtual void hide() {
+    void hide() {
         _isShowed = false;
     }
 

@@ -53,6 +53,11 @@ private:
     sf::Texture _texture;
 
     ///
+    /// \brief The fading in color for animation
+    ///
+    sf::Color _fadingInColor;
+
+    ///
     /// \brief Track the running time of this state
     ///
     sf::Time    _runningTime;

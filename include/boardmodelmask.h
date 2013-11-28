@@ -61,7 +61,7 @@ public:
     virtual int rowSize();
     
     virtual bool tileIsInBoard(int row, int column);
-    
+
     virtual int  value(int row, int column);
     virtual void setValue(int value, int row, int column);
 

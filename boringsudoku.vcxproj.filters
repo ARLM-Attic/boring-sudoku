@@ -104,5 +104,8 @@
     <ClInclude Include="include\boardmodelmask.h">
       <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="include\menustate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

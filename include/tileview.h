@@ -36,11 +36,12 @@ public:
     ///
     /// \brief Create tile, with _tilePos = (0, 0)
     ///
-    /// \param tilemap   Pointer to the tilemap texture
-    /// \param tileSize  The size of each tile in pixel
+    /// \param tilemapSize Tilemap size in pixel
+    /// \param tileSize    The size of each tile in tilemap
     ///
-    TileView(sf::Texture *tilemap, 
-             sf::Vector2u tileSize);
+    TileView(sf::Vector2u tilemapSize = sf::Vector2u(1, 1), 
+             sf::Vector2u tileSize    = sf::Vector2u(1, 1)
+    );
 
     ///
     /// \brief Set tile face (the tile looks)
@@ -49,6 +50,15 @@ public:
     ///
     void setFace(int face) {
         _tileFace = face;
+    }
+
+    ///
+    /// \brief Get the tile face value
+    ///
+    /// \return The tile face value
+    ///
+    int getFace(void) {
+        return _tileFace;
     }
 
     ///
@@ -99,19 +109,19 @@ private:
     sf::Vector2f _tilePos;
 
     ///
-    /// \brief The vertex to draw the tile
+    /// \brief The tilemap size in pixel
     ///
-    std::vector<sf::Vertex> _vertex;
-
-    ///
-    /// \brief The pointer to the texture of the tile
-    ///
-    sf::Texture *_texture;
+    sf::Vector2u _tilemapSize;
 
     ///
     /// \brief The tile size (in pixel)
     ///
     sf::Vector2u _tileSize;
+
+    ///
+    /// \brief The vertex to draw the tile
+    ///
+    std::vector<sf::Vertex> _vertex;
 };
 
 #endif // __TILEVIEW_H_

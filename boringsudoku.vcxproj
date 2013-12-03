@@ -86,33 +86,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\boardmodel.cpp" />
-    <ClCompile Include="source\boardmodelmask.cpp" />
+    <ClCompile Include="source\boardlayout.cpp" />
+    <ClCompile Include="source\boardmodeladapter.cpp" />
     <ClCompile Include="source\boardview.cpp" />
     <ClCompile Include="source\cursorcontroller.cpp" />
     <ClCompile Include="source\cursorview.cpp" />
     <ClCompile Include="source\gamemanager.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\menustate.cpp" />
     <ClCompile Include="source\play9x9sudokustate.cpp" />
+    <ClCompile Include="source\scorelayout.cpp" />
+    <ClCompile Include="source\menulayout.cpp" />
     <ClCompile Include="source\splashscreenstate.cpp" />
-    <ClCompile Include="source\sudokuboardview.cpp" />
+    <ClCompile Include="source\submenustate.cpp" />
+    <ClCompile Include="source\sudokuboardlayout.cpp" />
     <ClCompile Include="source\tileview.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\boardlayout.h" />
     <ClInclude Include="include\abstractcontroller.h" />
     <ClInclude Include="include\abstractgamestate.h" />
-    <ClInclude Include="include\boardmodel.h" />
-    <ClInclude Include="include\boardmodelmask.h" />
+    <ClInclude Include="include\boardmodeladapter.h" />
     <ClInclude Include="include\boardview.h" />
     <ClInclude Include="include\cursorcontroller.h" />
-    <ClInclude Include="include\cursoreventobserver.h" />
     <ClInclude Include="include\cursorview.h" />
     <ClInclude Include="include\gamemanager.h" />
+    <ClInclude Include="include\menulayout.h" />
     <ClInclude Include="include\menustate.h" />
     <ClInclude Include="include\play9x9sudokustate.h" />
+    <ClInclude Include="include\scorelayout.h" />
     <ClInclude Include="include\splashscreenstate.h" />
-    <ClInclude Include="include\sudokuboardview.h" />
     <ClInclude Include="include\abstractviewer.h" />
+    <ClInclude Include="include\submenustate.h" />
+    <ClInclude Include="include\sudokuboardlayout.h" />
     <ClInclude Include="include\sudokugame.h" />
     <ClInclude Include="include\tileview.h" />
   </ItemGroup>

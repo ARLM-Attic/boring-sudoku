@@ -30,40 +30,31 @@
 
 class AbstractController {
 public:
-    ///
-    /// \brief 'Up' key is pressed event
-    ///
-    virtual void up() { }
+    enum _keys {
+        KEY_UP,
+        KEY_DOWN,
+        KEY_LEFT,
+        KEY_RIGHT,
+        KEY_SELECT,
+        KEY_PAUSE,
+        KEY_DELETE,
+        KEY_1,
+        KEY_2,
+        KEY_3,
+        KEY_4,
+        KEY_5,
+        KEY_6,
+        KEY_7,
+        KEY_8,
+        KEY_9,
+    };
 
     ///
-    /// \brief 'Down' key is pressed event
+    /// \brief Process the keypress events
     ///
-    virtual void down() { }
-
+    /// \param key The key that is pressed
     ///
-    /// \brief 'Left' key is pressed event
-    ///
-    virtual void left() { }
-
-    ///
-    /// \brief 'Right' key is pressed event
-    ///
-    virtual void right() { }
-
-    ///
-    /// \brief Menu / item selected event
-    ///
-    virtual void select() { }
-
-    ///
-    /// \brief The mouse move event
-    ///
-    /// \param x The column of the current mouse pointer (measured from most 
-    ///          left column of the window)
-    /// \param y The row of the current mouse pointer (measured from most up 
-    ///          row of the window)
-    ///
-    virtual void mouseMove(int x, int y) { }
+    virtual void processKeypressEvent(enum _keys key) = 0;
 
     ///
     /// \brief The controller's destructor

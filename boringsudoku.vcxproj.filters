@@ -33,28 +33,40 @@
     <ClCompile Include="source\splashscreenstate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\menustate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tileview.cpp">
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\submenustate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="source\play9x9sudokustate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\boardmodeladapter.cpp">
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\boardlayout.cpp">
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\sudokuboardlayout.cpp">
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
     <ClCompile Include="source\boardview.cpp">
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scorelayout.cpp">
+      <Filter>Game Widgets\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menulayout.cpp">
       <Filter>Game Widgets\Source</Filter>
     </ClCompile>
     <ClCompile Include="source\cursorview.cpp">
       <Filter>Game Widgets\Source</Filter>
     </ClCompile>
-    <ClCompile Include="source\sudokuboardview.cpp">
-      <Filter>Game Widgets\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\tileview.cpp">
-      <Filter>Game Widgets\Source</Filter>
-    </ClCompile>
     <ClCompile Include="source\cursorcontroller.cpp">
-      <Filter>Game Widgets\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\boardmodel.cpp">
-      <Filter>Game Widgets\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\boardmodelmask.cpp">
       <Filter>Game Widgets\Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,35 +89,41 @@
     <ClInclude Include="include\abstractviewer.h">
       <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="include\sudokugame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\menustate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tileview.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\submenustate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\boardmodeladapter.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\boardlayout.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sudokuboardlayout.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
     <ClInclude Include="include\boardview.h">
       <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="include\cursorcontroller.h">
+    <ClInclude Include="include\scorelayout.h">
+      <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\menulayout.h">
       <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
     <ClInclude Include="include\cursorview.h">
       <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="include\sudokuboardview.h">
+    <ClInclude Include="include\cursorcontroller.h">
       <Filter>Game Widgets\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tileview.h">
-      <Filter>Game Widgets\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\cursoreventobserver.h">
-      <Filter>Game Widgets\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sudokugame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\boardmodel.h">
-      <Filter>Game Widgets\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\boardmodelmask.h">
-      <Filter>Game Widgets\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\menustate.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

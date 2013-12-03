@@ -33,7 +33,14 @@
 
 class CursorView : public AbstractViewer {
 public:
-    explicit CursorView();
+    ///
+    /// \brief Create cursor to be displayed in the screen
+    ///
+    /// \param cursorSize     The size of the cursor
+    /// \param cursorFilename The texture for the cursor
+    ///
+    explicit CursorView(sf::Vector2u       cursorSize     = sf::Vector2u(0, 0),
+                        const std::string &cursorFilename = "");
     
     //-------------------------------------------------------------------------
     // Override the AbstractViewer's methods
@@ -44,9 +51,7 @@ public:
     /// \brief Set the cursor's position in the screen
     ///
     /// \param position The cursor's new position in screen
-    void setPosition(sf::Vector2f position) {
-        _cursorView.setPosition(position);
-    }
+    void setPosition(sf::Vector2f position);
 
 private:
     ///
@@ -57,7 +62,7 @@ private:
     ///
     /// \brief The cursor representatives
     ///
-    TileView _cursorView;
+    TileView _cursorTile;
 
     ///
     /// \brief The tiles' vertex to draw

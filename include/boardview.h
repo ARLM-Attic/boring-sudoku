@@ -29,11 +29,9 @@
 #define __BOARDVIEW_H_
 
 #include "abstractviewer.h"
-#include "boardmodel.h"
+#include "boardmodeladapter.h"
+#include "boardlayout.h"
 #include "tileview.h"
-
-// Define the size of the tile in the texture
-#define TILESIZE_IN_PIXEL   sf::Vector2u(24, 24)
 
 class BoardView : public AbstractViewer {
 public:
@@ -41,30 +39,14 @@ public:
     /// \brief The board's view constructor
     ///
     /// \param board           The board's model
-    /// \param textureFilename The board's tilemap texture. The tilemap should 
-    ///                        be in 24x24pixel size
-    /// \param screenSize      The drawable screen size
-    /// \param screenOffset    The offset of the drawable screen from the real
-    ///                        screen
+    /// \param layout          The board's layout
+    /// \param tilemapFilename The board's tilemap texture. 
+    /// \param tileSize        The size of each tile in tilemap
     ///
-    explicit BoardView(BoardModel        *board,
-                       const std::string &tilemapFilename,
-                       sf::Vector2f       screenSize, 
-                       sf::Vector2f       screenOffset = sf::Vector2f(0, 0));
-
-    //-------------------------------------------------------------------------
-    // Part of board's view layout. To be used by the cursor view, and board 
-    // view
-
-    ///
-    /// \brief Get the tile in row, column's screen coordinate
-    ///
-    /// \param row    The row where the tile's reside
-    /// \param column The column where the tile's reside
-    ///
-    /// \return The tile's position in screen
-    ///
-    virtual sf::Vector2f tilePositionInScreen(int row, int column);
+    explicit BoardView(BoardModelAdapter *board           = NULL,
+                       BoardLayout       *layout          = NULL,               
+                       const std::string &tilemapFilename = ""
+    );
 
     //-------------------------------------------------------------------------
     // Override the AbstractViewer's methods
@@ -76,33 +58,21 @@ public:
     ///
     virtual ~BoardView() { }
 
-protected:
-    ///
-    /// \brief The board tiles
-    ///
-    std::vector<TileView> _boardTiles;
-
-    ///
-    /// \brief Pointer to the board's model
-    ///
-    BoardModel *_board;
-
-    ///
-    /// \brief The drawable screen size
-    ///
-    sf::Vector2f _screenSize;
-
-    ///
-    /// \brief The offset of the drawable screen from the real
-    ///        screen
-    ///
-    sf::Vector2f _screenOffset;
-
 private:
+    ///
+    /// \brief The board model
+    ///
+    BoardModelAdapter *_board;
+
     ///
     /// \brief The tile texture for the board
     ///
     sf::Texture _tileTexture;
+
+    ///
+    /// \brief The board tiles
+    ///
+    std::vector<TileView> _boardTiles;
     
     ///
     /// \brief The tiles' vertex to draw

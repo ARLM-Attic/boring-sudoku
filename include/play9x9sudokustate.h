@@ -24,47 +24,29 @@
 #ifndef __PLAY9X9SUDOKUSTATE_H_
 #define __PLAY9X9SUDOKUSTATE_H_
 
-#include <vector>
-
+#include <SFML/Graphics.hpp>
 #include "abstractgamestate.h"
-#include "abstractviewer.h"
-
-#include "boardmodel.h"
-#include "boardmodelmask.h"
+#include "boardmodeladapter.h"
+#include "boardlayout.h"
 #include "boardview.h"
-
 #include "cursorcontroller.h"
-#include "cursoreventobserver.h"
 #include "cursorview.h"
+#include "scorelayout.h"
+#include "sudokuboardlayout.h"
 
-#include "gamemanager.h"
-
-#include "sudokuboardview.h"
-
-class Play9x9SudokuState : public AbstractGameState, 
-                                  AbstractViewer, 
-                                  CursorEventObserver {
+class Play9x9SudokuState : public AbstractGameState
+{
 public:
-    explicit Play9x9SudokuState(GameManager *manager);
-    virtual ~Play9x9SudokuState() { }
+    explicit Play9x9SudokuState();
+    virtual ~Play9x9SudokuState();
 
     //-------------------------------------------------------------------------
-    // Override the AbstractGameState's methods. These functions are needed to
-    // create the paused / option / menu screen
-    virtual void pause();
+    // Abstractcontroller methods
+    virtual void processKeypressEvent(enum _keys key);
 
     //-------------------------------------------------------------------------
-    // Implementation of CursorEventObserver interface
-    virtual void tileSelected(AbstractController *controller, 
-                              sf::Vector2i        tilePos);
-
-    //-------------------------------------------------------------------------
-    // Override the AbstractViewer's method. This function is needed to compute
-    // the cursor position on the screen along with updating the screen 
-    // background and the board's view
+    // AbstractViewer's methods
     virtual void update(sf::Time elapsedTime);
-
-    // This function is needed to draw the game
     virtual void draw(sf::RenderWindow *win);
 
 private:
@@ -74,86 +56,109 @@ private:
     void createKeypad();
 
     ///
-    /// \brief Create the Sudoku puzzle
+    /// \brief Create the Sudoku board
     ///
-    void createSudokuPuzzle();
+    void createSudokuBoard();
 
     ///
-    /// \brief The access to the game manager
+    /// \brief Set the game score to be displayed
     ///
-    GameManager *_manager;
-
-    //-------------------------------------------------------------------------
-    ///
-    /// \brief The sudoku board
-    ///
-    BoardModel _sudokuBoard;
-
-    ///
-    /// \brief The sudoku board that's editable by user
-    ///
-    BoardModelMask _sudokuUserBoard;
-
-    ///
-    /// \brief The view of the sudoku board puzzle (the tiles that cannot be 
-    ///        updated by user)
-    ///
-    SudokuBoardView _sudokuPuzzleView;
-
-    ///
-    /// \brief The view of the sudoku board (the tiles that can be updated by 
-    ///        user)
-    ///
-    SudokuBoardView _sudokuBoardView;
-    
-    //-------------------------------------------------------------------------
-    ///
-    /// \brief The cursor position for the Sudoku board
-    ///
-    sf::Vector2i _sudokuBoardCursorPos;
-
-    ///
-    /// \brief The cursor view of the sudoku board
-    ///
-    CursorView _sudokuBoardCursorView;
-
-    ///
-    /// \brief The sudoku board cursor controller
-    ///
-    CursorController _sudokuBoardCursorController;
+    void setScore(unsigned int score);
 
     //-------------------------------------------------------------------------
     ///
-    /// \brief The background texture of the game
+    /// \brief The background texture
     ///
-    sf::Texture  _backgroundTexture;
+    sf::Texture _backgroundTexture;
 
     //-------------------------------------------------------------------------
     ///
-    /// \brief The keypad to insert the number selection
+    /// \brief The sudoku model
     ///
-    BoardModel _keypad;
+    std::vector<unsigned int> _sudokuModel;
 
     ///
-    /// \brief The view of the keypad
+    /// \brief sudoku model mask
+    ///
+    std::vector<bool> _sudokuModelMask;
+
+    ///
+    /// \brief The sudoku model adapter
+    ///
+    BoardModelAdapter _sudokuModelAdapter;
+
+    ///
+    /// \brief The sudoku layout
+    ///
+    SudokuBoardLayout _sudokuLayout;
+
+    ///
+    /// \brief The sudoku view (the puzzle)
+    ///
+    BoardView _sudokuView;
+
+    ///
+    /// \brief The sudoku view (user modifiable tiles)
+    ///
+    BoardView _sudokuUserView;
+
+    //-------------------------------------------------------------------------
+    ///
+    /// \brief The sudoku's board cursor model
+    ///
+    sf::Vector2u    _sudokuCursorModel;
+
+    ///
+    /// \brief The sudoku board's cursor controller
+    ///
+    CursorController _sudokuCursorController;
+
+    ///
+    /// \brief The sudoku board's cursor view
+    ///
+    CursorView _sudokuCursorView;
+
+    //-------------------------------------------------------------------------
+    ///
+    /// \brief The keypad model
+    ///
+    std::vector<unsigned int> _keypadModel;
+
+    ///
+    /// \brief The keypad model adapter
+    ///
+    BoardModelAdapter _keypadModelAdapter;
+
+    ///
+    /// \brief The keypad layout
+    ///
+    BoardLayout _keypadLayout;
+
+    ///
+    /// \brief The keypad view
     ///
     BoardView _keypadView;
 
     //-------------------------------------------------------------------------
     ///
-    /// \brief The cursor position of the keypad
+    /// \brief The score model, to hold the score digits
     ///
-    sf::Vector2i _keypadCursorPos;
+    std::vector<unsigned int> _scoreModel;
 
     ///
-    /// \brief The cursor view of the keypad
+    /// \brief The score model adapter
     ///
-    CursorView _keypadCursorView;
+    BoardModelAdapter _scoreModelAdapter;
 
     ///
-    /// \brief The sudoku board cursor controller
+    /// \brief The score layout
     ///
-    CursorController _keypadCursorController;
+    ScoreLayout _scoreLayout;
+
+    ///
+    /// \brief The score view adapter
+    ///
+    BoardView _scoreView;
 };
 
 #endif // __PLAY9X9SUDOKUSTATE_H_

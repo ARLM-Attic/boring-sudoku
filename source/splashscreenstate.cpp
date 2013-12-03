@@ -21,43 +21,28 @@
  * IN THE SOFTWARE.
  */
 
+#include "gamemanager.h"
 #include "splashscreenstate.h"
 
 #define SPLASHSCREEN_DURATION_IN_SEC    2
-#define INITIAL_FADING_COLOR            sf::Color(0, 75, 36, 255)
 
-SplashScreenState::SplashScreenState(GameManager *manager) :
-    _manager(manager) {
-    
-    _controller = new AbstractController();
-    _view       = this;
-
+SplashScreenState::SplashScreenState() {
     _texture.loadFromFile("artwork/sudoku-splashscreen.png");
-
-    _fadingInColor = INITIAL_FADING_COLOR;
 }
 
 SplashScreenState::~SplashScreenState() {
-    delete _controller;
 }
 
 void SplashScreenState::update(sf::Time elapsedTime) {
     _runningTime = _runningTime + elapsedTime;
 
-    _fadingInColor.a -= elapsedTime.asSeconds() / 
-        SPLASHSCREEN_DURATION_IN_SEC * 255;
-
     if (_runningTime.asSeconds() > SPLASHSCREEN_DURATION_IN_SEC) {
         // Exit this game state
-        _manager->popGameState();
+        GameManager_popGameState();
     }
 }
 
 void SplashScreenState::draw(sf::RenderWindow *win) {
     sf::Sprite background(_texture);
     win->draw(background);
-
-    sf::RectangleShape fading(sf::Vector2f( 480, 320));
-    fading.setFillColor(_fadingInColor);
-    win->draw(fading);
 }

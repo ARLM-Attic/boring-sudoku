@@ -29,33 +29,26 @@
 #define __SPLASHSCREENSTATE_H_
 
 #include "abstractgamestate.h"
-#include "gamemanager.h"
 
-class SplashScreenState : public AbstractGameState, AbstractViewer {
+class SplashScreenState : public AbstractGameState {
 public:
-    explicit SplashScreenState(GameManager *manager);
+    explicit SplashScreenState();
     virtual ~SplashScreenState();
 
     //-------------------------------------------------------------------------
-    // Override the AbstractViewer's methods
+    // Abstractcontroller methods
+    virtual void processKeypressEvent(enum _keys key) { }
+
+    //-------------------------------------------------------------------------
+    // AbstractViewer's methods
     virtual void update(sf::Time elapsedTime);
     virtual void draw(sf::RenderWindow *win);
 
 private:
     ///
-    /// \brief The access to the game manager
-    ///
-    GameManager *_manager;
-
-    ///
     /// \brief The Splashscreen texture
     ///
     sf::Texture _texture;
-
-    ///
-    /// \brief The fading in color for animation
-    ///
-    sf::Color _fadingInColor;
 
     ///
     /// \brief Track the running time of this state

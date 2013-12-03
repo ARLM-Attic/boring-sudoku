@@ -30,9 +30,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "abstractcontroller.h"
-#include "boardmodel.h"
-#include "boardview.h"
-#include "cursoreventobserver.h"
+#include "boardmodeladapter.h"
+#include "boardlayout.h"
 #include "cursorview.h"
 
 class CursorController : public AbstractController {
@@ -40,81 +39,68 @@ public:
     ///
     /// \brief Register the cursor model and board view to the controller
     ///
-    /// \param boardModel  The board model
-    /// \param boardView   The board view
-    /// \param cursorView  The cursor view
+    /// \param boardModelAdapter  The board model
+    /// \param boardLayout        The board layout
+    /// \param cursorModel        The cursor model
+    /// \param cursorView         The cursor view
     ///
-    CursorController(BoardModel *boardModel,
-                     BoardView  *boardView,
-                     CursorView *cursorView);
+    CursorController(BoardModelAdapter *boardModelAdapter = NULL,
+                     BoardLayout       *boardLayout       = NULL,
+                     sf::Vector2u      *cursorModel       = NULL,
+                     CursorView        *cursorView        = NULL
+    );
 
+    //-------------------------------------------------------------------------
     ///
-    /// \brief Register the cursor event observer
+    /// \brief Process the keypress events
     ///
-    /// Since the cursor only attach to single board, only single observer 
-    /// that's possible. Hence, only 1 observer that can be registered
-    ///
-    /// \param observer The observer for this event
-    ///
-    void registerObserver(CursorEventObserver *observer);
-
-    ///
-    /// \brief 'Up' key is pressed event
-    ///
-    virtual void up();
-
-    ///
-    /// \brief 'Down' key is pressed event
-    ///
-    virtual void down();
-
-    ///
-    /// \brief 'Left' key is pressed event
-    ///
-    virtual void left();
-
-    ///
-    /// \brief 'Right' key is pressed event
-    ///
-    virtual void right();
-
-    ///
-    /// \brief Menu / item selected event
-    ///
-    virtual void select();
+    virtual void processKeypressEvent(enum _keys key);
 
 private:
     ///
-    /// \brief Update the cursor view (called after user event is received)
+    /// \brief Move the cursor up into the valid tile position
+    ///
+    void moveCursorUp();
+
+    ///
+    /// \brief Move the cursor down into the valid tile position
+    ///
+    void moveCursorDown();
+
+    ///
+    /// \brief Move the cursor left into the valid tile position
+    ///
+    void moveCursorLeft();
+
+    ///
+    /// \brief Move the cursor right into the valid tile position
+    ///
+    void moveCursorRight();
+
+    ///
+    /// \brief Update the cursor view (called after keypress event is received)
     ///
     void updateCursorView();
 
     ///
     /// \brief The board model
     ///
-    BoardModel  *_boardModel;
+    BoardModelAdapter *_boardModelAdapter;
 
     ///
-    /// \brief The board view, that represents the board which the cursor 
-    ///        attached to
+    /// \brief The board layout
     ///
-    BoardView   *_boardView;
+    BoardLayout *_boardLayout;
+
+    ///
+    /// \brief The cursor model
+    ///
+    sf::Vector2u *_cursorModel;
 
     ///
     /// \brief The cursor view, represents the cursor position in the screen
     ///
     CursorView  *_cursorView;
-
-    ///
-    /// \brief The cursor model, that represents the cursor position in the 
-    ///        board
-    ///
-    sf::Vector2i _cursorModel;
-
-    ///
-    /// \brief The cursor event observer
-    ///
-    CursorEventObserver *_eventObserver;
 };
 
 #endif

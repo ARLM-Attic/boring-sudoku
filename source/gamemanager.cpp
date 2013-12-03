@@ -21,91 +21,41 @@
  * IN THE SOFTWARE.
  */
 
+#include <stack>
+#include <SFML/Graphics.hpp>
+
 #include "gamemanager.h"
 
 #define GAMEWINDOW_WIDTH  480
 #define GAMEWINDOW_HEIGHT 320
 
-GameManager *GameManager::_instance = NULL;
+///
+/// \brief The handler for the game window
+///
+static sf::RenderWindow _gameWindow;
 
-GameManager::GameManager() :
-    _gameWindow(sf::VideoMode(GAMEWINDOW_WIDTH, GAMEWINDOW_HEIGHT),
-                "Boring Sudoku",
-                sf::Style::None),
-    _gameIsRunning(true),
-    _deleteCurrentGameState(false)
-{
-    // Center the game window in the center of the screen
-    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+///
+/// \brief Flag to indicate whether the game is still running
+///
+static bool _gameIsRunning;
 
-    sf::Vector2i  screenCenterPos((desktop.width  - GAMEWINDOW_WIDTH ) / 2,
-                                  (desktop.height - GAMEWINDOW_HEIGHT) / 2);
-    _gameWindow.setPosition(screenCenterPos);
-}
+///
+/// \brief Game state stack (to store the sequence of the game)
+///
+static std::stack<AbstractGameState *> _gameStateStack;
 
-GameManager *GameManager::getInstance() {
-    if (_instance == NULL) {
-        _instance = new GameManager();
-    }
+///
+/// \brief The current game state that's running
+///
+static AbstractGameState *_currentGameState;
 
-    return _instance;
-}
+///
+/// \brief The flag to dispose the current game state
+///
+static bool _disposeCurrentGameState;
 
-void GameManager::pushGameState(AbstractGameState *state) {
-    _gameStateStack.push(state);
-}
-
-void GameManager::popGameState() {
-    _gameStateStack.pop();
-
-    _deleteCurrentGameState = true;
-}
-
-void GameManager::stop() {
-    _gameIsRunning = false;
-}
-
-void GameManager::run() {
-    sf::Clock gameClock;
-
-    while (_gameIsRunning) {
-        // If user ask to delete the current state, delete it here
-        if (_deleteCurrentGameState) {
-            delete _currentGameState;
-            _deleteCurrentGameState = false;
-        }
-
-        // Sync the current game state
-        _currentGameState = _gameStateStack.top();
-
-        // Get the events from the system, and send it to the game state
-        processEvents();
-
-        // Update the current game state view with elapsed time
-        AbstractViewer *gameStateView = _currentGameState->getView();
-        gameStateView->update(gameClock.restart());
-
-        // Clear the current window
-        _gameWindow.clear();
-
-        // Ask state to redraw
-        gameStateView->draw(&_gameWindow);
-
-        // Re-paint the window
-        _gameWindow.display();
-    }
-
-    // Clean up all the game state that's still left on the stack
-    while(!_gameStateStack.empty()) {
-        AbstractGameState *gameState = _gameStateStack.top();
-
-        delete gameState;
-        _gameStateStack.pop();
-    }
-}
-
-void GameManager::processEvents() {
-    AbstractController *gameStateController = _currentGameState->getController();
+//-----------------------------------------------------------------------------
+static void GameManager_processEvents() {
     sf::Event gameEvent;
     
     // Check if we have some event coming
@@ -120,15 +70,11 @@ void GameManager::processEvents() {
             break;
         }
 
-        case sf::Event::LostFocus: {
-            // Send pause event to the game state
-            _currentGameState->pause();
-            break;
-        }
-
+        case sf::Event::LostFocus: 
         case sf::Event::GainedFocus: {
-            // Send resume event to the game state
-            _currentGameState->resume();
+            // Send pause event to the game state
+            _currentGameState->
+                processKeypressEvent(AbstractController::KEY_PAUSE);
             break;
         }
 
@@ -136,37 +82,89 @@ void GameManager::processEvents() {
             switch (gameEvent.key.code) {
             case sf::Keyboard::Escape: {
                 // Toggle pause event to the game state
-                if (_currentGameState->isPaused()) {
-                    _currentGameState->resume();
-                } else {
-                    _currentGameState->pause();
-                }
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_PAUSE);
                 break;
             }
             case sf::Keyboard::Up: {
                 // Send key up event to the game state
-                gameStateController->up();
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_UP);
                 break;
             }
             case sf::Keyboard::Down: {
                 // Send key down event to the game state
-                gameStateController->down();
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_DOWN);
                 break;
             }
             case sf::Keyboard::Left: {
                 // Send key left event to the game state
-                gameStateController->left();
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_LEFT);
                 break;
             }
             case sf::Keyboard::Right: {
                 // Send key right event to the game state
-                gameStateController->right();
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_RIGHT);
                 break;
             }
             case sf::Keyboard::Space: 
             case sf::Keyboard::Return: {
                 // Send key select event to the game state
-                gameStateController->select();
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_SELECT);
+                break;
+            }
+            case sf::Keyboard::Num1: {
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_1);
+                break;
+            }
+            case sf::Keyboard::Num2: {
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_2);
+                break;
+            }
+            case sf::Keyboard::Num3: {
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_3);
+                break;
+            }
+            case sf::Keyboard::Num4: {
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_4);
+                break;
+            }
+            case sf::Keyboard::Num5: {
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_5);
+                break;
+            }
+            case sf::Keyboard::Num6: {
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_6);
+                break;
+            }
+            case sf::Keyboard::Num7: {
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_7);
+                break;
+            }
+            case sf::Keyboard::Num8: {
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_8);
+                break;
+            }
+            case sf::Keyboard::Num9: {
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_9);
+                break;
+            }
+            case sf::Keyboard::Delete: {
+                _currentGameState->
+                    processKeypressEvent(AbstractController::KEY_DELETE);
                 break;
             }
             default: {
@@ -177,15 +175,12 @@ void GameManager::processEvents() {
         }
 
         case sf::Event::MouseMoved: {
-            gameStateController->mouseMove(gameEvent.mouseMove.x, 
-                                        gameEvent.mouseMove.y);
+            // TODO: Implement mouse mode handler
             break;
         }
 
         case sf::Event::MouseButtonPressed: {
-            gameStateController->mouseMove(gameEvent.mouseButton.x, 
-                                        gameEvent.mouseButton.y);
-            gameStateController->select();
+            // TODO: Implement mouse button pressed handler
             break;
         }
 
@@ -194,5 +189,73 @@ void GameManager::processEvents() {
             break;
         }
         }
+    }
+}
+
+//-----------------------------------------------------------------------------
+void GameManager_init(void) {
+    _gameWindow.create(sf::VideoMode(GAMEWINDOW_WIDTH, GAMEWINDOW_HEIGHT),
+                "Boring Sudoku",
+                sf::Style::None);
+    
+    _gameIsRunning = true;
+    _disposeCurrentGameState = false;
+
+    // Center the game window in the center of the screen
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+
+    sf::Vector2i  screenCenterPos((desktop.width  - GAMEWINDOW_WIDTH ) / 2,
+                                  (desktop.height - GAMEWINDOW_HEIGHT) / 2);
+    _gameWindow.setPosition(screenCenterPos);
+}
+
+void GameManager_pushGameState(AbstractGameState *state) {
+    _gameStateStack.push(state);
+}
+
+void GameManager_popGameState() {
+    _gameStateStack.pop();
+
+    _disposeCurrentGameState = true;
+}
+
+void GameManager_stop() {
+    _gameIsRunning = false;
+}
+
+void GameManager_run() {
+    sf::Clock gameClock;
+
+    while (_gameIsRunning) {
+        // Sync the current game state
+        _currentGameState = _gameStateStack.top();
+
+        // Get the events from the system, and send it to the game state
+        GameManager_processEvents();
+
+        // Update the current game state view with elapsed time
+        _currentGameState->update(gameClock.restart());
+
+        // Clear the current window
+        _gameWindow.clear();
+
+        // Ask state to redraw
+        _currentGameState->draw(&_gameWindow);
+
+        // Re-paint the window
+        _gameWindow.display();
+
+        if (_disposeCurrentGameState) {
+            delete _currentGameState;
+            _disposeCurrentGameState = false;
+        }
+    }
+
+    // Clean up all the game state that's still left on the stack
+    while(!_gameStateStack.empty()) {
+        AbstractGameState *gameState = _gameStateStack.top();
+
+        delete gameState;
+        _gameStateStack.pop();
     }
 }

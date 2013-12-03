@@ -37,14 +37,14 @@ public:
     ///
     /// \param elapsedTime The time that has elapsed
     ///
-    virtual void update(sf::Time elapsedTime) { }
+    virtual void update(sf::Time elapsedTime) = 0;
 
     ///
     /// \brief Draw the game state
     ///
     /// \param win The handler to the window
     ///
-    virtual void draw(sf::RenderWindow *win) { }
+    virtual void draw(sf::RenderWindow *win) = 0;
 
     ///
     /// \brief Show the view

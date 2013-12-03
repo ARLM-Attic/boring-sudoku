@@ -28,4 +28,70 @@
 #ifndef __MENUSTATE_H_
 #define __MENUSTATE_H_
 
+#include <vector>
+#include "abstractgamestate.h"
+#include "boardmodeladapter.h"
+#include "boardview.h"
+#include "menulayout.h"
+
+class MenuState : public AbstractGameState {
+public:
+    explicit MenuState();
+    virtual ~MenuState();
+
+    //-------------------------------------------------------------------------
+    // Abstractcontroller methods
+    virtual void processKeypressEvent(enum _keys key);
+
+    //-------------------------------------------------------------------------
+    // AbstractViewer's methods
+    virtual void update(sf::Time elapsedTime);
+    virtual void draw(sf::RenderWindow *win);
+
+private:
+    ///
+    /// \brief The background texture
+    ///
+    sf::Texture _backgroundTexture;
+
+    //-------------------------------------------------------------------------
+    ///
+    /// \brief The menu model, to hold the menu items
+    ///
+    std::vector<unsigned int> _menuModel;
+
+    ///
+    /// \brief The Menu model adapter
+    ///
+    BoardModelAdapter _menuModelAdapter;
+
+    ///
+    /// \brief The menu layout
+    ///
+    MenuLayout _menuLayout;
+
+    ///
+    /// \brief The menu view
+    ///
+    BoardView _menuView;
+
+    //-------------------------------------------------------------------------
+    ///
+    /// \brief The menu options
+    ///
+    enum _mainMenu {
+        MENU_PLAY,
+        MENU_HELP,
+        MENU_QUIT,
+        
+        MENU_END,
+        MENU_START = MENU_PLAY,
+    } _currentMainMenu;
+
+    ///
+    /// \brief The tiles' vertex to draw
+    ///
+    std::vector<sf::Vertex> _vertex;
+};
+
 #endif // __MENUSTATE_H_

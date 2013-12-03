@@ -23,34 +23,39 @@
 
 #include "play9x9sudokustate.h"
 
-///
-/// \brief The tile in tilemap that is transparent (to draw the board mask)
-///
-#define SUDOKU_BOARD_TRANSPARENT_TILE   11
-
-///
-/// \brief No of tiles in the Sudoku board
-///
-#define SUDOKU_BOARD_TILE_SIZE      81
-
+//-----------------------------------------------------------------------------
 ///
 /// \brief No of column in the Sudoku board
 ///
 #define SUDOKU_BOARD_COLUMN_SIZE    9
 
 ///
+/// \brief The sudoku tile size
+///
+#define SUDOKU_TILESIZE             sf::Vector2u(24, 24)
+
+///
 /// \brief The sudoku board screen size
 ///
 #define SUDOKU_BOARD_SCREEN_SIZE    sf::Vector2f(320, 320)
 
+//-----------------------------------------------------------------------------
 ///
-/// \brief No of tile in the keypad
+/// \brief The sudoku board's cursor size
 ///
-#define KEYPAD_TILE_SIZE            10 // 9 numbers + 1 delete key
+#define SUDOKU_CURSOR_SIZE          sf::Vector2u(36, 36)
+
+
+//-----------------------------------------------------------------------------
 ///
 /// \brief The column size of the keypad (in tiles, not pixel)
 ///
 #define KEYPAD_COLUMN_SIZE          3
+
+///
+/// \brief The keypad tile size
+///
+#define KEYPAD_TILESIZE             sf::Vector2u(24, 24)
 
 ///
 /// \brief The keypad screen size
@@ -62,104 +67,164 @@
 ///
 #define KEYPAD_SCREEN_OFFSET        sf::Vector2f(320, 16)
 
+//-----------------------------------------------------------------------------
 ///
-/// \brief The keypad value for delete button
+/// \brief The column size of the score display
 ///
-#define KEYPAD_DELETE_TILE          10
+#define SCORE_COLUMN_SIZE           5
+
+///
+/// \brief The score display tilesize
+///
+#define SCORE_TILESIZE              sf::Vector2u(24, 24)
+
+///
+/// \brief The screen size for the score display
+///
+#define SCORE_SCREEN_SIZE           sf::Vector2f(160, 160)
+
+///
+/// \brief The score display screen offset
+///
+#define SCORE_SCREEN_OFFSET         sf::Vector2f(326, 274)
 
 //-----------------------------------------------------------------------------
+///
+/// \brief The number tilemap that's used in this game store no 0 symbol at pos 
+///        #11
+///
+#define TILEMAP_SYMBOL_0      10
 
-Play9x9SudokuState::Play9x9SudokuState(GameManager *manager) :
-        _manager(manager),
-        
-        // Create Sudoku board, and its views
-        _sudokuBoard(SUDOKU_BOARD_TILE_SIZE, SUDOKU_BOARD_COLUMN_SIZE),
-        _sudokuUserBoard(&_sudokuBoard, SUDOKU_BOARD_TRANSPARENT_TILE),
-        _sudokuPuzzleView(&_sudokuBoard,
-                          "artwork/sudoku-numbertiles-24px-faded.png",
-                          SUDOKU_BOARD_SCREEN_SIZE),
-        _sudokuBoardView(&_sudokuUserBoard,
-                          "artwork/sudoku-numbertiles-24px.png",
-                          SUDOKU_BOARD_SCREEN_SIZE),
+///
+/// \brief The number tilemap that's used in this game store delete symbol at 
+///        pos #12
+///
+#define TILEMAP_SYMBOL_DELETE 11
 
-        // Create Sudoku board's cursor
-        _sudokuBoardCursorController(&_sudokuUserBoard,
-                                     &_sudokuBoardView, 
-                                     &_sudokuBoardCursorView),
-        
-        // Create keypad board, and its view
-        _keypad(KEYPAD_TILE_SIZE, KEYPAD_COLUMN_SIZE),
-        _keypadView(&_keypad, 
-                    "artwork/sudoku-numbertiles-24px.png",
-                    KEYPAD_SCREEN_SIZE, 
-                    KEYPAD_SCREEN_OFFSET),
+//-----------------------------------------------------------------------------
+///
+/// \brief The score display length (in digit)
+///
+#define SCORE_DIGIT_LENGTH    5
 
-        // Create keypad's cursor
-        _keypadCursorView(),
-        _keypadCursorController(&_keypad, &_keypadView, &_keypadCursorView)
-{
+//-----------------------------------------------------------------------------
+Play9x9SudokuState::Play9x9SudokuState() {
     // Load background texture
-    _backgroundTexture.loadFromFile("artwork/sudoku-background.png");
+    _backgroundTexture.loadFromFile("artwork/sudoku-game-background.png");
 
-    // Show the sudoku board
-    _sudokuPuzzleView.show();
-    _sudokuBoardView.show();
+    //-------------------------------------------------------------------------
+    // Create Sudoku puzzle
+    createSudokuBoard();
 
-    // Show the cursor of the board
-    _sudokuBoardCursorView.show();
+    _sudokuModelAdapter = 
+        BoardModelAdapter(&_sudokuModel, 
+                          SUDOKU_BOARD_COLUMN_SIZE
+        );
+    _sudokuModelAdapter.setModelMask(&_sudokuModelMask);
+
+    _sudokuLayout = 
+        SudokuBoardLayout(&_sudokuModelAdapter, 
+                          SUDOKU_TILESIZE, 
+                          SUDOKU_BOARD_SCREEN_SIZE
+        );
+
+    _sudokuView =
+        BoardView(&_sudokuModelAdapter, 
+                  &_sudokuLayout, 
+                  "artwork/sudoku-numbertiles-black-24px.png"
+        );
+    _sudokuView.show();
+
+    _sudokuUserView = 
+        BoardView(&_sudokuModelAdapter, 
+                  &_sudokuLayout, 
+                  "artwork/sudoku-numbertiles-24px.png"
+        );
+    _sudokuUserView.show();
+
+    //-------------------------------------------------------------------------
+    // Create board's cursor
+    _sudokuCursorModel = sf::Vector2u(0, 0);
+
+    _sudokuCursorView  = 
+        CursorView(SUDOKU_CURSOR_SIZE, 
+                   "artwork/sudoku-cursor-36px.png"
+        );
+    _sudokuCursorView.show();
+
+    _sudokuCursorController = 
+        CursorController(&_sudokuModelAdapter, 
+                         &_sudokuLayout, 
+                         &_sudokuCursorModel,
+                         &_sudokuCursorView
+        );
+
+    //-------------------------------------------------------------------------
+    // Create keypad
+    createKeypad();
+
+    _keypadModelAdapter = 
+        BoardModelAdapter(&_keypadModel, 
+                          KEYPAD_COLUMN_SIZE
+        );
     
-    // Register sudoku board's 'select' event handler
-    _sudokuBoardCursorController.registerObserver(this);
+    _keypadLayout = 
+        BoardLayout(&_keypadModelAdapter, 
+                     KEYPAD_TILESIZE, 
+                     KEYPAD_SCREEN_SIZE, 
+                     KEYPAD_SCREEN_OFFSET
+        );
 
-    // Register keypad's 'select' event handler
-    _keypadCursorController.registerObserver(this);
+    _keypadView = 
+        BoardView(&_keypadModelAdapter, 
+                  &_keypadLayout, 
+                  "artwork/sudoku-numbertiles-24px.png"
+        );
+    _keypadView.show();
 
-    _controller = &_sudokuBoardCursorController;
-    _view       = this;
+    //-------------------------------------------------------------------------
+    // Create the score display
+    setScore(98201);
 
-    createSudokuPuzzle();
+    _scoreModelAdapter =
+        BoardModelAdapter(&_scoreModel, 
+                          SCORE_COLUMN_SIZE
+        );
+
+    _scoreLayout = 
+        ScoreLayout(&_scoreModelAdapter,
+                    SCORE_TILESIZE,
+                    SCORE_SCREEN_SIZE,
+                    SCORE_SCREEN_OFFSET
+        );
+
+    _scoreView =
+        BoardView(&_scoreModelAdapter,
+                  &_scoreLayout,
+                  "artwork/sudoku-numbertiles-24px.png"
+        );
+    _scoreView.show();
 }
 
-void Play9x9SudokuState::pause() {
-    // TODO: Create paused / option screen
+Play9x9SudokuState::~Play9x9SudokuState() {
 }
 
-void Play9x9SudokuState::tileSelected(AbstractController *controller, 
-                                      sf::Vector2i        tilePos) {
-    if (controller == &_sudokuBoardCursorController) {
-        _sudokuBoardCursorPos = tilePos;
-
-        createKeypad();
-        _keypadView.show();
-        _keypadCursorView.show();
-
-        _controller = &_keypadCursorController;
-    } else {
-        _keypadCursorPos = tilePos;
-
-        // Sudoku tile is selected, and the number is selected as well
-        int selectedNo = _keypad.value(_keypadCursorPos.y, _keypadCursorPos.x);
-        if (selectedNo == KEYPAD_DELETE_TILE) {
-            _sudokuUserBoard.setValue(0, 
-                _sudokuBoardCursorPos.y, _sudokuBoardCursorPos.x);
-        } else {
-            _sudokuUserBoard.setValue(selectedNo,
-                _sudokuBoardCursorPos.y, _sudokuBoardCursorPos.x);
-        }
-
-        _keypadView.hide();
-        _keypadCursorView.hide();
-        _controller = &_sudokuBoardCursorController;
-    }
+void Play9x9SudokuState::processKeypressEvent(enum _keys key) {
+    _sudokuCursorController.processKeypressEvent(key);
 }
 
 void Play9x9SudokuState::update(sf::Time elapsedTime) {
-    _sudokuBoardCursorView.update(elapsedTime);
-    _sudokuPuzzleView.update(elapsedTime);
-    _sudokuBoardView.update(elapsedTime);
+    _sudokuCursorView.update(elapsedTime);
+
+    _sudokuModelAdapter.disableMask();
+    _sudokuView.update(elapsedTime);
+
+    _sudokuModelAdapter.enableMask();
+    _sudokuUserView.update(elapsedTime);
 
     _keypadView.update(elapsedTime);
-    _keypadCursorView.update(elapsedTime);
+
+    _scoreView.update(elapsedTime);
 }
 
 void Play9x9SudokuState::draw(sf::RenderWindow *win) {
@@ -167,84 +232,66 @@ void Play9x9SudokuState::draw(sf::RenderWindow *win) {
     sf::Sprite backgroundSprite(_backgroundTexture);
     win->draw(backgroundSprite);
 
-    // Draw cursor sprite
-    _sudokuBoardCursorView.draw(win);
+    _sudokuCursorView.draw(win);
+    _sudokuView.draw(win);
+    _sudokuUserView.draw(win);
 
-    // Draw the Sudoku board
-    _sudokuPuzzleView.draw(win);
-    _sudokuBoardView.draw(win);
-
-    // Draw keypad cursor
-    _keypadCursorView.draw(win);
-    
-    // Draw cursor
     _keypadView.draw(win);
+
+    _scoreView.draw(win);
 }
 
+//-----------------------------------------------------------------------------
 void Play9x9SudokuState::createKeypad() {
-    _keypad.setValue(1, 0, 0);
-    _keypad.setValue(2, 0, 1);
-    _keypad.setValue(3, 0, 2);
-    _keypad.setValue(4, 1, 0);
-    _keypad.setValue(5, 1, 1);
-    _keypad.setValue(6, 1, 2);
-    _keypad.setValue(7, 2, 0);
-    _keypad.setValue(8, 2, 1);
-    _keypad.setValue(9, 2, 2);
-    _keypad.setValue(KEYPAD_DELETE_TILE, 3, 0);
-}
-
-void Play9x9SudokuState::createSudokuPuzzle() {
-    // |-----------------|-----------------|-----------------|
-    // |  7  |     |  1  |     |     |  2  |     |     |  9  |
-    // |     |     |     |  1  |     |     |  2  |     |     |
-    // |  3  |     |     |     |  4  |     |     |  5  |     |
-    // |-----------------|-----------------|-----------------|
-    // |     |  3  |     |     |     |  4  |     |     |  5  |
-    // |     |     |     |     |  7  |     |     |     |     |
-    // |  5  |     |     |  6  |     |     |     |  7  |     |
-    // |-----------------|-----------------|-----------------|
-    // |     |  5  |     |     |  6  |     |     |     |  7  |
-    // |     |     |  8  |     |     |  9  |     |     |     |
-    // |  4  |     |     |  8  |     |     |  9  |     |  3  |
-    // |-----------------|-----------------|-----------------|
-
-    _sudokuBoard.setValue( 7, 0, 0);
-    _sudokuBoard.setValue( 1, 0, 2);
-    _sudokuBoard.setValue( 2, 0, 5);
-    _sudokuBoard.setValue( 9, 0, 8);
-    _sudokuBoard.setValue( 1, 1, 3);
-    _sudokuBoard.setValue( 2, 1, 6);
-    _sudokuBoard.setValue( 3, 2, 0);
-    _sudokuBoard.setValue( 4, 2, 4);
-    _sudokuBoard.setValue( 5, 2, 7);
-    _sudokuBoard.setValue( 3, 3, 1);
-    _sudokuBoard.setValue( 4, 3, 5);
-    _sudokuBoard.setValue( 5, 3, 7);
-    _sudokuBoard.setValue( 7, 4, 4);
-    _sudokuBoard.setValue( 5, 5, 0);
-    _sudokuBoard.setValue( 6, 5, 3);
-    _sudokuBoard.setValue( 7, 5, 7);
-    _sudokuBoard.setValue( 5, 6, 1);
-    _sudokuBoard.setValue( 6, 6, 4);
-    _sudokuBoard.setValue( 7, 6, 8);
-    _sudokuBoard.setValue( 8, 7, 2);
-    _sudokuBoard.setValue( 9, 7, 5);
-    _sudokuBoard.setValue( 4, 8, 0);
-    _sudokuBoard.setValue( 8, 8, 3);
-    _sudokuBoard.setValue( 9, 8, 6);
-    _sudokuBoard.setValue( 3, 8, 8);
-
-    std::vector<bool> boardMask;
-    for (int row = 0; row < _sudokuBoard.rowSize(); row++) {
-        for (int col = 0; col < _sudokuBoard.columnSize(); col++) {
-            if (_sudokuBoard.value(row, col) > 0) {
-                boardMask.push_back(true);
-            } else {
-                boardMask.push_back(false);
-            }
-        }
+    // Init keypad model
+    for (unsigned int i = 1; i < 10; i++) {
+        _keypadModel.push_back(i);
     }
 
-    _sudokuUserBoard.setModelMask(boardMask);
+    _keypadModel.push_back(TILEMAP_SYMBOL_DELETE);
+}
+
+void Play9x9SudokuState::createSudokuBoard() {
+    unsigned int suzokuPuzzle[] = {
+        8, 0, 0, 3, 5, 4, 0, 9, 0,
+        2, 0, 0, 6, 7, 0, 8, 0, 0,
+        0, 6, 0, 8, 1, 0, 0, 3, 0,
+        0, 0, 3, 9, 2, 0, 0, 0, 4,
+        0, 9, 0, 0, 0, 0, 0, 2, 0,
+        6, 0, 0, 0, 3, 8, 1, 0, 0,
+        0, 4, 0, 0, 9, 6, 0, 5, 0,
+        0, 0, 2, 0, 8, 3, 0, 0, 6,
+        0, 5, 0, 7, 4, 1, 0, 0, 3
+    };
+
+    _sudokuModel.insert(_sudokuModel.begin(),
+                        std::begin(suzokuPuzzle), 
+                        std::end  (suzokuPuzzle)
+    );
+
+    for (unsigned int i = 0; i < _sudokuModel.size(); i++) {
+        if (_sudokuModel[i] > 0) {
+            _sudokuModelMask.push_back(true);
+        } else {
+            _sudokuModelMask.push_back(false);
+        }
+    }
+}
+
+
+
+void Play9x9SudokuState::setScore(unsigned int score) {
+    unsigned int divider = 10;
+
+    _scoreModel.resize(SCORE_DIGIT_LENGTH);
+
+    for (unsigned int i = 0; i < SCORE_DIGIT_LENGTH; i++) {
+        _scoreModel[(SCORE_DIGIT_LENGTH -1) - i] = score % divider;
+
+        if (_scoreModel[(SCORE_DIGIT_LENGTH -1) - i] == 0) {
+            _scoreModel[(SCORE_DIGIT_LENGTH -1) - i] = TILEMAP_SYMBOL_0;
+        }
+        
+        score = score / divider;
+    }
 }

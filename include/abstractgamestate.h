@@ -28,48 +28,15 @@
 #ifndef __ABSTRACTGAMESTATE_H_
 #define __ABSTRACTGAMESTATE_H_
 
-#include "abstractviewer.h"
 #include "abstractcontroller.h"
+#include "abstractviewer.h"
 
-class AbstractGameState {
+class AbstractGameState : public AbstractController, public AbstractViewer {
 public:
-    ///
-    /// \brief Pause the game
-    ///
-    virtual void pause() { }
-
-    ///
-    /// \brief Resume the game
-    ///
-    virtual void resume() { }
-
-    ///
-    /// \brief Check if the state is paused
-    ///
-    virtual bool isPaused() { return false; }
-
-    ///
-    /// \brief Get the state's controller
-    ///
-    AbstractController *getController() {
-        return _controller;
-    }
-
-    ///
-    /// \brief Get the state's view
-    ///
-    AbstractViewer *getView() {
-        return _view;
-    }
-
     ///
     /// \brief The AbstractGameState desctructor
     ///
     virtual ~AbstractGameState() { }
-
-protected:
-    AbstractController *_controller;
-    AbstractViewer     *_view;
 };
 
 #endif // __ABSTRACTGAMESTATE_H_

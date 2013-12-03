@@ -37,7 +37,7 @@
 #endif
 
 #include "gamemanager.h"
-#include "play9x9sudokustate.h"
+#include "menustate.h"
 #include "splashscreenstate.h"
 
 #ifdef _WIN32            /* WIN32 platform specific (WinXP, Win7) */
@@ -49,13 +49,15 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR, int) {
 #else /* Win32-MinGW / Linux / etc */
 int main(int argc,char *argv[]) {
 #endif
-    GameManager *theGame = GameManager::getInstance();
+    // Init the game manager
+    GameManager_init();
 
     // Init the sequence of the game state
-    theGame->pushGameState(new Play9x9SudokuState(theGame));
-    theGame->pushGameState(new SplashScreenState(theGame));
+    GameManager_pushGameState(new MenuState());
+    GameManager_pushGameState(new SplashScreenState());
 
-    theGame->run();
+    // Run the game
+    GameManager_run();
 
     return 0;
 }

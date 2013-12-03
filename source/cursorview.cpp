@@ -23,26 +23,23 @@
 
 #include "cursorview.h"
 
-// The cursor size in pixel
-#define CURSOR_SIZE   sf::Vector2u(36, 36)
-
-CursorView::CursorView() :
-    _cursorTexture(),
-    _cursorView(&_cursorTexture, CURSOR_SIZE) {
-    // Make sure the view is closed when init'd
-    _isShowed = false;
-
+CursorView::CursorView(sf::Vector2u       cursorSize,
+                        const std::string &cursorFilename) {
     // Load cursor texture
-    _cursorTexture.loadFromFile("artwork/sudoku-cursor-36px.png");
+    _cursorTexture.loadFromFile(cursorFilename);
+
+    // Setup the cursor tile. Assuming that the tilemap has only single tile
+    // for the cursor only.
+    _cursorTile = TileView(cursorSize, cursorSize);
 }
 
 void CursorView::update(sf::Time elapsedTime) {
-    _cursorView.update(elapsedTime);
+    _cursorTile.update(elapsedTime);
 
     _vertex.clear();
     _vertex.insert( _vertex.end(), 
-                    _cursorView.begin(), 
-                    _cursorView.end()
+                    _cursorTile.begin(), 
+                    _cursorTile.end()
     );
 }
 
@@ -56,4 +53,8 @@ void CursorView::draw(sf::RenderWindow *win) {
               _vertex.size(), 
               sf::Quads, 
               &_cursorTexture);
+}
+
+void CursorView::setPosition(sf::Vector2f position) {
+    _cursorTile.setPosition(position);
 }

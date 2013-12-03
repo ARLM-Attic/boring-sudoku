@@ -23,26 +23,22 @@
 
 #include "tileview.h"
 
-TileView::TileView(sf::Texture *tilemap, 
-                   sf::Vector2u tileSize) :
+TileView::TileView(sf::Vector2u tilemapSize, sf::Vector2u tileSize) :
     _tileFace (0),
-    _texture  (tilemap), 
+    _tilemapSize(tilemapSize),
     _tileSize (tileSize)
 {
+    setPosition(sf::Vector2f(0, 0));
+
     // Each tile requires 4 Vertex points
     _vertex.resize(4);
-
-    setPosition(sf::Vector2f(0, 0));
 }
 
 void TileView::update(sf::Time elapsedTime) {
-    // Adjust the texture to match the value
-    sf::Vector2u textureSize = _texture->getSize();
-
     // Find the _tileValue column in the texture
-    float tu = (float) (_tileFace % (textureSize.x / _tileSize.x));
+    float tu = (float) (_tileFace % (_tilemapSize.x / _tileSize.x));
     // Find the _tileValue row in the texture
-    float tv = (float) (_tileFace / (textureSize.x / _tileSize.x));
+    float tv = (float) (_tileFace / (_tilemapSize.x / _tileSize.x));
 
     _vertex[0].texCoords = sf::Vector2f(
         (tu       * _tileSize.x), (tv       * _tileSize.y)

@@ -24,87 +24,42 @@
 #ifndef __GAMEMANAGER_H_
 #define __GAMEMANAGER_H_
 
-#include <stack>
-#include <SFML/Graphics.hpp>
 #include "abstractgamestate.h"
 
-class GameManager {
-public:
-    ///
-    /// \brief Get the game manager instance
-    ///
-    static GameManager *getInstance();
+///
+/// \brief Init the game manager
+///
+void GameManager_init(void);
 
-    ///
-    /// \brief Push game state to be executed
-    ///
-    /// This function should be executed in the game state class to update
-    /// the current game state
-    ///
-    /// \param state The game state to be executed
-    ///
-    void pushGameState(AbstractGameState *state);
+///
+/// \brief Push game state to be executed
+///
+/// This function should be executed in the game state class to update
+/// the current game state
+///
+/// \param state The game state to be executed
+///
+void GameManager_pushGameState(AbstractGameState *state);
 
-    ///
-    /// \brief Remove game state from the stack
-    ///
-    /// This function should be executed in the game state class to update
-    /// the current game state
-    ///
-    void popGameState();
+///
+/// \brief Remove game state from the stack
+///
+/// This function should be executed in the game state class to update
+/// the current game state
+///
+void GameManager_popGameState();
 
-    /// \brief Stop the game
-    ///
-    /// This function should be execued in the game state class to stop the 
-    /// game
-    ///
-    void stop();
+///
+/// \brief Stop the game
+///
+/// This function should be execued in the game state class to stop the 
+/// game
+///
+void GameManager_stop();
 
-    ///
-    /// \brief Run the game
-    ///
-    void run();
-
-private:
-    ///
-    /// \brief Process / filter the events and distribute it to the game state
-    ///
-    void processEvents();
-
-    ///
-    /// \brief The current game state.
-    ///
-    /// This member is needed to avoid the game state popped / pushed in the 
-    /// middle of screen update
-    ///
-    AbstractGameState *_currentGameState;
-
-    ///
-    /// \brief The stack of game state
-    ///
-    std::stack<AbstractGameState *> _gameStateStack;
-
-    ///
-    /// \brief The main view to render the animation / games
-    ///
-    sf::RenderWindow _gameWindow;
-
-    ///
-    /// \brief Flag to indicate if game should be run
-    ///
-    bool _gameIsRunning;
-
-    ///
-    /// \brief Flag to delete the current game state
-    ///
-    bool _deleteCurrentGameState;
-
-    //-------------------------------------------------------------------------
-    // The singleton class pattern
-    explicit GameManager  ();
-    GameManager           (GameManager const&) { };
-    GameManager& operator=(GameManager const&) { };
-    static GameManager    *_instance;
-};
+///
+/// \brief Run the game
+///
+void GameManager_run();
 
 #endif // __GAMEMANAGER_H_

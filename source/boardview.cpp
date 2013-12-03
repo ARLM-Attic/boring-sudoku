@@ -23,63 +23,35 @@
 
 #include "boardview.h"
 
-BoardView::BoardView(BoardModel        *board,
-                     const std::string &tilemapFilename,
-                     sf::Vector2f       screenSize, 
-                     sf::Vector2f       screenOffset) :
-        _board(board), 
-        _tileTexture(),
-        _screenSize(screenSize),
-        _screenOffset(screenOffset)
+BoardView::BoardView(BoardModelAdapter *board,
+                     BoardLayout       *layout,
+                     const std::string &tilemapFilename) :
+    _board(board) 
 {
-    // Make sure the view is closed when init'd
-    _isShowed = false;
-
     // Load the tile texture
     _tileTexture.loadFromFile(tilemapFilename);
-    
-    // Create tile view for each of tile
+
+    if ((board == NULL) || (layout == NULL)) {
+        return;
+    }
+
     for (unsigned int i = 0; i < _board->size(); i++) {
-        TileView tile(&_tileTexture, 
-                      TILESIZE_IN_PIXEL);
+        TileView tile(_tileTexture.getSize(), layout->tileSize());
         _boardTiles.push_back(tile);
     }
 
     // Setup the layout of the board
-    for (int row = 0; row < _board->rowSize(); row++) {
-        for (int col = 0; col < _board->columnSize(); col++) {
-            if (_board->tileIsInBoard(row, col)) {
-                TileView *tile = &_boardTiles[(row * _board->columnSize()) + col];
-                sf::Vector2f tilePos = tilePositionInScreen(row, col);
-
-                tile->setPosition(tilePos);
-            }
-        }
-    }
-}
-
-sf::Vector2f BoardView::tilePositionInScreen(int row, int column) {
-    // The default board layout will look like this:
-    //    XX XX XX .. (_columnSize)
-    //    XX XX XX .. (_columnSize)
-    //    XX -> (if the tile doesn't fill up the whole column)
-
-    sf::Vector2u tileSize = TILESIZE_IN_PIXEL;
-    sf::Vector2f tilePos = sf::Vector2f(
-        _screenOffset.x + ((0.75f + (column * 1.25f)) * tileSize.x),
-        _screenOffset.y + ((0.75f + (row    * 1.25f)) * tileSize.y)
-    );
-
-    return tilePos;
+    layout->setTileLayout(&_boardTiles);
 }
 
 void BoardView::update(sf::Time elapsedTime) {
     _vertex.clear();
 
-    for (int row = 0; row < _board->rowSize(); row++) {
-        for (int col = 0; col < _board->columnSize(); col++) {
+    for (unsigned int row = 0; row < _board->rowSize(); row++) {
+        for (unsigned int col = 0; col < _board->columnSize(); col++) {
             if (_board->tileIsInBoard(row, col)) {
-                TileView *tile = &_boardTiles[(row * _board->columnSize()) + col];
+                TileView *tile = 
+                    &_boardTiles[(row * _board->columnSize()) + col];
 
                 tile->setFace(_board->value(row, col));
                 tile->update(elapsedTime);

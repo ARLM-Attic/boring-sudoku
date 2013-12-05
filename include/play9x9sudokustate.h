@@ -30,11 +30,12 @@
 #include "boardlayout.h"
 #include "boardview.h"
 #include "cursorcontroller.h"
+#include "cursoreventobserver.h"
 #include "cursorview.h"
 #include "scorelayout.h"
 #include "sudokuboardlayout.h"
 
-class Play9x9SudokuState : public AbstractGameState
+class Play9x9SudokuState : public AbstractGameState, public CursorEventObserver
 {
 public:
     explicit Play9x9SudokuState();
@@ -49,6 +50,11 @@ public:
     virtual void update(sf::Time elapsedTime);
     virtual void draw(sf::RenderWindow *win);
 
+    //-------------------------------------------------------------------------
+    // CursorEventObserver's methods
+    virtual void tileSelected(AbstractController       *controller, 
+                              sf::Vector2i              tilePos,
+                              AbstractController::_keys key);
 private:
     ///
     /// \brief Create the keypad
@@ -138,6 +144,29 @@ private:
     /// \brief The keypad view
     ///
     BoardView _keypadView;
+
+    //-------------------------------------------------------------------------
+    ///
+    /// \brief The sudoku's keypad cursor model
+    ///
+    sf::Vector2u    _keypadCursorModel;
+
+    ///
+    /// \brief The sudoku keypad's cursor controller
+    ///
+    CursorController _keypadCursorController;
+
+    ///
+    /// \brief The sudoku keypad's cursor view
+    ///
+    CursorView _keypadCursorView;
+
+    //-------------------------------------------------------------------------
+    ///
+    /// \brief The current cursor controller points to the cursor controller 
+    ///        that will process the current user input
+    ///
+    CursorController *_currentCursorController;
 
     //-------------------------------------------------------------------------
     ///

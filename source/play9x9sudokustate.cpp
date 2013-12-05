@@ -160,6 +160,7 @@ Play9x9SudokuState::Play9x9SudokuState() {
                          &_sudokuCursorModel,
                          &_sudokuCursorView
         );
+    _sudokuCursorController.registerEventObserver(this);
 
     //-------------------------------------------------------------------------
     // Create keypad
@@ -182,7 +183,25 @@ Play9x9SudokuState::Play9x9SudokuState() {
                   &_keypadLayout, 
                   "artwork/sudoku-numbertiles-24px.png"
         );
-    _keypadView.show();
+    _keypadView.hide();
+
+    //-------------------------------------------------------------------------
+    // Create keypad's cursor
+    _keypadCursorModel = sf::Vector2u(0, 0);
+
+    _keypadCursorView  = 
+        CursorView(SUDOKU_CURSOR_SIZE, 
+                   "artwork/sudoku-cursor-36px.png"
+        );
+    _keypadCursorView.hide();
+
+    _keypadCursorController = 
+        CursorController(&_keypadModelAdapter, 
+                         &_keypadLayout, 
+                         &_keypadCursorModel,
+                         &_keypadCursorView
+        );
+    _keypadCursorController.registerEventObserver(this);
 
     //-------------------------------------------------------------------------
     // Create the score display
@@ -206,21 +225,16 @@ Play9x9SudokuState::Play9x9SudokuState() {
                   "artwork/sudoku-numbertiles-24px.png"
         );
     _scoreView.show();
+
+    //-------------------------------------------------------------------------
+    _currentCursorController = &_sudokuCursorController;
 }
 
 Play9x9SudokuState::~Play9x9SudokuState() {
 }
 
 void Play9x9SudokuState::processKeypressEvent(enum _keys key) {
-    // Tap the KEY_PAUSE
-    switch (key) {
-    case AbstractController::KEY_PAUSE: {
-        GameManager_pushGameState(new PauseMenuState());
-        break;
-    }
-    }
-
-    _sudokuCursorController.processKeypressEvent(key);
+    _currentCursorController->processKeypressEvent(key);
 }
 
 void Play9x9SudokuState::update(sf::Time elapsedTime) {
@@ -232,6 +246,7 @@ void Play9x9SudokuState::update(sf::Time elapsedTime) {
     _sudokuModelAdapter.enableMask();
     _sudokuUserView.update(elapsedTime);
 
+    _keypadCursorView.update(elapsedTime);
     _keypadView.update(elapsedTime);
 
     _scoreView.update(elapsedTime);
@@ -246,9 +261,96 @@ void Play9x9SudokuState::draw(sf::RenderWindow *win) {
     _sudokuView.draw(win);
     _sudokuUserView.draw(win);
 
+    _keypadCursorView.draw(win);
     _keypadView.draw(win);
 
     _scoreView.draw(win);
+}
+
+void Play9x9SudokuState::tileSelected(AbstractController       *controller,
+                                      sf::Vector2i              tilePos,
+                                      AbstractController::_keys key) {
+    // Mark tileValue with invalid value first, so we can tell whether 
+    // it's updated by user
+    unsigned int tileValue = (unsigned int) -1;
+
+    switch (key) {
+    case AbstractController::KEY_SELECT: {
+        if (controller == &_sudokuCursorController) {
+            if (_sudokuModelAdapter.tileIsSelectable(tilePos.x, tilePos.y)) {
+                _keypadCursorView.show();
+                _keypadView.show();
+
+                _currentCursorController = &_keypadCursorController;
+            } else {
+                // Ignore it, since the tile is not selectable
+            }
+        } else 
+        if (controller == &_keypadCursorController) {
+            _keypadCursorView.hide();
+            _keypadView.hide();
+            
+            _currentCursorController = &_sudokuCursorController;
+            
+            tileValue = _keypadModelAdapter.value(tilePos.x, tilePos.y);
+            if (tileValue == TILEMAP_SYMBOL_DELETE) {
+                tileValue = 0;
+            }
+        }
+        break;
+    }
+    case AbstractController::KEY_PAUSE: {
+        GameManager_pushGameState(new PauseMenuState());
+        break;
+    }
+    case AbstractController::KEY_DELETE: {
+        tileValue = 0;
+        break;
+    }
+    case AbstractController::KEY_1: {
+        tileValue = 1;
+        break;
+    }
+    case AbstractController::KEY_2: {
+        tileValue = 2;
+        break;
+    }
+    case AbstractController::KEY_3: {
+        tileValue = 3;
+        break;
+    }
+    case AbstractController::KEY_4: {
+        tileValue = 4;
+        break;
+    }
+    case AbstractController::KEY_5: {
+        tileValue = 5;
+        break;
+    }
+    case AbstractController::KEY_6: {
+        tileValue = 6;
+        break;
+    }
+    case AbstractController::KEY_7: {
+        tileValue = 7;
+        break;
+    }
+    case AbstractController::KEY_8: {
+        tileValue = 8;
+        break;
+    }
+    case AbstractController::KEY_9: {
+        tileValue = 9;
+        break;
+    }
+    }
+
+    if (tileValue != (unsigned int) -1) {
+        _sudokuModelAdapter.setValue(tileValue, 
+                                     _sudokuCursorModel.y,
+                                     _sudokuCursorModel.x
+        );
+    }
 }
 
 //-----------------------------------------------------------------------------

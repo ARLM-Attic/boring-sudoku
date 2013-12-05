@@ -62,10 +62,20 @@ void CursorController::processKeypressEvent(enum _keys key) {
     }
     
     case KEY_SELECT: {
+        _cursorEventObserver->tileSelected(
+            this, 
+            sf::Vector2i(_cursorModel->y, _cursorModel->x), 
+            KEY_SELECT
+        );
         break;
     }
 
     case KEY_PAUSE: {
+        _cursorEventObserver->tileSelected(
+            this, 
+            sf::Vector2i(_cursorModel->y, _cursorModel->x), 
+            KEY_PAUSE
+        );
         break;
     }
 
@@ -79,6 +89,11 @@ void CursorController::processKeypressEvent(enum _keys key) {
     case KEY_7: // fall through
     case KEY_8: // fall through
     case KEY_9: {
+        _cursorEventObserver->tileSelected(
+            this, 
+            sf::Vector2i(_cursorModel->y, _cursorModel->x), 
+            key
+        );
         break;
     }
     
@@ -87,6 +102,10 @@ void CursorController::processKeypressEvent(enum _keys key) {
     }
 
     updateCursorView();
+}
+
+void CursorController::registerEventObserver(CursorEventObserver *observer) {
+    _cursorEventObserver = observer;
 }
 
 void CursorController::moveCursorUp() {

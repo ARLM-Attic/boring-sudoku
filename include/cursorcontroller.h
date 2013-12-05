@@ -33,6 +33,7 @@
 #include "boardmodeladapter.h"
 #include "boardlayout.h"
 #include "cursorview.h"
+#include "cursoreventobserver.h"
 
 class CursorController : public AbstractController {
 public:
@@ -55,6 +56,11 @@ public:
     /// \brief Process the keypress events
     ///
     virtual void processKeypressEvent(enum _keys key);
+
+    ///
+    /// \brief Register the cursor event observer
+    ///
+    void registerEventObserver(CursorEventObserver *observer);
 
 private:
     ///
@@ -101,6 +107,11 @@ private:
     /// \brief The cursor view, represents the cursor position in the screen
     ///
     CursorView  *_cursorView;
+
+    ///
+    /// \brief The cursor event observer
+    ///
+    CursorEventObserver *_cursorEventObserver;
 };
 
 #endif

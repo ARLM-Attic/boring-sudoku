@@ -110,6 +110,7 @@
     <ClInclude Include="include\boardmodeladapter.h" />
     <ClInclude Include="include\boardview.h" />
     <ClInclude Include="include\cursorcontroller.h" />
+    <ClInclude Include="include\cursoreventobserver.h" />
     <ClInclude Include="include\cursorview.h" />
     <ClInclude Include="include\gamemanager.h" />
     <ClInclude Include="include\menulayout.h" />

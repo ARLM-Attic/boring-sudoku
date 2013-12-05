@@ -38,9 +38,11 @@ public:
     ///
     /// \param controller The controller, the origin of the event
     /// \param tilePos    Tile position in the board
+    /// \param key        The user pressed key
     ///
-    virtual void tileSelected(AbstractController *controller, 
-                             sf::Vector2i         tilePos) = 0;
+    virtual void tileSelected(AbstractController       *controller, 
+                              sf::Vector2i              tilePos,
+                              AbstractController::_keys key) = 0;
 };
 
 #endif // __CURSOREVENTOBSERVER_H_

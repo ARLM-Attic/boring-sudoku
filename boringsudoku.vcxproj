@@ -94,6 +94,7 @@
     <ClCompile Include="source\gamemanager.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\menustate.cpp" />
+    <ClCompile Include="source\pausemenustate.cpp" />
     <ClCompile Include="source\play9x9sudokustate.cpp" />
     <ClCompile Include="source\scorelayout.cpp" />
     <ClCompile Include="source\menulayout.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="include\gamemanager.h" />
     <ClInclude Include="include\menulayout.h" />
     <ClInclude Include="include\menustate.h" />
+    <ClInclude Include="include\pausemenustate.h" />
     <ClInclude Include="include\play9x9sudokustate.h" />
     <ClInclude Include="include\scorelayout.h" />
     <ClInclude Include="include\splashscreenstate.h" />

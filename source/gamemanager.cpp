@@ -45,6 +45,12 @@ static bool _gameIsRunning;
 static std::stack<AbstractGameState *> _gameStateStack;
 
 ///
+/// \brief Store the deleted game state, so it can be removed from the memory
+///        when it's no longer used
+///
+static std::stack<AbstractGameState *> _deletedGameState;
+
+///
 /// \brief The current game state that's running
 ///
 static AbstractGameState *_currentGameState;
@@ -214,8 +220,9 @@ void GameManager_pushGameState(AbstractGameState *state) {
 }
 
 void GameManager_popGameState() {
+    _deletedGameState.push(_gameStateStack.top());
     _gameStateStack.pop();
-
+    
     _disposeCurrentGameState = true;
 }
 
@@ -246,7 +253,12 @@ void GameManager_run() {
         _gameWindow.display();
 
         if (_disposeCurrentGameState) {
-            delete _currentGameState;
+            while (!_deletedGameState.empty()) {
+                AbstractGameState *gameState = _deletedGameState.top();
+                delete gameState;
+                _deletedGameState.pop();
+            }
+            
             _disposeCurrentGameState = false;
         }
     }

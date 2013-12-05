@@ -21,6 +21,8 @@
  * IN THE SOFTWARE.
  */
 
+#include "gamemanager.h"
+#include "pausemenustate.h"
 #include "play9x9sudokustate.h"
 
 //-----------------------------------------------------------------------------
@@ -210,6 +212,14 @@ Play9x9SudokuState::~Play9x9SudokuState() {
 }
 
 void Play9x9SudokuState::processKeypressEvent(enum _keys key) {
+    // Tap the KEY_PAUSE
+    switch (key) {
+    case AbstractController::KEY_PAUSE: {
+        GameManager_pushGameState(new PauseMenuState());
+        break;
+    }
+    }
+
     _sudokuCursorController.processKeypressEvent(key);
 }
 

@@ -69,6 +69,9 @@
     <ClCompile Include="source\cursorcontroller.cpp">
       <Filter>Game Widgets\Source</Filter>
     </ClCompile>
+    <ClCompile Include="source\pausemenustate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\gamemanager.h">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="include\cursorcontroller.h">
       <Filter>Game Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pausemenustate.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

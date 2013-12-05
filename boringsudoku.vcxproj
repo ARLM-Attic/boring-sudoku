@@ -101,6 +101,7 @@
     <ClCompile Include="source\splashscreenstate.cpp" />
     <ClCompile Include="source\submenustate.cpp" />
     <ClCompile Include="source\sudokuboardlayout.cpp" />
+    <ClCompile Include="source\sudokugame.cpp" />
     <ClCompile Include="source\tileview.cpp" />
   </ItemGroup>
   <ItemGroup>

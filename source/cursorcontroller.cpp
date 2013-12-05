@@ -108,6 +108,12 @@ void CursorController::registerEventObserver(CursorEventObserver *observer) {
     _cursorEventObserver = observer;
 }
 
+void CursorController::resetCursorPosition() {
+    _cursorModel->x = 0; 
+    _cursorModel->y = 0;
+    updateCursorView();
+}
+
 void CursorController::moveCursorUp() {
     do {
         if (_cursorModel->y > 0) {

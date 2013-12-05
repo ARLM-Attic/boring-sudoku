@@ -33,6 +33,7 @@
 #include "cursoreventobserver.h"
 #include "cursorview.h"
 #include "scorelayout.h"
+#include "sudokugame.h"
 #include "sudokuboardlayout.h"
 
 class Play9x9SudokuState : public AbstractGameState, public CursorEventObserver
@@ -70,6 +71,12 @@ private:
     /// \brief Set the game score to be displayed
     ///
     void setScore(unsigned int score);
+
+    //-------------------------------------------------------------------------
+    ///
+    /// \brief The sudoku game
+    ///
+    SudokuGame _sudokuGame;
 
     //-------------------------------------------------------------------------
     ///

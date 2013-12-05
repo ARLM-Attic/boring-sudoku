@@ -21,3 +21,95 @@
  * IN THE SOFTWARE.
  */
 
+/*
+ * Sudoku game contains the rules of the Sudoku, including the validation of 
+ * the digit and available digit for certain position.
+ */
+
+#ifndef __SUDOKUGAME_H_
+#define __SUDOKUGAME_H_
+
+#include <vector>
+
+class SudokuGame {
+public:
+    ///
+    /// \brief The type of the Sudoku game
+    ///
+    enum _sudokuType {
+        SUDOKU_TYPE_9X9 = 9,
+    };
+
+    ///
+    /// \brief Init the Sudoku game
+    ///
+    /// \param board The sudoku board
+    ///
+    SudokuGame(std::vector<unsigned int> *board = NULL);
+
+    ///
+    /// \brief Check if the digit is valid
+    ///
+    /// \param digit  The digit to be checked
+    /// \param row    The row of the digit
+    /// \param column The column of the digit
+    ///
+    /// \return true if the digit is valid
+    ///
+    bool isDigitValid(unsigned int digit, int row, int column);
+
+    ///
+    /// \brief Check the available digit for the row, column
+    ///
+    /// \param row    The row of the tile
+    /// \param column The column of the tile
+    ///
+    /// \return Array of available digit for the tile
+    ///
+    std::vector<unsigned int> availableDigit(int row, int column);
+
+    ///
+    /// \brief Check if all tiles has been filled (game over condition)
+    ///
+    /// \return true if the game is over
+    ///
+    bool isGameOver();
+
+private:
+    ///
+    /// \brief Check if the current row is valid
+    ///
+    /// \param row    The row of the digit
+    /// \param column The column of the digit
+    ///
+    /// \return true if the current row is valid
+    ///
+    bool isRowValid(int row, int column);
+
+    ///
+    /// \brief Check if the current column is valid
+    ///
+    /// \param row    The row of the digit
+    /// \param column The column of the digit
+    ///
+    /// \return true if the current column is valid
+    ///
+    bool isColumnValid(int row, int column);
+
+    ///
+    /// \brief Check if the subboard is valid
+    ///
+    /// \param row    The row of the digit
+    /// \param column The column of the digit
+    ///
+    /// \return true if the current subboard is valid
+    ///
+    bool isSubboardValid(int row, int column);
+
+    ///
+    /// \brief Pointer to the sudoku board
+    ///
+    std::vector<unsigned int> *_sudokuBoard;
+};
+
+#endif // __SUDOKUGAME_H_

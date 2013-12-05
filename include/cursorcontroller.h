@@ -62,6 +62,11 @@ public:
     ///
     void registerEventObserver(CursorEventObserver *observer);
 
+    ///
+    /// \brief Reset the cursor position to row #0, column #0
+    ///
+    void resetCursorPosition();
+
 private:
     ///
     /// \brief Move the cursor up into the valid tile position

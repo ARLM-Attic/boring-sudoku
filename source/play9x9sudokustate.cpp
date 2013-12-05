@@ -163,8 +163,11 @@ Play9x9SudokuState::Play9x9SudokuState() {
     _sudokuCursorController.registerEventObserver(this);
 
     //-------------------------------------------------------------------------
-    // Create keypad
-    createKeypad();
+    // Create keypad with all the combination tiles
+    for (unsigned int i = 1; i <= 9; i++) {
+        _keypadModel.push_back(i);
+    }
+    _keypadModel.push_back(TILEMAP_SYMBOL_DELETE);
 
     _keypadModelAdapter = 
         BoardModelAdapter(&_keypadModel, 
@@ -278,6 +281,8 @@ void Play9x9SudokuState::tileSelected(AbstractController       *controller,
     case AbstractController::KEY_SELECT: {
         if (controller == &_sudokuCursorController) {
             if (_sudokuModelAdapter.tileIsSelectable(tilePos.x, tilePos.y)) {
+                createKeypad();
+                _keypadCursorController.resetCursorPosition();
                 _keypadCursorView.show();
                 _keypadView.show();
 
@@ -355,12 +360,14 @@ void Play9x9SudokuState::tileSelected(AbstractController       *controller,
 
 //-----------------------------------------------------------------------------
 void Play9x9SudokuState::createKeypad() {
-    // Init keypad model
-    for (unsigned int i = 1; i < 10; i++) {
-        _keypadModel.push_back(i);
-    }
+    _keypadModel = 
+        _sudokuGame.availableDigit(_sudokuCursorModel.y, 
+                                   _sudokuCursorModel.x
+        );
 
     _keypadModel.push_back(TILEMAP_SYMBOL_DELETE);
+
+    _keypadModelAdapter.setModel(&_keypadModel);
 }
 
 void Play9x9SudokuState::createSudokuBoard() {
@@ -388,6 +395,8 @@ void Play9x9SudokuState::createSudokuBoard() {
             _sudokuModelMask.push_back(false);
         }
     }
+
+    _sudokuGame = SudokuGame(&_sudokuModel);
 }
 
 

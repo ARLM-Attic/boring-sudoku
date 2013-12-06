@@ -47,7 +47,6 @@
 ///
 #define SUDOKU_CURSOR_SIZE          sf::Vector2u(36, 36)
 
-
 //-----------------------------------------------------------------------------
 ///
 /// \brief The column size of the keypad (in tiles, not pixel)
@@ -71,16 +70,6 @@
 
 //-----------------------------------------------------------------------------
 ///
-/// \brief The column size of the score display
-///
-#define SCORE_COLUMN_SIZE           5
-
-///
-/// \brief The score display tilesize
-///
-#define SCORE_TILESIZE              sf::Vector2u(24, 24)
-
-///
 /// \brief The screen size for the score display
 ///
 #define SCORE_SCREEN_SIZE           sf::Vector2f(160, 160)
@@ -92,22 +81,10 @@
 
 //-----------------------------------------------------------------------------
 ///
-/// \brief The number tilemap that's used in this game store no 0 symbol at pos 
-///        #11
-///
-#define TILEMAP_SYMBOL_0      10
-
-///
 /// \brief The number tilemap that's used in this game store delete symbol at 
 ///        pos #12
 ///
 #define TILEMAP_SYMBOL_DELETE 11
-
-//-----------------------------------------------------------------------------
-///
-/// \brief The score display length (in digit)
-///
-#define SCORE_DIGIT_LENGTH    5
 
 //-----------------------------------------------------------------------------
 Play9x9SudokuState::Play9x9SudokuState() {
@@ -208,32 +185,19 @@ Play9x9SudokuState::Play9x9SudokuState() {
 
     //-------------------------------------------------------------------------
     // Create the score display
-    setScore(98201);
-
-    _scoreModelAdapter =
-        BoardModelAdapter(&_scoreModel, 
-                          SCORE_COLUMN_SIZE
+    _sudokuScore =
+        new SudokuScore(&_sudokuModel, 
+                        SUDOKU_BOARD_COLUMN_SIZE,
+                        SCORE_SCREEN_SIZE,
+                        SCORE_SCREEN_OFFSET
         );
-
-    _scoreLayout = 
-        ScoreLayout(&_scoreModelAdapter,
-                    SCORE_TILESIZE,
-                    SCORE_SCREEN_SIZE,
-                    SCORE_SCREEN_OFFSET
-        );
-
-    _scoreView =
-        BoardView(&_scoreModelAdapter,
-                  &_scoreLayout,
-                  "artwork/sudoku-numbertiles-24px.png"
-        );
-    _scoreView.show();
 
     //-------------------------------------------------------------------------
     _currentCursorController = &_sudokuCursorController;
 }
 
 Play9x9SudokuState::~Play9x9SudokuState() {
+    delete _sudokuScore;
 }
 
 void Play9x9SudokuState::processKeypressEvent(enum _keys key) {
@@ -252,7 +216,7 @@ void Play9x9SudokuState::update(sf::Time elapsedTime) {
     _keypadCursorView.update(elapsedTime);
     _keypadView.update(elapsedTime);
 
-    _scoreView.update(elapsedTime);
+    _sudokuScore->update(elapsedTime);
 }
 
 void Play9x9SudokuState::draw(sf::RenderWindow *win) {
@@ -267,7 +231,7 @@ void Play9x9SudokuState::draw(sf::RenderWindow *win) {
     _keypadCursorView.draw(win);
     _keypadView.draw(win);
 
-    _scoreView.draw(win);
+    _sudokuScore->draw(win);
 }
 
 void Play9x9SudokuState::tileSelected(AbstractController       *controller,
@@ -350,11 +314,31 @@ void Play9x9SudokuState::tileSelected(AbstractController       *controller,
     }
     }
 
-    if (tileValue != (unsigned int) -1) {
+    if (tileValue == (unsigned int) -1) {
+        return;
+    } else {
+        // We got the tileValue. Proceed with verification, scoring and game 
+        // over check
+    }
+
+    if (_sudokuGame.isDigitValid(tileValue, 
+                                 _sudokuCursorModel.y, 
+                                 _sudokuCursorModel.x)) 
+    { 
         _sudokuModelAdapter.setValue(tileValue, 
                                      _sudokuCursorModel.y,
                                      _sudokuCursorModel.x
         );
+
+        // Get a score when the tileValue is not 0 (not erasing the current
+        // value)
+        if (tileValue > 0) {
+            _sudokuScore->updateScore(_sudokuCursorModel.y,
+                                      _sudokuCursorModel.x);
+        }
+
+        if (_sudokuGame.isGameOver()) {
+        }
     }
 }
 
@@ -397,22 +381,4 @@ void Play9x9SudokuState::createSudokuBoard() {
     }
 
     _sudokuGame = SudokuGame(&_sudokuModel);
-}
-
-
-
-void Play9x9SudokuState::setScore(unsigned int score) {
-    unsigned int divider = 10;
-
-    _scoreModel.resize(SCORE_DIGIT_LENGTH);
-
-    for (unsigned int i = 0; i < SCORE_DIGIT_LENGTH; i++) {
-        _scoreModel[(SCORE_DIGIT_LENGTH -1) - i] = score % divider;
-
-        if (_scoreModel[(SCORE_DIGIT_LENGTH -1) - i] == 0) {
-            _scoreModel[(SCORE_DIGIT_LENGTH -1) - i] = TILEMAP_SYMBOL_0;
-        }
-        
-        score = score / divider;
-    }
 }

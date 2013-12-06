@@ -33,8 +33,9 @@
 #include "cursoreventobserver.h"
 #include "cursorview.h"
 #include "scorelayout.h"
-#include "sudokugame.h"
 #include "sudokuboardlayout.h"
+#include "sudokugame.h"
+#include "sudokuscore.h"
 
 class Play9x9SudokuState : public AbstractGameState, public CursorEventObserver
 {
@@ -67,16 +68,16 @@ private:
     ///
     void createSudokuBoard();
 
-    ///
-    /// \brief Set the game score to be displayed
-    ///
-    void setScore(unsigned int score);
-
     //-------------------------------------------------------------------------
     ///
     /// \brief The sudoku game
     ///
     SudokuGame _sudokuGame;
+
+    ///
+    /// \brief The sudoku scoring mechanism, and its display
+    ///
+    SudokuScore *_sudokuScore;
 
     //-------------------------------------------------------------------------
     ///
@@ -174,27 +175,6 @@ private:
     ///        that will process the current user input
     ///
     CursorController *_currentCursorController;
-
-    //-------------------------------------------------------------------------
-    ///
-    /// \brief The score model, to hold the score digits
-    ///
-    std::vector<unsigned int> _scoreModel;
-
-    ///
-    /// \brief The score model adapter
-    ///
-    BoardModelAdapter _scoreModelAdapter;
-
-    ///
-    /// \brief The score layout
-    ///
-    ScoreLayout _scoreLayout;
-
-    ///
-    /// \brief The score view adapter
-    ///
-    BoardView _scoreView;
 };
 
 #endif // __PLAY9X9SUDOKUSTATE_H_

@@ -102,6 +102,7 @@
     <ClCompile Include="source\submenustate.cpp" />
     <ClCompile Include="source\sudokuboardlayout.cpp" />
     <ClCompile Include="source\sudokugame.cpp" />
+    <ClCompile Include="source\sudokuscore.cpp" />
     <ClCompile Include="source\tileview.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +115,7 @@
     <ClInclude Include="include\cursoreventobserver.h" />
     <ClInclude Include="include\cursorview.h" />
     <ClInclude Include="include\gamemanager.h" />
+    <ClInclude Include="include\sudokuscore.h" />
     <ClInclude Include="include\menulayout.h" />
     <ClInclude Include="include\menustate.h" />
     <ClInclude Include="include\pausemenustate.h" />

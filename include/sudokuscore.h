@@ -57,6 +57,25 @@ public:
     virtual void update(sf::Time elapsedTime);
     virtual void draw(sf::RenderWindow *win);
 
+    ///
+    /// \brief Get the total score of the board
+    ///
+    /// \return The total score of the board
+    ///
+    unsigned int totalScore();
+
+    ///
+    /// \brief Convert the score to digit (tile with numbers for display)
+    ///
+    /// This function is provided as helper for other classes that want
+    /// to display the score. Note that the conversion is limited to 5 digits.
+    ///
+    /// \param digitModel The digit model to hold the conversion result
+    /// \param score      The score to be converted
+    ///
+    static void scoreToDigit(std::vector<unsigned int> *digitModel, 
+                             unsigned int               score);
+
 private:
     ///
     /// \brief Count down the _currentScore, based on the time elapsed

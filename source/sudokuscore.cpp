@@ -111,24 +111,8 @@ void SudokuScore::updateScore(int row, int col) {
         _currentScore = MAXIMUM_SCORE_PER_TILE;
         _runningTime = sf::seconds(0.f);
 
-        // Count the total score for the board
-        unsigned int totalScore = 0;
-        for (unsigned int i = 0; i < _scoreModel.size(); i++) {
-            totalScore += _scoreModel[i];
-        }
-
-        unsigned int divider = 10;
-        for (unsigned int i = 0; i < SCORE_DIGIT_LENGTH; i++) {
-            _scoreDigitModel[(SCORE_DIGIT_LENGTH -1) - i] = 
-                (totalScore % divider);
-
-            if (_scoreDigitModel[(SCORE_DIGIT_LENGTH -1) - i] == 0) {
-                _scoreDigitModel[(SCORE_DIGIT_LENGTH -1) - i] = 
-                    TILEMAP_SYMBOL_0;
-            }
-        
-            totalScore = totalScore / divider;
-        }
+        // Convert the total score into display digit
+        scoreToDigit(&_scoreDigitModel, totalScore());
     }
 }
 
@@ -141,6 +125,15 @@ void SudokuScore::draw(sf::RenderWindow *win) {
     _scoreDigitView.draw(win);
 }
 
+unsigned int SudokuScore::totalScore() {
+    unsigned int totalScore = 0;
+    for (unsigned int i = 0; i < _scoreModel.size(); i++) {
+        totalScore += _scoreModel[i];
+    }
+
+    return totalScore;
+}
+
 void SudokuScore::countdownScore(sf::Time elapsedTime) {
     _runningTime += elapsedTime;
 
@@ -150,4 +143,18 @@ void SudokuScore::countdownScore(sf::Time elapsedTime) {
 
     _currentScore = (unsigned int) (MAXIMUM_SCORE_PER_TILE * 
         (1 - (_runningTime.asSeconds() / MAXIMUM_TIME_PER_TILE.asSeconds())));
+}
+
+void SudokuScore::scoreToDigit(std::vector<unsigned int> *digitModel, 
+                               unsigned int               score) {
+    unsigned int divider = 10;
+    for (unsigned int i = 0; i < SCORE_DIGIT_LENGTH; i++) {
+        (*digitModel)[(SCORE_DIGIT_LENGTH -1) - i] = (score % divider);
+
+        if ((*digitModel)[(SCORE_DIGIT_LENGTH -1) - i] == 0) {
+            (*digitModel)[(SCORE_DIGIT_LENGTH -1) - i] = TILEMAP_SYMBOL_0;
+        }
+        
+        score = score / divider;
+    }
 }

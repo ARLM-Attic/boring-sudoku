@@ -92,6 +92,7 @@
     <ClCompile Include="source\cursorcontroller.cpp" />
     <ClCompile Include="source\cursorview.cpp" />
     <ClCompile Include="source\gamemanager.cpp" />
+    <ClCompile Include="source\gameoverstate.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\menustate.cpp" />
     <ClCompile Include="source\pausemenustate.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="include\cursoreventobserver.h" />
     <ClInclude Include="include\cursorview.h" />
     <ClInclude Include="include\gamemanager.h" />
+    <ClInclude Include="include\gameoverstate.h" />
     <ClInclude Include="include\sudokuscore.h" />
     <ClInclude Include="include\menulayout.h" />
     <ClInclude Include="include\menustate.h" />

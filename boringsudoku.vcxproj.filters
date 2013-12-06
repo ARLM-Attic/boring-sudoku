@@ -78,6 +78,9 @@
     <ClCompile Include="source\sudokuscore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\gameoverstate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\gamemanager.h">
@@ -141,6 +144,9 @@
       <Filter>Game Widgets\Headers</Filter>
     </ClInclude>
     <ClInclude Include="include\sudokuscore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gameoverstate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

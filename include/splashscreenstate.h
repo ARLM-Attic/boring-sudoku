@@ -53,7 +53,7 @@ private:
     ///
     /// \brief Track the running time of this state
     ///
-    sf::Time    _runningTime;
+    sf::Time _runningTime;
 };
 
 #endif // __SPLASHSCREENSTATE_H_

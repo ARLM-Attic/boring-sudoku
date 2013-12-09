@@ -23,9 +23,62 @@
 
 #include "gamemanager.h"
 #include "gameoverstate.h"
+#include "sudokuscore.h"
 
-GameOverState::GameOverState() {
+//-----------------------------------------------------------------------------
+///
+/// \brief The screen size for the score display
+///
+#define SCORE_SCREEN_SIZE           sf::Vector2f(160, 160)
+
+///
+/// \brief The score display screen offset
+///
+#define SCORE_SCREEN_OFFSET         sf::Vector2f(200, 145)
+
+///
+/// \brief The column size of the score display
+///
+#define SCORE_COLUMN_SIZE           5
+
+///
+/// \brief The score display tilesize
+///
+#define SCORE_TILESIZE              sf::Vector2u(24, 24)
+
+///
+/// \brief The score display length (in digit)
+///
+#define SCORE_DIGIT_LENGTH          5
+
+//-----------------------------------------------------------------------------
+GameOverState::GameOverState(unsigned int lastScore) {
     _backgroundTexture.loadFromFile("artwork/sudoku-gameover-background.png");
+
+    // Init the score widget
+    _scoreDigitModel = std::vector<unsigned int> (SCORE_DIGIT_LENGTH, 0);
+
+    _scoreDigitModelAdapter =
+        BoardModelAdapter(&this->_scoreDigitModel, 
+                          SCORE_COLUMN_SIZE
+        );
+
+    _scoreDigitLayout = 
+        ScoreLayout(&_scoreDigitModelAdapter,
+                    SCORE_TILESIZE,
+                    SCORE_SCREEN_SIZE,
+                    SCORE_SCREEN_OFFSET
+        );
+
+    _scoreDigitView =
+        BoardView(&_scoreDigitModelAdapter,
+                  &_scoreDigitLayout,
+                  "artwork/sudoku-numbertiles-24px.png"
+        );
+    _scoreDigitView.show();
+
+    // Set the last score into the widget
+    SudokuScore::scoreToDigit(&_scoreDigitModel, lastScore);
 }
 
 GameOverState::~GameOverState() {
@@ -40,9 +93,12 @@ void GameOverState::processKeypressEvent(enum _keys key) {
 }
 
 void GameOverState::update(sf::Time elapsedTime) {
+    _scoreDigitView.update(elapsedTime);
 }
 
 void GameOverState::draw(sf::RenderWindow *win) {
     sf::Sprite background(_backgroundTexture);
     win->draw(background);
+
+    _scoreDigitView.draw(win);
 }

@@ -339,7 +339,7 @@ void Play9x9SudokuState::tileSelected(AbstractController       *controller,
         }
 
         if (_sudokuGame.isGameOver()) {
-            GameManager_pushGameState(new GameOverState());
+            GameManager_pushGameState(new GameOverState(_sudokuScore->totalScore()));
         }
     }
 }

@@ -32,10 +32,16 @@
 #include "boardmodeladapter.h"
 #include "boardview.h"
 #include "menulayout.h"
+#include "scorelayout.h"
 
 class GameOverState : public AbstractGameState {
 public:
-    explicit GameOverState();
+    ///
+    /// \brief Create game over state, with lastScore displayed
+    ///
+    /// \param lastScore The last score of the game
+    ///
+    explicit GameOverState(unsigned int lastScore);
     virtual ~GameOverState();
 
     //-------------------------------------------------------------------------
@@ -52,6 +58,27 @@ private:
     /// \brief The background texture
     ///
     sf::Texture _backgroundTexture;
+
+    //-------------------------------------------------------------------------
+    ///
+    /// \brief The score digit model, to hold the score digits
+    ///
+    std::vector<unsigned int> _scoreDigitModel;
+
+    ///
+    /// \brief The score digit model adapter
+    ///
+    BoardModelAdapter _scoreDigitModelAdapter;
+
+    ///
+    /// \brief The score digit layout
+    ///
+    ScoreLayout _scoreDigitLayout;
+
+    ///
+    /// \brief The score digit view adapter
+    ///
+    BoardView _scoreDigitView;
 };
 
 #endif // __GAMEOVERSTATE_H_
